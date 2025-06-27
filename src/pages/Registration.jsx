@@ -1,16 +1,20 @@
 import React from 'react'
 import Grid from '@mui/material/Grid';
-import RegistrationImg from '../assets/registration.png';
+
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import { alpha, styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 
+import RegistrationImg from '../assets/registration.png';
+import { Link } from 'react-router-dom';
+
 const BootstrapButton = styled(Button)({
   width:'55%',
   padding:"19px 0px",
   background:"#5F35F5",
-  borderRadius:"86px"
+  borderRadius:"86px",
+  fontFamily:"Open Sans",
 });
 
 
@@ -44,8 +48,8 @@ function Registration() {
             <CssTextField id="outlined-basic" label="Email Address" variant="outlined" />
             <CssTextField id="outlined-basic" label="Full name" variant="outlined" />
             <CssTextField id="outlined-basic" label="Password" variant="outlined" />
-            <BootstrapButton variant="contained">Contained</BootstrapButton>
-            <p>Already  have an account ? <span>Sign In</span></p>
+            <BootstrapButton variant="contained">Sign up</BootstrapButton>
+            <p>Already  have an account ? <Link to='/login'><span>Sign In</span></Link> </p>
           </div>
          </div>
            

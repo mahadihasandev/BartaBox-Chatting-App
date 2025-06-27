@@ -57,3 +57,32 @@
         font-family: "Nunito", sans-serif;
         font-size: 13px;
     }
+
+    .googleBtn{
+        display: flex;
+        gap: 10px;
+        border:1px solid #8080806e;
+        border-radius: 9px;
+        justify-content: center;
+        align-items: center;
+        padding: 23px 29px;
+        margin-bottom: 54px;
+
+    }
+    .googleBtn img{
+        height: 19px;
+        width: 19px;
+    }
+    .googleBtn h4{
+        font-family: "Open Sans", sans-serif;
+        color: #03014C;
+        font-size: 13px;
+        font-weight: 400;
+    }
+    .reg-title h5{
+    color: #11175D;
+    font-size: 34px;
+    font-family: "Nunito", sans-serif;
+    font-weight: 700;
+    padding-bottom: 29px;
+}
