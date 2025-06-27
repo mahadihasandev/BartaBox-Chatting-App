@@ -86,3 +86,13 @@
     font-weight: 700;
     padding-bottom: 29px;
 }
+
+.passField{
+    position: relative;
+    width: 100%;
+}
+.fa-eye-on{
+    position: absolute;
+    left: 49%;
+    top: 20%;
+}

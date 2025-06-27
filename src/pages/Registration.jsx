@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Grid from '@mui/material/Grid';
 
 import Container from '@mui/material/Container';
@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 
 import RegistrationImg from '../assets/registration.png';
 import { Link } from 'react-router-dom';
+import { FiEye,FiEyeOff } from "react-icons/fi";
 
 const BootstrapButton = styled(Button)({
   width:'55%',
@@ -37,6 +38,15 @@ const CssTextField = styled(TextField)({
 
 
 function Registration() {
+
+  const [showPass,setShowPass]=useState(false);
+    const [eye,setEye]=useState(false)
+  
+    let handleEyeClick=()=>{
+      setShowPass(!showPass)
+      setEye(!eye)
+    }
+
   return (
     <Container>
       <Grid container>
@@ -47,7 +57,14 @@ function Registration() {
             <p>Free register and you can enjoy it</p>
             <CssTextField id="outlined-basic" label="Email Address" variant="outlined" />
             <CssTextField id="outlined-basic" label="Full name" variant="outlined" />
-            <CssTextField id="outlined-basic" label="Password" variant="outlined" />
+            <div className='passField'>
+                          <CssTextField type={showPass?"text":"password"} id="outlined-basic" label="Password" variant="outlined" />
+                          <div onClick={handleEyeClick} className='fa-eye-on'>
+                          
+                          {eye?<FiEye />:<FiEyeOff />}
+                          </div>
+                          </div>
+
             <BootstrapButton variant="contained">Sign up</BootstrapButton>
             <p>Already  have an account ? <Link to='/login'><span>Sign In</span></Link> </p>
           </div>

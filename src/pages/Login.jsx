@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
@@ -7,6 +7,8 @@ import Button from '@mui/material/Button';
 import LoginImg from '../assets/loginImg.png'
 import { Link } from 'react-router-dom';
 import GoogleIcon from '../assets/googleIcon.png'
+import { FiEye,FiEyeOff } from "react-icons/fi";
+
 
 const BootstrapButton = styled(Button)({
   width:'55%',
@@ -15,6 +17,7 @@ const BootstrapButton = styled(Button)({
   fontFamily:"Open Sans",
   
 });
+
 
 
 const CssTextField = styled(TextField)({
@@ -36,6 +39,14 @@ const CssTextField = styled(TextField)({
 
 
 function Login() {
+  const [showPass,setShowPass]=useState(false);
+  const [eye,setEye]=useState(false)
+
+  let handleEyeClick=()=>{
+    setShowPass(!showPass)
+    setEye(!eye)
+  }
+
   return (
     <>
        <Container>
@@ -49,8 +60,14 @@ function Login() {
               <h4>Login with Google</h4>
             </div>
             <CssTextField id="outlined-basic" label="Email Address" variant="outlined" />
-            <CssTextField id="outlined-basic" label="Full name" variant="outlined" />
+            <div className='passField'>
+              <CssTextField type={showPass?"text":"password"} id="outlined-basic" label="Password" variant="outlined" />
+              <div onClick={handleEyeClick} className='fa-eye-on'>
+              
+              {eye?<FiEye />:<FiEyeOff />}
+              </div>
             
+            </div>
             <BootstrapButton variant="contained">Login to Continue</BootstrapButton>
             <p>Don’t have an account ? <Link to='/'><span>Sign up</span></Link></p>
           </div>
