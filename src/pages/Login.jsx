@@ -91,7 +91,7 @@ function Login() {
   
   return (
     <>
-       <Container>
+       <>
       <Grid container>
         <Grid size={6}>
           <div className='reg-box'>
@@ -106,7 +106,7 @@ function Login() {
             <div className='passField'>
               {passError&&<div className='error-screen'>{passError}</div>}
               <CssTextField onChange={handlePass} type={showPass?"text":"password"} id="outlined-basic" label="Password" variant="outlined" />
-              <div onClick={handleEyeClick} className='fa-eye-on'>
+              <div onClick={handleEyeClick} className='fa-eye-on-login'>
               
               {showPass?<FiEye />:<FiEyeOff />}
               </div>
@@ -119,11 +119,11 @@ function Login() {
            
   
         </Grid>
-        <Grid size={6}>
+        <Grid className='reg-grid' size={6}>
           <img className='regImg' src={LoginImg} alt="Image" />
         </Grid>  
       </Grid>
-    </Container>
+    </>
     </>
   )
 }

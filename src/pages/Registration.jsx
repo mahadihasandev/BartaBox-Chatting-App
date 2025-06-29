@@ -109,9 +109,9 @@ function Registration() {
     }
 
   return (
-    <Container>
+    <>
       <Grid container>
-        <Grid size={6}>
+        <Grid size={6} spacing={20}>
          <div className='reg-box'>
            <div className='reg-title'>
             <h2>Get started with easily register</h2>
@@ -136,11 +136,11 @@ function Registration() {
            
   
         </Grid>
-        <Grid size={6}>
+        <Grid className='reg-grid' size={6}>
           <img className='regImg' src={RegistrationImg} alt="Image" />
         </Grid>  
       </Grid>
-    </Container>
+    </>
   )
 }
 
