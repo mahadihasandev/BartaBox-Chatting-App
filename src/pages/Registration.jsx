@@ -40,11 +40,72 @@ const CssTextField = styled(TextField)({
 function Registration() {
 
   const [showPass,setShowPass]=useState(false);
-    const [eye,setEye]=useState(false)
-  
+  const [email,setEmail]=useState("");
+  const [emailError,setEmailError]=useState("");
+  const [nameError,setNameError]=useState("");
+  const [passError,setPassError]=useState("");
+  const [name,setName]=useState("");
+   const [pass,setPass]=useState("");
+    
+
+
+    function handleEmail(e){
+      
+        setEmail(e.target.value)
+        setEmailError("")
+
+    }
+
+    function handleName(e){
+        setName(e.target.value)
+        setNameError("")
+    }
+
+    function handlePass(e){
+        setPass(e.target.value)
+        setPassError("")
+    }
+
+   function handleClick(){
+    if(!email){
+        setEmailError("Email does not exist")
+        
+      }else if(!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)){
+      setEmailError("Type a valid email")
+    }
+
+
+    if(!name){
+      setNameError("name is required")
+    }else if(!/^.{2,15}$/.test(name)){
+      setNameError("Name must be between 2-16 character long") 
+    }else if(!/^[a-zA-Z].*$/.test(name)){
+      setNameError("Must be start with a letter") 
+    }else if(!/^[a-zA-Z0-9_]+$/.test(name)){
+      setNameError("only later number & underscore are valid") 
+    }
+
+    if(!pass){
+      setPassError("Password is empty")
+    }else if (!/^(?=.{8,})$/.test(pass)){
+      setPassError("at least 8 character")
+    }else if(!/(?=.*[A-Z])/.test(pass)){
+      setPassError("at least one upper case")
+    }else if (!/^(?=.*[a-z])/.test(pass)){
+      setPassError("at least one lower case")
+    }else if (!/(?=.*\d)/.test(pass)){
+      setPassError("at least one number")
+
+      // (?=.*[@$!%*?&])
+      // [A-Za-z\d@$!%*?&]{8,}$
+    }
+
+   }
+
     let handleEyeClick=()=>{
+      
       setShowPass(!showPass)
-      setEye(!eye)
+      
     }
 
   return (
@@ -55,17 +116,20 @@ function Registration() {
            <div className='reg-title'>
             <h2>Get started with easily register</h2>
             <p>Free register and you can enjoy it</p>
-            <CssTextField id="outlined-basic" label="Email Address" variant="outlined" />
-            <CssTextField id="outlined-basic" label="Full name" variant="outlined" />
+            {emailError&&<div className='error-screen'>{emailError}</div>}
+            <CssTextField onChange={handleEmail} id="outlined-basic" label="Email Address" variant="outlined" />
+            {nameError&&<div className='error-screen'>{nameError}</div>}
+            <CssTextField onChange={handleName} id="outlined-basic" label="Full name" variant="outlined" />
+            {passError&&<div className='error-screen'>{passError}</div>}
             <div className='passField'>
-                          <CssTextField type={showPass?"text":"password"} id="outlined-basic" label="Password" variant="outlined" />
+                          <CssTextField onChange={handlePass} type={showPass?"text":"password"} id="outlined-basic" label="Password" variant="outlined" />
                           <div onClick={handleEyeClick} className='fa-eye-on'>
                           
-                          {eye?<FiEye />:<FiEyeOff />}
+                          {showPass?<FiEye />:<FiEyeOff />}
                           </div>
                           </div>
 
-            <BootstrapButton variant="contained">Sign up</BootstrapButton>
+            <BootstrapButton onClick={handleClick} variant="contained">Sign up</BootstrapButton>
             <p>Already  have an account ? <Link to='/login'><span>Sign In</span></Link> </p>
           </div>
          </div>

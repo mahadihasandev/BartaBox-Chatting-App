@@ -74,14 +74,17 @@ function Login() {
 
     if(!pass){
       setPassError("Password is empty")
-    }else if (!/^.{8,}$/.test(pass)){
+    }else if (!/^(?=.{8,})$/.test(pass)){
       setPassError("at least 8 character")
-    }else if(!/[A-Z]/.test(pass)){
+    }else if(!/(?=.*[A-Z])/.test(pass)){
       setPassError("at least one upper case")
-    }else if (!/[a-z]/.test(pass)){
+    }else if (!/^(?=.*[a-z])/.test(pass)){
       setPassError("at least one lower case")
-    }else if (!/\d/.test(pass)){
+    }else if (!/(?=.*\d)/.test(pass)){
       setPassError("at least one number")
+
+      // (?=.*[@$!%*?&])
+      // [A-Za-z\d@$!%*?&]{8,}$
     }
   }
 
@@ -98,10 +101,10 @@ function Login() {
               <img src={GoogleIcon} alt="Google" />
               <h4>Login with Google</h4>
             </div>
-            {emailError&&<div>{emailError}</div>}
+            {emailError&&<div className='error-screen'>{emailError}</div>}
             <CssTextField onChange={handleEmail} id="outlined-basic" label="Email Address" variant="outlined" />
             <div className='passField'>
-              {passError&&<div>{passError}</div>}
+              {passError&&<div className='error-screen'>{passError}</div>}
               <CssTextField onChange={handlePass} type={showPass?"text":"password"} id="outlined-basic" label="Password" variant="outlined" />
               <div onClick={handleEyeClick} className='fa-eye-on'>
               

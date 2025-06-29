@@ -96,3 +96,12 @@
     left: 49%;
     top: 20%;
 }
+
+
+.error-screen{
+    color: red;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 400;
+    padding-bottom: 15px;
+    
+}
