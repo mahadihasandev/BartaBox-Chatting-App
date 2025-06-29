@@ -19,7 +19,6 @@ const BootstrapButton = styled(Button)({
 });
 
 
-
 const CssTextField = styled(TextField)({
   '& label.Mui-focused': {
     color: '#11175D',
@@ -40,13 +39,53 @@ const CssTextField = styled(TextField)({
 
 function Login() {
   const [showPass,setShowPass]=useState(false);
-  const [eye,setEye]=useState(false)
+  const [pass,setPass]=useState('');
+
+  const [email,setEmail]=useState('');
+  const [emailError,setEmailError]=useState('');
+  const [passError,setPassError]=useState('');
+  
 
   let handleEyeClick=()=>{
     setShowPass(!showPass)
-    setEye(!eye)
+    
   }
 
+  let handleEmail=(e)=>{
+    setEmail(e.target.value)
+    setEmailError("")
+    
+  }
+
+  let handlePass=(e)=>{
+    setPass(e.target.value)
+    setPassError('')
+
+  }
+
+  let handleBtnClick=()=>{
+    if(!email){
+      setEmailError("Emile is empty");
+      
+    }else if(!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)){
+      setEmailError("Type a valid email")
+    }
+  
+
+    if(!pass){
+      setPassError("Password is empty")
+    }else if (!/^.{8,}$/.test(pass)){
+      setPassError("at least 8 character")
+    }else if(!/[A-Z]/.test(pass)){
+      setPassError("at least one upper case")
+    }else if (!/[a-z]/.test(pass)){
+      setPassError("at least one lower case")
+    }else if (!/\d/.test(pass)){
+      setPassError("at least one number")
+    }
+  }
+
+  
   return (
     <>
        <Container>
@@ -59,16 +98,18 @@ function Login() {
               <img src={GoogleIcon} alt="Google" />
               <h4>Login with Google</h4>
             </div>
-            <CssTextField id="outlined-basic" label="Email Address" variant="outlined" />
+            {emailError&&<div>{emailError}</div>}
+            <CssTextField onChange={handleEmail} id="outlined-basic" label="Email Address" variant="outlined" />
             <div className='passField'>
-              <CssTextField type={showPass?"text":"password"} id="outlined-basic" label="Password" variant="outlined" />
+              {passError&&<div>{passError}</div>}
+              <CssTextField onChange={handlePass} type={showPass?"text":"password"} id="outlined-basic" label="Password" variant="outlined" />
               <div onClick={handleEyeClick} className='fa-eye-on'>
               
-              {eye?<FiEye />:<FiEyeOff />}
+              {showPass?<FiEye />:<FiEyeOff />}
               </div>
             
             </div>
-            <BootstrapButton variant="contained">Login to Continue</BootstrapButton>
+            <BootstrapButton onClick={handleBtnClick} variant="contained">Login to Continue</BootstrapButton>
             <p>Don’t have an account ? <Link to='/'><span>Sign up</span></Link></p>
           </div>
          </div>
