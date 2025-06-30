@@ -93,6 +93,7 @@ function Login() {
     <>
        <>
       <Grid container>
+        
         <Grid size={6}>
           <div className='reg-box'>
            <div className='reg-title'>
