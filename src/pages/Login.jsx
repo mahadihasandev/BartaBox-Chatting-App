@@ -105,12 +105,14 @@ function Login() {
             <CssTextField onChange={handleEmail} id="outlined-basic" label="Email Address" variant="outlined" />
             <div className='passField'>
               {passError&&<div className='error-screen'>{passError}</div>}
+
+              <div className='passFieldLogin'>
               <CssTextField onChange={handlePass} type={showPass?"text":"password"} id="outlined-basic" label="Password" variant="outlined" />
               <div onClick={handleEyeClick} className='fa-eye-on-login'>
               
               {showPass?<FiEye />:<FiEyeOff />}
               </div>
-            
+            </div>
             </div>
             <BootstrapButton onClick={handleBtnClick} variant="contained">Login to Continue</BootstrapButton>
             <p>Don’t have an account ? <Link to='/'><span>Sign up</span></Link></p>
