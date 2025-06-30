@@ -87,13 +87,13 @@ function Registration() {
 
     if(!pass){
       setPassError("Password is empty")
-    }else if (!/^(?=.{8,})$/.test(pass)){
+    }else if (!/^.{8,}$/.test(pass)){
       setPassError("at least 8 character")
-    }else if(!/(?=.*[A-Z])/.test(pass)){
+    }else if(!/.*[A-Z]/.test(pass)){
       setPassError("at least one upper case")
-    }else if (!/^(?=.*[a-z])/.test(pass)){
+    }else if (!/^.*[a-z]/.test(pass)){
       setPassError("at least one lower case")
-    }else if (!/(?=.*\d)/.test(pass)){
+    }else if (!/.*\d/.test(pass)){
       setPassError("at least one number")
 
       // (?=.*[@$!%*?&])
