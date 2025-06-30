@@ -101,7 +101,9 @@ function Login() {
               <img src={GoogleIcon} alt="Google" />
               <h4>Login with Google</h4>
             </div>
+            <div className='emailError'>
             {emailError&&<div className='error-screen'>{emailError}</div>}
+            </div>
             <CssTextField onChange={handleEmail} id="outlined-basic" label="Email Address" variant="outlined" />
             <div className='passField'>
               {passError&&<div className='error-screen'>{passError}</div>}
