@@ -92,8 +92,7 @@ function Login() {
   return (
     <>
        <>
-      <Grid container>
-        
+      <Grid container>        
         <Grid size={6}>
           <div className='reg-box'>
            <div className='reg-title'>
