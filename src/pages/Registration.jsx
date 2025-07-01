@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
 import Grid from '@mui/material/Grid';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-
 import TextField from '@mui/material/TextField';
 import { alpha, styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import { ToastContainer, toast,Bounce } from 'react-toastify';
 import RegistrationImg from '../assets/registration.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FiEye,FiEyeOff } from "react-icons/fi";
 
 const BootstrapButton = styled(Button)({
@@ -45,7 +44,8 @@ function Registration() {
   const [nameError,setNameError]=useState("");
   const [passError,setPassError]=useState("");
   const [name,setName]=useState("");
-   const [pass,setPass]=useState("");
+  const [pass,setPass]=useState("");
+  let navigate=useNavigate()
     
 
 
@@ -136,10 +136,21 @@ function Registration() {
 const auth = getAuth();
 createUserWithEmailAndPassword(auth, email, pass)
   .then(() => {
+    setEmail('')
+    setName('')
+    setPass('')
     toast.success("New Account Created")
+    setTimeout(()=>{
+      navigate("/login")
+    },2000)
+
   })
   .catch((error) => {
-    console.log(error)
+    const errorCode=error.code
+    toast.error(errorCode)
+      setEmail('')
+      setName('')
+      setPass('')
   
   });
   }
@@ -153,18 +164,18 @@ createUserWithEmailAndPassword(auth, email, pass)
         <Grid size={6} spacing={20}>
          <div className='reg-box'>
             <ToastContainer
-position="top-right"
-autoClose={5000}
-hideProgressBar={false}
-newestOnTop={false}
-closeOnClick={false}
-rtl={false}
-pauseOnFocusLoss
-draggable
-pauseOnHover
-theme="light"
-transition={Bounce}
-/>
+               position="top-center"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+               transition={Bounce}
+            />
            <div className='reg-title'>
             <h2>Get started with easily register</h2>
             <p>Free register and you can enjoy it</p>

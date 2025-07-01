@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import Grid from '@mui/material/Grid';
-import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import { alpha, styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
@@ -9,6 +8,7 @@ import { Link } from 'react-router-dom';
 import GoogleIcon from '../assets/googleIcon.png'
 import { FiEye,FiEyeOff } from "react-icons/fi";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { ToastContainer, toast,Bounce } from 'react-toastify';
 
 
 const BootstrapButton = styled(Button)({
@@ -94,20 +94,21 @@ function Login() {
 const auth = getAuth();
 signInWithEmailAndPassword(auth, email, pass)
   .then(() => {
-    console.log("you are loged in")
-   
-    
+        setEmail('')
+        setPass('')
+        toast.success("You are logged in Successfully")
+  
   })
   .catch((error) => {
-    console.log(error)
+    let errorcode=error.code
+    toast.error(errorcode)
+          setEmail('')
+          setPass('')
   });
-
-  }
-  }
+}}
 
   
 
-  
   return (
     <>
        <>
@@ -115,6 +116,19 @@ signInWithEmailAndPassword(auth, email, pass)
         <Grid size={6}>
           <div className='reg-box'>
            <div className='reg-title'>
+            <ToastContainer
+              position="top-center"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick={false}
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="dark"
+              transition={Bounce}
+              />
             <h5>Login to your account!</h5>
             <div className='googleBtn'>
               <img src={GoogleIcon} alt="Google" />
