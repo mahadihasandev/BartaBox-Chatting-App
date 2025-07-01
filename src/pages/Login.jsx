@@ -107,7 +107,7 @@ function Login() {
     <>
        <>
       <Grid container>        
-        <Grid size={6}>
+        <Grid size={{xs:12,md:6}}>
           <div className='reg-box'>
            <div className='reg-title'>
             <ToastContainer
@@ -150,7 +150,7 @@ function Login() {
            
   
         </Grid>
-        <Grid className='reg-grid' size={6}>
+        <Grid className='reg-grid' size={{xs:0,md:6}}>
           <img className='regImg' src={LoginImg} alt="Image" />
         </Grid>  
       </Grid>

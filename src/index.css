@@ -129,4 +129,29 @@
           
     }
 
+    @media (min-width: 370px) and (max-width: 600px) {
+          .reg-title{
+            margin-left: 50px;
+            
+          }
+        .reg-title h2{
+            font-size: 18px;
+            margin-left: 5px;
+            
+        }
+        .reg-title p{
+            font-size: 16px;
+            
+        }
+        #outlined-basic{
+            width: 500px;
+        }
+        .reg-title h5{
+            font-size: 30px;
+            
+        }
+        
+        
+}
+
   

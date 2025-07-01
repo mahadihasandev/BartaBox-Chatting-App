@@ -149,7 +149,7 @@ function Registration() {
   return (
     <>
       <Grid container>
-        <Grid size={6} spacing={20}>
+        <Grid size={{xs:12,md:6}} spacing={20}>
          <div className='reg-box'>
             <ToastContainer
                position="top-center"
@@ -186,7 +186,7 @@ function Registration() {
            
   
         </Grid>
-        <Grid className='reg-grid' size={6}>
+        <Grid className='reg-grid' size={{xs:0,md:6}}>
           <img className='regImg' src={RegistrationImg} alt="Image" />
         </Grid>  
       </Grid>
