@@ -8,6 +8,7 @@ import LoginImg from '../assets/loginImg.png'
 import { Link } from 'react-router-dom';
 import GoogleIcon from '../assets/googleIcon.png'
 import { FiEye,FiEyeOff } from "react-icons/fi";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 
 const BootstrapButton = styled(Button)({
@@ -86,7 +87,25 @@ function Login() {
       // (?=.*[@$!%*?&])
       // [A-Za-z\d@$!%*?&]{8,}$
     }
+
+    if(email&&(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))&&pass){
+  
+
+const auth = getAuth();
+signInWithEmailAndPassword(auth, email, pass)
+  .then(() => {
+    console.log("you are loged in")
+   
+    
+  })
+  .catch((error) => {
+    console.log(error)
+  });
+
   }
+  }
+
+  
 
   
   return (
@@ -104,12 +123,12 @@ function Login() {
             <div className='emailError'>
             {emailError&&<div className='error-screen'>{emailError}</div>}
             </div>
-            <CssTextField onChange={handleEmail} id="outlined-basic" label="Email Address" variant="outlined" />
+            <CssTextField value={email} onChange={handleEmail} id="outlined-basic" label="Email Address" variant="outlined" />
             <div className='passField'>
               {passError&&<div className='error-screen'>{passError}</div>}
 
               <div className='passFieldLogin'>
-              <CssTextField onChange={handlePass} type={showPass?"text":"password"} id="outlined-basic" label="Password" variant="outlined" />
+              <CssTextField value={pass} onChange={handlePass} type={showPass?"text":"password"} id="outlined-basic" label="Password" variant="outlined" />
               <div onClick={handleEyeClick} className='fa-eye-on-login'>
               
               {showPass?<FiEye />:<FiEyeOff />}
