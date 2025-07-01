@@ -48,7 +48,6 @@ function Registration() {
   let navigate=useNavigate()
     
 
-
     function handleEmail(e){
       
         setEmail(e.target.value)
@@ -73,11 +72,9 @@ function Registration() {
    function handleClick(){
     let hasError = false;
 
-    if(!email){
-       
+    if(!email){       
         setEmailError("Email does not exist")
-        hasError = true;
-        
+        hasError = true;        
       }else{
         if(!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)){
       setEmailError("Type a valid email")
@@ -118,10 +115,6 @@ function Registration() {
       // [A-Za-z\d@$!%*?&]{8,}$
     }
 
-   
-    
-    
-    
   //    if(email&&!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)&&pass&&name){
   //     console.log(email+name+pass)
   //   }else{
@@ -131,17 +124,15 @@ function Registration() {
 
 
     if(!hasError){
-      
-
-const auth = getAuth();
-createUserWithEmailAndPassword(auth, email, pass)
-  .then(() => {
-    setEmail('')
-    setName('')
-    setPass('')
-    toast.success("New Account Created")
-    setTimeout(()=>{
-      navigate("/login")
+        const auth = getAuth();
+        createUserWithEmailAndPassword(auth, email, pass)
+        .then(() => {
+        setEmail('')
+        setName('')
+        setPass('')
+        toast.success("New Account Created")
+        setTimeout(()=>{
+        navigate("/login")
     },2000)
 
   })
@@ -153,11 +144,8 @@ createUserWithEmailAndPassword(auth, email, pass)
       setPass('')
   
   });
-  }
-  
-}
+  }}
    
-
   return (
     <>
       <Grid container>

@@ -41,7 +41,6 @@ const CssTextField = styled(TextField)({
 function Login() {
   const [showPass,setShowPass]=useState(false);
   const [pass,setPass]=useState('');
-
   const [email,setEmail]=useState('');
   const [emailError,setEmailError]=useState('');
   const [passError,setPassError]=useState('');
@@ -89,25 +88,20 @@ function Login() {
     }
 
     if(email&&(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))&&pass){
-  
-
-const auth = getAuth();
-signInWithEmailAndPassword(auth, email, pass)
-  .then(() => {
+      const auth = getAuth();
+      signInWithEmailAndPassword(auth, email, pass)
+        .then(() => {
         setEmail('')
         setPass('')
-        toast.success("You are logged in Successfully")
-  
+        toast.success("You are logged in Successfully")  
   })
   .catch((error) => {
     let errorcode=error.code
-    toast.error(errorcode)
-          setEmail('')
-          setPass('')
+      toast.error(errorcode)
+        setEmail('')
+        setPass('')
   });
-}}
-
-  
+}}  
 
   return (
     <>
