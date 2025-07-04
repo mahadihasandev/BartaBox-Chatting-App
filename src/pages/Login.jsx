@@ -7,8 +7,9 @@ import LoginImg from '../assets/loginImg.png'
 import { Link } from 'react-router-dom';
 import GoogleIcon from '../assets/googleIcon.png'
 import { FiEye,FiEyeOff } from "react-icons/fi";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword,signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { ToastContainer, toast,Bounce } from 'react-toastify';
+
 
 
 const BootstrapButton = styled(Button)({
@@ -39,11 +40,15 @@ const CssTextField = styled(TextField)({
 
 
 function Login() {
+  const provider = new GoogleAuthProvider();
+  const auth = getAuth();
   const [showPass,setShowPass]=useState(false);
   const [pass,setPass]=useState('');
   const [email,setEmail]=useState('');
   const [emailError,setEmailError]=useState('');
   const [passError,setPassError]=useState('');
+  
+
   
 
   let handleEyeClick=()=>{
@@ -88,20 +93,47 @@ function Login() {
     }
 
     if(email&&(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))&&pass){
-      const auth = getAuth();
+      
       signInWithEmailAndPassword(auth, email, pass)
-        .then(() => {
-        setEmail('')
-        setPass('')
-        toast.success("You are logged in Successfully")  
+        .then((user) => {
+          if(user.user.emailVerified){
+            setEmail('')
+            setPass('')
+            toast.success("You are logged in Successfully") 
+          }else{
+            toast.error("Email is not verified")
+          }
+         
   })
   .catch((error) => {
     let errorcode=error.code
+    if(errorcode.includes("auth/invalid-credential")){
+      toast.error("Invalid Email or Password")
+    }else{      
       toast.error(errorcode)
         setEmail('')
-        setPass('')
+        setPass('')      
+    }
+    
   });
-}}  
+}}
+
+let handleGoogleAuth=()=>{
+
+signInWithPopup(auth, provider)
+  .then((result) => {
+    console.log(result)
+    toast.success("You are logged in Successfully") 
+    
+  }).catch((error) => {
+    const errorCode = error.code;
+    toast.error(errorCode)
+    
+  });
+  console.log("google")
+}
+
+
 
   return (
     <>
@@ -124,7 +156,7 @@ function Login() {
               transition={Bounce}
               />
             <h5>Login to your account!</h5>
-            <div className='googleBtn'>
+            <div onClick={handleGoogleAuth} className='googleBtn'>
               <img src={GoogleIcon} alt="Google" />
               <h4>Login with Google</h4>
             </div>

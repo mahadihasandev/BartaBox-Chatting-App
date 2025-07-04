@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Grid from '@mui/material/Grid';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword ,sendEmailVerification } from "firebase/auth";
 import TextField from '@mui/material/TextField';
 import { alpha, styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
@@ -126,18 +126,26 @@ function Registration() {
     if(!hasError){
         const auth = getAuth();
         createUserWithEmailAndPassword(auth, email, pass)
-        .then(() => {
-        setEmail('')
-        setName('')
-        setPass('')
-        toast.success("New Account Created")
-        setTimeout(()=>{
-        navigate("/login")
-    },2000)
+        .then((user) => {
+          
+          sendEmailVerification(auth.currentUser)
+          .then(() => {
+            toast.success("Email Verification send");
+            setEmail('')
+            setName('')
+            setPass('')
+            toast.success("New Account Created")
+            setTimeout(()=>{
+            navigate("/login")
+            },2000)
+            });
+        
 
   })
   .catch((error) => {
-    const errorCode=error.code
+    
+    const errorCode=error.code;
+   
     toast.error(errorCode)
       setEmail('')
       setName('')
