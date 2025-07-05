@@ -8,6 +8,7 @@ import { ToastContainer, toast,Bounce } from 'react-toastify';
 import RegistrationImg from '../assets/registration.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiEye,FiEyeOff } from "react-icons/fi";
+import fireBaseConfig from '../FirebaseConfig';
 
 const BootstrapButton = styled(Button)({
   width:'55%',
@@ -46,6 +47,7 @@ function Registration() {
   const [name,setName]=useState("");
   const [pass,setPass]=useState("");
   let navigate=useNavigate()
+  const auth = getAuth(fireBaseConfig);
     
 
     function handleEmail(e){
@@ -124,7 +126,7 @@ function Registration() {
 
 
     if(!hasError){
-        const auth = getAuth();
+        
         createUserWithEmailAndPassword(auth, email, pass)
         .then((user) => {
           

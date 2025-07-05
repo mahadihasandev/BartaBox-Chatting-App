@@ -70,6 +70,7 @@
         align-items: center;
         padding: 23px 29px;
         margin-bottom: 54px;
+        cursor: pointer;
 
     }
     .googleBtn img{
@@ -81,6 +82,7 @@
         color: #03014C;
         font-size: 13px;
         font-weight: 400;
+        cursor: pointer;
     }
     .reg-title h5{
     color: #11175D;

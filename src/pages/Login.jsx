@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
-import { alpha, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import LoginImg from '../assets/loginImg.png'
 import { Link } from 'react-router-dom';
@@ -9,7 +9,7 @@ import GoogleIcon from '../assets/googleIcon.png'
 import { FiEye,FiEyeOff } from "react-icons/fi";
 import { getAuth, signInWithEmailAndPassword,signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { ToastContainer, toast,Bounce } from 'react-toastify';
-
+import fireBaseConfig from '../FirebaseConfig';
 
 
 const BootstrapButton = styled(Button)({
@@ -19,7 +19,6 @@ const BootstrapButton = styled(Button)({
   fontFamily:"Open Sans",
   
 });
-
 
 const CssTextField = styled(TextField)({
   '& label.Mui-focused': {
@@ -41,7 +40,7 @@ const CssTextField = styled(TextField)({
 
 function Login() {
   const provider = new GoogleAuthProvider();
-  const auth = getAuth();
+  const auth = getAuth(fireBaseConfig);
   const [showPass,setShowPass]=useState(false);
   const [pass,setPass]=useState('');
   const [email,setEmail]=useState('');
@@ -49,23 +48,18 @@ function Login() {
   const [passError,setPassError]=useState('');
   
 
-  
-
   let handleEyeClick=()=>{
-    setShowPass(!showPass)
-    
+    setShowPass(!showPass)   
   }
 
   let handleEmail=(e)=>{
     setEmail(e.target.value)
-    setEmailError("")
-    
+    setEmailError("")    
   }
 
   let handlePass=(e)=>{
     setPass(e.target.value)
     setPassError('')
-
   }
 
   let handleBtnClick=()=>{
@@ -130,10 +124,7 @@ signInWithPopup(auth, provider)
     toast.error(errorCode)
     
   });
-  console.log("google")
 }
-
-
 
   return (
     <>
