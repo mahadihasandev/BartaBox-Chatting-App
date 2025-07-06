@@ -39,7 +39,7 @@ const CssTextField = styled(TextField)({
 
 
 function Login() {
-  const provider = new GoogleAuthProvider();
+  const provider = new GoogleAuthProvider((fireBaseConfig);
   const auth = getAuth(fireBaseConfig);
   const [showPass,setShowPass]=useState(false);
   const [pass,setPass]=useState('');
