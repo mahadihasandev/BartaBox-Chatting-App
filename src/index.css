@@ -51,7 +51,7 @@
         font-size: 13px;
         font-weight: 700;
         font-family: "Nunito", sans-serif;
-        margin-left: 34px;
+        
         
     }
 
@@ -155,5 +155,13 @@
         
         
 }
-
+.forget-pass{
+    margin-top: -15px;
+    margin-left: -160px;
+    padding-bottom: 15px;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: #EA6C00;
+}
   

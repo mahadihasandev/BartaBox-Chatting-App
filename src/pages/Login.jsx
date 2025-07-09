@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import LoginImg from '../assets/loginImg.png'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import GoogleIcon from '../assets/googleIcon.png'
 import { FiEye,FiEyeOff } from "react-icons/fi";
 import { getAuth, signInWithEmailAndPassword,signInWithPopup, GoogleAuthProvider } from "firebase/auth";
@@ -46,6 +46,7 @@ function Login() {
   const [email,setEmail]=useState('');
   const [emailError,setEmailError]=useState('');
   const [passError,setPassError]=useState('');
+  const navigate=useNavigate()
   
 
   let handleEyeClick=()=>{
@@ -93,7 +94,8 @@ function Login() {
           if(user.user.emailVerified){
             setEmail('')
             setPass('')
-            toast.success("You are logged in Successfully") 
+            toast.success("You are logged in Successfully")
+            navigate("/home")
           }else{
             toast.error("Email is not verified")
           }
@@ -117,13 +119,18 @@ let handleGoogleAuth=()=>{
 signInWithPopup(auth, provider)
   .then((result) => {
     console.log(result)
-    toast.success("You are logged in Successfully") 
+    toast.success("You are logged in Successfully")
+    navigate("/home")
     
   }).catch((error) => {
     const errorCode = error.code;
     toast.error(errorCode)
     
   });
+}
+
+let handleForgetPass=()=>{
+  
 }
 
   return (
@@ -164,7 +171,8 @@ signInWithPopup(auth, provider)
               
               {showPass?<FiEye />:<FiEyeOff />}
               </div>
-            </div>
+            </div >
+            <div onClick={handleForgetPass} className='forget-pass'>Forget Password?</div>
             </div>
             <BootstrapButton onClick={handleBtnClick} variant="contained">Login to Continue</BootstrapButton>
             <p>Don’t have an account ? <Link to='/'><span>Sign up</span></Link></p>

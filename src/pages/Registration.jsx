@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Grid from '@mui/material/Grid';
 import { getAuth, createUserWithEmailAndPassword ,sendEmailVerification } from "firebase/auth";
 import TextField from '@mui/material/TextField';
-import { alpha, styled } from '@mui/material/styles';
+import {styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import { ToastContainer, toast,Bounce } from 'react-toastify';
 import RegistrationImg from '../assets/registration.png';
