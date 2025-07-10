@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { use, useState } from 'react'
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
@@ -7,7 +7,7 @@ import LoginImg from '../assets/loginImg.png'
 import { Link, useNavigate } from 'react-router-dom';
 import GoogleIcon from '../assets/googleIcon.png'
 import { FiEye,FiEyeOff } from "react-icons/fi";
-import { getAuth, signInWithEmailAndPassword,signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword,signInWithPopup, GoogleAuthProvider,sendPasswordResetEmail } from "firebase/auth";
 import { ToastContainer, toast,Bounce } from 'react-toastify';
 import fireBaseConfig from '../FirebaseConfig';
 
@@ -47,6 +47,8 @@ function Login() {
   const [emailError,setEmailError]=useState('');
   const [passError,setPassError]=useState('');
   const navigate=useNavigate()
+  const [ForgetPassBtn,setForgetPassBtn]=useState(false)
+  const [ForgetEmail,setForgetEmail]=useState("")
   
 
   let handleEyeClick=()=>{
@@ -130,12 +132,43 @@ signInWithPopup(auth, provider)
 }
 
 let handleForgetPass=()=>{
+  setForgetPassBtn(true)
   
+}
+
+let handleForgetEmail =(e)=>{
+   setForgetEmail(e.target.value)
+}
+
+let handleForgetPassBtn=()=>{
+if(!ForgetEmail){
+  toast.error("Entire a Valid email")
+}else{
+  sendPasswordResetEmail(auth, ForgetEmail)
+  .then(() => {
+    toast.success("Verification email send")
+   
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    toast.error(errorCode)
+    
+  });
+
+  setForgetPassBtn(false)
+  setForgetEmail("")
+}
+
+}
+
+let handleBtoLogin=()=>{
+  setForgetPassBtn(false)
+  setForgetEmail("")
 }
 
   return (
     <>
-       <>
+       
       <Grid container>        
         <Grid size={{xs:12,md:6}}>
           <div className='reg-box'>
@@ -185,7 +218,22 @@ let handleForgetPass=()=>{
           <img className='regImg' src={LoginImg} alt="Image" />
         </Grid>  
       </Grid>
-    </>
+
+      {ForgetPassBtn&&<div className='forget-pass-ui'>
+          <div className='forget-pass-ui-box'>
+
+            <div className='emailError'>
+            {emailError&&<div className='error-screen'>{emailError}</div>}
+            </div>
+            <CssTextField className='forget-pass-email' value={ForgetEmail} onChange={handleForgetEmail} id="outlined-basic" label="Email Address" variant="outlined" /> 
+            <div className='forget-pass-btn-box'>
+              <BootstrapButton onClick={handleForgetPassBtn} variant="contained">Send a Reset Email</BootstrapButton>
+              <BootstrapButton onClick={handleBtoLogin} variant="contained">Back to login</BootstrapButton>
+            </div>
+
+          </div>
+      </div>}
+    
     </>
   )
 }

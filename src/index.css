@@ -156,12 +156,47 @@
         
 }
 .forget-pass{
-    margin-top: -15px;
-    margin-left: -160px;
-    padding-bottom: 15px;
+    height: 5px;
+    width: 200px;
+    margin-left: 72px;
+    margin-bottom: 40px;
     font-family: "Open Sans", sans-serif;
     font-weight: 700;
     font-size: 14px;
     color: #EA6C00;
+    cursor: pointer;
 }
+
+     .forget-pass-ui{
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(10px);
+        
+        width: 100%;
+        height: 100vh;
+        position: absolute;
+        top: 0;
+        display: flex ;
+        justify-content: center;
+        align-items: center;
+        /* left: 0; */
+     }
+
   
+.forget-pass-ui-box{
+    background: #ffffff;
+    text-align: center;
+    height: 170px;
+    width: 381px;
+    padding: 50px 50px;
+    border: solid black;
+    border-radius: 20px;
+}
+
+.forget-pass-email{
+    width: 100% !important;
+}
+
+.forget-pass-btn-box{
+    display: flex;
+    gap: 20px;
+}
