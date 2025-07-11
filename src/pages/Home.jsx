@@ -4,6 +4,7 @@ import { useNavigate} from 'react-router-dom'
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import { userDetails } from '../slices/userInfoSlice';
+import { Bounce, toast, ToastContainer } from 'react-toastify';
 
 
 const BootstrapButton = styled(Button)({
@@ -16,17 +17,22 @@ const BootstrapButton = styled(Button)({
 
 
 function Home() {
+  console.log("home");
 let dispatch=useDispatch()
   let navigate=useNavigate()
 let data=useSelector((state)=>(state.activeUser.value)
 )
+
+
   useEffect(
     ()=>{
       if(!data)
           navigate('/login')
+        toast.success("Welcome to home page")
+        
+        
     }
   ,[])
-
 
   let handleLogOut=()=>{
     localStorage.removeItem("activeUser")
@@ -36,6 +42,21 @@ let data=useSelector((state)=>(state.activeUser.value)
  
   return (
     <>
+    <div>
+      <ToastContainer
+              position="top-center"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick={false}
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="dark"
+              transition={Bounce}
+              />
+    </div>
     <div>
       <div>{data.displayName}</div>
       <div>{data.email}</div>
