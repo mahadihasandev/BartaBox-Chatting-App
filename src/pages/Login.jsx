@@ -10,6 +10,9 @@ import { FiEye,FiEyeOff } from "react-icons/fi";
 import { getAuth, signInWithEmailAndPassword,signInWithPopup, GoogleAuthProvider,sendPasswordResetEmail } from "firebase/auth";
 import { ToastContainer, toast,Bounce } from 'react-toastify';
 import fireBaseConfig from '../FirebaseConfig';
+import { useDispatch } from 'react-redux';
+import { userDetails } from '../slices/userInfoSlice';
+
 
 
 const BootstrapButton = styled(Button)({
@@ -49,6 +52,8 @@ function Login() {
   const navigate=useNavigate()
   const [ForgetPassBtn,setForgetPassBtn]=useState(false)
   const [ForgetEmail,setForgetEmail]=useState("")
+  const dispatch=useDispatch()
+  
   
 
   let handleEyeClick=()=>{
@@ -94,6 +99,10 @@ function Login() {
       signInWithEmailAndPassword(auth, email, pass)
         .then((user) => {
           if(user.user.emailVerified){
+            dispatch(userDetails(user.user))
+            localStorage.setItem("activeUser",JSON.stringify(user.user))
+
+
             setEmail('')
             setPass('')
             toast.success("You are logged in Successfully")
