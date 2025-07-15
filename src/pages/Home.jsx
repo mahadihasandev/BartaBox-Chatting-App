@@ -5,6 +5,7 @@ import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import { userDetails } from '../slices/userInfoSlice';
 import { Bounce, toast, ToastContainer } from 'react-toastify';
+import { getAuth, signOut } from "firebase/auth";
 
 
 const BootstrapButton = styled(Button)({
@@ -17,6 +18,9 @@ const BootstrapButton = styled(Button)({
 
 
 function Home() {
+  const auth = getAuth();
+
+
   console.log("home");
 let dispatch=useDispatch()
   let navigate=useNavigate()
@@ -35,9 +39,17 @@ let data=useSelector((state)=>(state.activeUser.value)
   ,[])
 
   let handleLogOut=()=>{
-    localStorage.removeItem("activeUser")
+
+signOut(auth).then(() => {
+   localStorage.removeItem("activeUser")
     dispatch(userDetails(null))
     navigate('/login')
+}).catch((error) => {
+  let errorCode=error.code
+  toast.error(errorCode)
+});
+
+   
   }
  
   return (
