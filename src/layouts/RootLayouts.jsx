@@ -2,7 +2,9 @@ import React from 'react'
 
 function RootLayouts() {
   return (
-    <div>RootLayouts</div>
+    <div>
+
+    </div>
   )
 }
 
