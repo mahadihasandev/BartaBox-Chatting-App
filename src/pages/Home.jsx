@@ -1,12 +1,27 @@
 import React, { useEffect } from 'react'
 import {useDispatch, useSelector } from 'react-redux'
 import { useNavigate} from 'react-router-dom'
-import { styled } from '@mui/material/styles';
+ 
 import Button from '@mui/material/Button';
 import { userDetails } from '../slices/userInfoSlice';
 import { Bounce, toast, ToastContainer } from 'react-toastify';
 import { getAuth, signOut } from "firebase/auth";
+import { styled } from '@mui/material/styles';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
 
+
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: '#fff',
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  color: (theme.vars ?? theme).palette.text.secondary,
+  ...theme.applyStyles('dark', {
+    backgroundColor: '#1A2027',
+  }),
+}));
 
 const BootstrapButton = styled(Button)({
   width:'55%',
@@ -54,30 +69,24 @@ signOut(auth).then(() => {
  
   return (
     <>
-    <div>
-      <ToastContainer
-              position="top-center"
-              autoClose={5000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick={false}
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-              theme="dark"
-              transition={Bounce}
-              />
-    </div>
-    <div>
-      <div>{data.displayName}</div>
-      <div>{data.email}</div>
-      <div><img src={data.photoURL} alt="Image" /></div>
-      <div>{data.createdAt}</div>
-      <div>{data.lastLoginAt}</div>
+    <Grid container spacing={2}>
+        <Grid size={2}>
+          <Item>size=8</Item>
+        </Grid>
+        <Grid size={10}>
+          <Item>
+            <BootstrapButton onClick={handleLogOut} variant="contained">Log Out</BootstrapButton>
+          </Item>
+        </Grid>
+        
+          
+            
+          
+        
+      </Grid>
       
-      <BootstrapButton onClick={handleLogOut} variant="contained">Log Out</BootstrapButton>
-    </div>
+      
+    
     </>
   )
 }
