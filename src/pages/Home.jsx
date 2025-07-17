@@ -18,7 +18,9 @@ let data=useSelector((state)=>(state.activeUser.value)
 
   return (
     <>
-               <ToastContainer
+
+      <Grid container spacing={2}>
+                           <ToastContainer
               position="top-center"
               autoClose={5000}
               hideProgressBar={false}
@@ -31,7 +33,18 @@ let data=useSelector((state)=>(state.activeUser.value)
               theme="dark"
               transition={Bounce}
               />
-      Home
+
+  <Grid size={4}>
+    
+  </Grid>
+  <Grid size={4}>
+  
+  </Grid>
+  <Grid size={4}>
+    
+  </Grid>
+  
+</Grid>
 
     </>
   )
