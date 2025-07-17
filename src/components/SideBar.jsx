@@ -4,18 +4,25 @@ import { AiOutlineMessage } from "react-icons/ai";
 import { MdOutlineNotificationsActive } from "react-icons/md";
 import { MdOutlineSettings } from "react-icons/md";
 import { HiOutlineLogout } from "react-icons/hi";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate} from 'react-router-dom'
 import { userDetails } from '../slices/userInfoSlice';
 import { Bounce, toast, ToastContainer } from 'react-toastify';
 import { getAuth, signOut } from "firebase/auth";
 
 function SideBar() {
+  const [Locations,setLocation]=useState()
    const auth = getAuth();
   let dispatch=useDispatch()
   let navigate=useNavigate()
+  let location=useLocation()
+  useEffect(()=>{
+    setLocation(location.pathname.replace("/pages/",""));
+  },)
+  
+  
 let data=useSelector((state)=>(state.activeUser.value)
 )
 
@@ -23,8 +30,7 @@ let data=useSelector((state)=>(state.activeUser.value)
     ()=>{
       if(!data){
           navigate('/login')
-      } 
-    },[])
+      } },{})
 
    let handleLogOut=()=>{
 
@@ -44,16 +50,16 @@ signOut(auth).then(() => {
             <img src={pPic} alt="Img" />
           </div>
           <div className='page-layout'>
-            <Link className='active' to='/pages/home'>
+            <Link className={Locations=="home"&&"active"} to='/pages/home'>
           <TbHomeDown className='page-icon'/>
           </Link>
-            <Link to='/pages/messages'>
+            <Link className={Locations=="messages"&&"active"} to='/pages/messages'>
             <AiOutlineMessage className='page-icon'/>
             </Link>
-            <Link to='/pages/notification'>
+            <Link className={Locations=="notification"&&"active"} to='/pages/notification'>
             <MdOutlineNotificationsActive className='page-icon'/>
             </Link>
-            <Link to='/pages/settings'>
+            <Link className={Locations=="settings"&&"active"} to='/pages/settings'>
             <MdOutlineSettings className='page-icon'/>
             </Link>
           </div>
