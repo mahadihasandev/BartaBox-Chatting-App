@@ -1,5 +1,4 @@
-
-import ppic from '../assets/ppic.png'
+import pPic from '../assets/ppic.png'
 import { TbHomeDown } from "react-icons/tb";
 import { AiOutlineMessage } from "react-icons/ai";
 import { MdOutlineNotificationsActive } from "react-icons/md";
@@ -24,7 +23,6 @@ let data=useSelector((state)=>(state.activeUser.value)
     ()=>{
       if(!data){
           navigate('/login')
-         toast.success("Data Error") 
       } 
     },[])
 
@@ -43,10 +41,10 @@ signOut(auth).then(() => {
     <>
         <div className='sidebar-layouts'>
           <div className='profile-layout'>
-            <img src={ppic} alt="Img" />
+            <img src={pPic} alt="Img" />
           </div>
           <div className='page-layout'>
-            <Link to='/pages/home'>
+            <Link className='active' to='/pages/home'>
           <TbHomeDown className='page-icon'/>
           </Link>
             <Link to='/pages/messages'>

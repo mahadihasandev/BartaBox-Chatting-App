@@ -215,6 +215,7 @@
     justify-content: space-between;
     padding: 40px 0px;
     box-sizing: border-box;
+   
 
 }
 
@@ -238,3 +239,37 @@
     font-size: 50px;
 }
 
+.active{
+    position: relative;
+    z-index: 2;
+}
+.active .page-icon{
+    color: #5F35F5;
+    
+}
+
+.active::after{
+    height: 100px;
+    width: 320%;
+    content: "";
+    background: white;
+    position: absolute;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    left: -22px;
+    top: -22px;
+    z-index: -1;
+}
+
+.active::before{
+    height: 100px;
+    width: 12px;
+    content: "";
+    background: #5F35F5;
+    position: absolute;
+    border-radius: 80px;
+    
+    left: 250%;
+    top: -22px;
+    z-index: 1;
+}
