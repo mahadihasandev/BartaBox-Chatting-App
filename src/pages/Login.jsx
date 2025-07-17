@@ -101,12 +101,11 @@ function Login() {
           if(user.user.emailVerified){
             dispatch(userDetails(user.user))
             localStorage.setItem("activeUser",JSON.stringify(user.user))
-            
-
             setEmail('')
             setPass('')
             toast.success("You are logged in Successfully")
-            setTimeout(()=>navigate('/home'),3000)
+            setTimeout(()=>{navigate('/pages/home')},1000)
+            
           }else{
             toast.error("Email is not verified")
           }
@@ -131,7 +130,7 @@ signInWithPopup(auth, provider)
   .then((result) => {
     console.log(result)
     toast.success("You are logged in Successfully")
-    navigate("/home")
+    setTimeout(()=>{navigate('/pages/home')},1000)
     
   }).catch((error) => {
     const errorCode = error.code;
