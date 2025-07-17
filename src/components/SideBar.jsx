@@ -18,19 +18,20 @@ function SideBar() {
   let dispatch=useDispatch()
   let navigate=useNavigate()
   let location=useLocation()
+  
   useEffect(()=>{
     setLocation(location.pathname.replace("/pages/",""));
   },)
   
   
-let data=useSelector((state)=>(state.activeUser.value)
-)
+let data=useSelector((state)=>(state.activeUser.value))
 
   useEffect(
     ()=>{
       if(!data){
           navigate('/login')
-      } },{})
+      }
+    },[])
 
    let handleLogOut=()=>{
 

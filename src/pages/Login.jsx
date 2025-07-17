@@ -127,10 +127,11 @@ function Login() {
 let handleGoogleAuth=()=>{
 
 signInWithPopup(auth, provider)
-  .then((result) => {
-    console.log(result)
+  .then((user) => {
     toast.success("You are logged in Successfully")
-    setTimeout(()=>{navigate('/pages/home')},1000)
+    navigate('/pages/home')
+    dispatch(userDetails(user.user))
+    localStorage.setItem("activeUser",JSON.stringify(user.user))
     
   }).catch((error) => {
     const errorCode = error.code;
