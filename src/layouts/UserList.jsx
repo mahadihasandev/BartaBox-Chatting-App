@@ -11,6 +11,10 @@ function UserList() {
         <input placeholder='Search' type="text" />
         <BsThreeDotsVertical className='threeDot-icon'/>
       </div>
+      <div className="userList-box">
+        <h4>User List</h4>
+        <BsThreeDotsVertical/>
+      </div>
       <div></div>
     </div>
     </>

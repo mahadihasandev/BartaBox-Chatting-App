@@ -33,16 +33,15 @@ let data=useSelector((state)=>(state.activeUser.value))
       }
     },[])
 
-   let handleLogOut=()=>{
-
-signOut(auth).then(() => {
-   localStorage.removeItem("activeUser")
+let handleLogOut=()=>{
+  signOut(auth).then(() => {
+    localStorage.removeItem("activeUser")
     dispatch(userDetails(null))
     navigate('/login')
-}).catch((error) => {
-  let errorCode=error.code
-  toast.error(errorCode)
-});
+  }).catch((error) => {
+      let errorCode=error.code
+      toast.error(errorCode)
+  });
 }
   return (
     <>
