@@ -94,8 +94,7 @@ function Login() {
       // [A-Za-z\d@$!%*?&]{8,}$
     }
 
-    if(email&&(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))&&pass){
-      
+    if(email&&(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))&&pass){      
       signInWithEmailAndPassword(auth, email, pass)
         .then((user) => {
           if(user.user.emailVerified){
@@ -104,35 +103,30 @@ function Login() {
             setEmail('')
             setPass('')
             toast.success("You are logged in Successfully")
-            setTimeout(()=>{navigate('/pages/home')},1000)
-            
+            setTimeout(()=>{navigate('/pages/home')},1000)            
           }else{
             toast.error("Email is not verified")
           }
-         
-  })
-  .catch((error) => {
-    let errorcode=error.code
-    if(errorcode.includes("auth/invalid-credential")){
-      toast.error("Invalid Email or Password")
-    }else{      
+         })
+    .catch((error) => {
+      let errorcode=error.code
+      if(errorcode.includes("auth/invalid-credential")){
+        toast.error("Invalid Email or Password")
+      }else{      
       toast.error(errorcode)
         setEmail('')
         setPass('')      
     }
-    
   });
-}}
+}};
 
 let handleGoogleAuth=()=>{
-
 signInWithPopup(auth, provider)
   .then((user) => {
     toast.success("You are logged in Successfully")
     navigate('/pages/home')
     dispatch(userDetails(user.user))
-    localStorage.setItem("activeUser",JSON.stringify(user.user))
-    
+    localStorage.setItem("activeUser",JSON.stringify(user.user))    
   }).catch((error) => {
     const errorCode = error.code;
     toast.error(errorCode)
@@ -141,8 +135,7 @@ signInWithPopup(auth, provider)
 }
 
 let handleForgetPass=()=>{
-  setForgetPassBtn(true)
-  
+  setForgetPassBtn(true)  
 }
 
 let handleForgetEmail =(e)=>{
@@ -155,8 +148,7 @@ if(!ForgetEmail){
 }else{
   sendPasswordResetEmail(auth, ForgetEmail)
   .then(() => {
-    toast.success("Verification email send")
-   
+    toast.success("Verification email send")   
   })
   .catch((error) => {
     const errorCode = error.code;
@@ -166,9 +158,7 @@ if(!ForgetEmail){
 
   setForgetPassBtn(false)
   setForgetEmail("")
-}
-
-}
+}}
 
 let handleBtoLogin=()=>{
   setForgetPassBtn(false)

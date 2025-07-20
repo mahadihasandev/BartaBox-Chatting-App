@@ -2,6 +2,8 @@ import React from 'react'
 import { LuSearch } from "react-icons/lu";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
+import SingleUser from '../components/SingleUser';
+
 function UserList() {
   return (
     <>
@@ -12,13 +14,25 @@ function UserList() {
         <BsThreeDotsVertical className='threeDot-icon'/>
       </div>
       <div className="userList-box">
-        <h4>User List</h4>
-        <BsThreeDotsVertical/>
-      </div>
-      <div></div>
+        <div className='userList-title-box '>
+          <h4 className='userList-title'>User List</h4>
+          <BsThreeDotsVertical className='userList-threeDot'/>
+        </div>
+          
+        <SingleUser/>
+        <SingleUser/>
+        <SingleUser/>
+        <SingleUser/>
+        <SingleUser/>
+        <SingleUser/>
+        <SingleUser/>
+        <SingleUser/>
+
+
+      </div>     
     </div>
     </>
-  )
-}
+  ); 
+};
 
-export default UserList
+export default UserList;

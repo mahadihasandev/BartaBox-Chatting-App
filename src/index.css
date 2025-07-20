@@ -290,7 +290,7 @@
     border: 0px;
     border-radius: 20px;
     background: white;
-    padding: 18px 50px;
+    padding: 18px 30px;
     box-sizing: border-box;
     box-shadow: 0px 10px 15px 4px rgba(0,0,0,0.3);
 -webkit-box-shadow: 0px 10px 15px 4px rgba(0,0,0,0.3);
@@ -328,19 +328,77 @@
 -webkit-box-shadow: 0px 10px 15px 4px rgba(0,0,0,0.11);
 -moz-box-shadow: 0px 10px 15px 4px rgba(0,0,0,0.11);
     margin-top: 30px;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    border-radius: 20px;    
+    height: 400px;
+    overflow-y: scroll;    
     padding: 13px 20px;
 }
-.userList-box h4{
-    font-family:"Poppins", sans-serif;
+
+ .userList-title {   
+     font-family:"Poppins", sans-serif;
     color: black;
     font-weight: 600;
     font-size: 20px;
-    
-}
- .userList-box BsThreeDotsVertical{
+ }
+ .userList-threeDot{
     color: #5F35F5;
  }
+
+ .profile-box{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding:20px 25px;
+    border-bottom:1px solid rgba(0, 0, 0, 0.25);
+    
+    
+ }
+.profile-img-title-box{
+    
+    display: flex;
+    column-gap: 20px;
+    align-items: center;
+   
+}
+ .profile-img-box{
+    height: 50px;
+    width: 50px;
+    
+    border-radius: 50%;
+ }
+ .profile-img-box img{
+    height: 100%;
+    width: 100%;
+ }
+
+ .userList-title-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 17px ;
+    
+}
+
+.profile-title h4{
+    font-size: 18px;
+    font-weight: 600;
+    font-family:"Poppins", sans-serif;
+    color: black;
+}
+
+.profile-title p{
+    font-size: 14px;
+    font-weight: 500;
+    font-family:"Poppins", sans-serif;
+    color: #4D4D4DBF;
+}
+.profile-box button{
+    font-size: 18px;
+    font-weight: 600;
+    font-family:"Poppins", sans-serif;
+    color: #fff;
+    padding: 2px 15px;
+    background: #5F35F5;
+    border-radius: 5px;
+    border: 0px;
+}
