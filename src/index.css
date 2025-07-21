@@ -242,6 +242,7 @@
 .active{
     position: relative;
     z-index: 2;
+    width: 100%;
 }
 .active .page-icon{
     color: #5F35F5;
@@ -250,7 +251,7 @@
 
 .active::after{
     height: 100px;
-    width: 320%;
+    width: 370%;
     content: "";
     background: white;
     position: absolute;
@@ -268,7 +269,7 @@
     background: #5F35F5;
     position: absolute;
     border-radius: 80px;    
-    left: 250%;
+    left: 300%;
     top: -22px;
     z-index: 1;
 }
@@ -330,7 +331,7 @@
     margin-top: 30px;
     border-radius: 20px;    
     height: 400px;
-    overflow-y: scroll;    
+    overflow-y: scroll; 
     padding: 13px 20px;
 }
 
@@ -350,6 +351,8 @@
     justify-content: space-between;
     padding:20px 25px;
     border-bottom:1px solid rgba(0, 0, 0, 0.25);
+    
+    
     
     
  }
