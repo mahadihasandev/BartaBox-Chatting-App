@@ -1,4 +1,7 @@
 import React from 'react'
+import { LuSearch } from "react-icons/lu";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import SingleUser from '../components/SingleUser';
 
 function BlockedUsers() {
   return (
