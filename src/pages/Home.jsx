@@ -7,6 +7,7 @@ import Grid from '@mui/material/Grid';
 import GroupList from '../layouts/GroupList';
 import FriendList from '../layouts/FriendList';
 import FriendRequest from '../layouts/FriendRequest';
+import MyGroups from '../layouts/MyGroups';
 
 function Home() {
   let navigate=useNavigate()
@@ -52,19 +53,20 @@ let data=useSelector((state)=>(state.activeUser.value)
   </div>
 
 
-  <div className='grid-division'>
+<div className='grid-division'>
     <Grid container spacing={3}>
       <Grid size={4}>
         <FriendRequest/>
       </Grid>
       <Grid size={4}>
-        <FriendList/>
+        <MyGroups/>
       </Grid>
       <Grid size={4}>
        <UserList/>
       </Grid>  
     </Grid>   
   </div>
+
 
     </>
   )
