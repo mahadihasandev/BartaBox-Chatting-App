@@ -5,6 +5,7 @@ import { Bounce, toast, ToastContainer } from 'react-toastify';
 import UserList from '../layouts/UserList';
 import Grid from '@mui/material/Grid';
 import GroupList from '../layouts/GroupList';
+import FriendList from '../layouts/FriendList';
 
 function Home() {
   let navigate=useNavigate()
@@ -41,13 +42,29 @@ let data=useSelector((state)=>(state.activeUser.value)
         <GroupList/>
       </Grid>
       <Grid size={4}>
-        <UserList/>
+        <FriendList/>
       </Grid>
       <Grid size={4}>
        <UserList/>
       </Grid>  
-    </Grid>
+    </Grid>   
   </div>
+
+
+  <div className='grid-division'>
+    <Grid container spacing={3}>
+      <Grid size={4}>
+        <GroupList/>
+      </Grid>
+      <Grid size={4}>
+        <FriendList/>
+      </Grid>
+      <Grid size={4}>
+       <UserList/>
+      </Grid>  
+    </Grid>   
+  </div>
+
     </>
   )
 }
