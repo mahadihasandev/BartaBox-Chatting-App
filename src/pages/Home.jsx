@@ -4,6 +4,7 @@ import { useNavigate} from 'react-router-dom'
 import { Bounce, toast, ToastContainer } from 'react-toastify';
 import UserList from '../layouts/UserList';
 import Grid from '@mui/material/Grid';
+import GroupList from '../layouts/GroupList';
 
 function Home() {
   let navigate=useNavigate()
@@ -37,7 +38,7 @@ let data=useSelector((state)=>(state.activeUser.value)
   <div className='grid-division'>
     <Grid container spacing={3}>
       <Grid size={4}>
-        <UserList/>
+        <GroupList/>
       </Grid>
       <Grid size={4}>
         <UserList/>

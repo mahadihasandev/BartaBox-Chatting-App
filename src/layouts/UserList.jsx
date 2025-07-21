@@ -24,9 +24,7 @@ function UserList() {
         <SingleUser/>
         <SingleUser/>
         <SingleUser/>
-        <SingleUser/>
-        <SingleUser/>
-        <SingleUser/>
+
 
 
       </div>     
