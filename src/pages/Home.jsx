@@ -8,6 +8,7 @@ import GroupList from '../layouts/GroupList';
 import FriendList from '../layouts/FriendList';
 import FriendRequest from '../layouts/FriendRequest';
 import MyGroups from '../layouts/MyGroups';
+import BlockedUsers from '../layouts/BlockedUsers';
 
 function Home() {
   let navigate=useNavigate()
@@ -62,7 +63,7 @@ let data=useSelector((state)=>(state.activeUser.value)
         <MyGroups/>
       </Grid>
       <Grid size={4}>
-       <UserList/>
+       <BlockedUsers/>
       </Grid>  
     </Grid>   
   </div>
