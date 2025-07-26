@@ -6,14 +6,16 @@ import { MdOutlineSettings } from "react-icons/md";
 import { HiOutlineLogout } from "react-icons/hi";
 import { Link, useLocation } from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate} from 'react-router-dom'
 import { userDetails } from '../slices/userInfoSlice';
 import { Bounce, toast, ToastContainer } from 'react-toastify';
 import { getAuth, signOut } from "firebase/auth";
+import { FaCloudUploadAlt } from "react-icons/fa";
 
 function SideBar() {
-  const [Locations,setLocation]=useState()
+  const [Locations,setLocation]=useState();
+  const [visiblePopup,setVisiblePopup]=useState(false)
    const auth = getAuth();
   let dispatch=useDispatch()
   let navigate=useNavigate()
@@ -22,6 +24,8 @@ function SideBar() {
   useEffect(()=>{
     setLocation(location.pathname.replace("/pages/",""));
   },)
+  let domRef=useRef(null)
+  console.log(domRef.current.classList);
   
   
 let data=useSelector((state)=>(state.activeUser.value))
@@ -43,11 +47,18 @@ let handleLogOut=()=>{
       toast.error(errorCode)
   });
 }
+
+let handleUpdateProfile=()=>{
+  setVisiblePopup(true)
+}
   return (
     <>
         <div className='sidebar-layouts'>
-          <div className='profile-layout'>
+          <div onClick={handleUpdateProfile} className='profile-layout'>
             <img src={pPic} alt="Img" />
+            <div className="overlay">
+              <FaCloudUploadAlt className='icon'/>
+            </div>
           </div>
           <div className='page-layout'>
             <Link className={Locations=="home"&&"active"} to='/pages/home'>
@@ -66,6 +77,13 @@ let handleLogOut=()=>{
           <div className='logout-layout'>
               <HiOutlineLogout onClick={handleLogOut} className='page-icon'/>
           </div>
+
+          {visiblePopup&&<div ref={domRef} className='popup-image'>
+            <div className="popup-img-box">
+              <h2>Change your profile picture</h2>
+              <input type="file" />
+            </div>
+          </div>}
 
         </div>
     </>
