@@ -12,6 +12,19 @@ import { userDetails } from '../slices/userInfoSlice';
 import { Bounce, toast, ToastContainer } from 'react-toastify';
 import { getAuth, signOut } from "firebase/auth";
 import { FaCloudUploadAlt } from "react-icons/fa";
+import Button from '@mui/material/Button';
+import { styled } from '@mui/material/styles';
+
+
+const BootstrapButton = styled(Button)({
+  width:'35%',
+  padding:"19px 0px",
+  background:"#5F35F5",
+  fontFamily:"Open Sans",
+  borderRadius:"30px",
+  
+  
+});
 
 function SideBar() {
   const [Locations,setLocation]=useState();
@@ -25,9 +38,7 @@ function SideBar() {
     setLocation(location.pathname.replace("/pages/",""));
   },)
   let domRef=useRef(null)
- 
-  
-  
+
 let data=useSelector((state)=>(state.activeUser.value))
 
   useEffect(
@@ -50,17 +61,18 @@ let handleLogOut=()=>{
 
 let handleUpdateProfile=()=>{
   setVisiblePopup(true)
-  
-  
-   
 }
 
 let handlePopUp=(e)=>{
   
-  console.log(domRef.current.contains(e.target));
   if(!domRef.current.contains(e.target)){    
     setVisiblePopup(false)
   }
+}
+
+let handleUpload=()=>{
+  console.log("img uploaded");
+  
 }
   return (
     <>
@@ -90,10 +102,15 @@ let handlePopUp=(e)=>{
           </div>
 
           {visiblePopup&&<div onClick={handlePopUp} className='popup-image'>
-            <div ref={domRef} className="Arnob popup-img-box">
+            <div ref={domRef} className="popup-img-box">
               <h2>Change your profile picture</h2>
               <input type="file" />
+              <div>
+                <BootstrapButton onClick={handleUpload} variant="contained">Upload</BootstrapButton>
+              </div>
+               
             </div>
+            
           </div>}
 
         </div>
