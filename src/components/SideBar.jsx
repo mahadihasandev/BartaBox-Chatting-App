@@ -25,7 +25,7 @@ function SideBar() {
     setLocation(location.pathname.replace("/pages/",""));
   },)
   let domRef=useRef(null)
-  console.log(domRef.current.classList);
+ 
   
   
 let data=useSelector((state)=>(state.activeUser.value))
@@ -50,6 +50,17 @@ let handleLogOut=()=>{
 
 let handleUpdateProfile=()=>{
   setVisiblePopup(true)
+  
+  
+   
+}
+
+let handlePopUp=(e)=>{
+  
+  console.log(domRef.current.contains(e.target));
+  if(!domRef.current.contains(e.target)){    
+    setVisiblePopup(false)
+  }
 }
   return (
     <>
@@ -78,8 +89,8 @@ let handleUpdateProfile=()=>{
               <HiOutlineLogout onClick={handleLogOut} className='page-icon'/>
           </div>
 
-          {visiblePopup&&<div ref={domRef} className='popup-image'>
-            <div className="popup-img-box">
+          {visiblePopup&&<div onClick={handlePopUp} className='popup-image'>
+            <div ref={domRef} className="Arnob popup-img-box">
               <h2>Change your profile picture</h2>
               <input type="file" />
             </div>
