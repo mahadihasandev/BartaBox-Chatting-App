@@ -6,7 +6,7 @@ import { MdOutlineSettings } from "react-icons/md";
 import { HiOutlineLogout } from "react-icons/hi";
 import { Link, useLocation } from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { createRef, useEffect, useRef, useState } from 'react'
 import { useNavigate} from 'react-router-dom'
 import { userDetails } from '../slices/userInfoSlice';
 import { Bounce, toast, ToastContainer } from 'react-toastify';
@@ -14,6 +14,8 @@ import { getAuth, signOut } from "firebase/auth";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
+import Cropper from "react-cropper";
+import "cropperjs/dist/cropper.css";
 
 
 const BootstrapButton = styled(Button)({
@@ -33,6 +35,9 @@ function SideBar() {
   let dispatch=useDispatch()
   let navigate=useNavigate()
   let location=useLocation()
+    const [image, setImage] = useState("");
+  const [cropData, setCropData] = useState("");
+  const cropperRef = createRef();
   
   useEffect(()=>{
     setLocation(location.pathname.replace("/pages/",""));
@@ -70,10 +75,27 @@ let handlePopUp=(e)=>{
   }
 }
 
-let handleUpload=()=>{
-  console.log("img uploaded");
-  
-}
+  const onChange = (e) => {
+    e.preventDefault();
+    let files;
+    if (e.dataTransfer) {
+      files = e.dataTransfer.files;
+    } else if (e.target) {
+      files = e.target.files;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImage(reader.result);
+    };
+    reader.readAsDataURL(files[0]);
+  };
+
+  const getCropData = () => {
+    if (typeof cropperRef.current?.cropper !== "undefined") {
+      setCropData(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
+    }
+  };
+
   return (
     <>
         <div className='sidebar-layouts'>
@@ -104,9 +126,37 @@ let handleUpload=()=>{
           {visiblePopup&&<div onClick={handlePopUp} className='popup-image'>
             <div ref={domRef} className="popup-img-box">
               <h2>Change your profile picture</h2>
-              <input type="file" />
+              <input onChange={onChange} type="file" />
+              <div style={{display:"flex"}}>
+            <div>
+          <Cropper
+          ref={cropperRef}
+          style={{ height: 400, width: "100%" }}
+          initialAspectRatio={1}
+          preview=".img-preview"
+          src={image}
+          viewMode={1}
+          minCropBoxHeight={10}
+          minCropBoxWidth={10}
+          background={false}
+          responsive={true}
+          autoCropArea={1}
+          checkOrientation={false}
+          guides={true}
+        />
+              </div>
               <div>
-                <BootstrapButton onClick={handleUpload} variant="contained">Upload</BootstrapButton>
+          <div className="box" style={{ width: "50%", float: "right" }}>
+          <h1>Preview</h1>
+          <div
+            className="img-preview"
+            style={{ width: "100%", float: "left", height: "300px" }}
+          />
+        </div>
+              </div>
+              </div>
+              <div>
+                <BootstrapButton  onClick={getCropData} variant="contained">Upload</BootstrapButton>
               </div>
                
             </div>
