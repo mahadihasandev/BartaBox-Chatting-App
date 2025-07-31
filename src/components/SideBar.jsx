@@ -35,9 +35,11 @@ function SideBar() {
   let dispatch=useDispatch()
   let navigate=useNavigate()
   let location=useLocation()
-    const [image, setImage] = useState("");
+  const [image, setImage] = useState("");
+
   const [cropData, setCropData] = useState("");
   const cropperRef = createRef();
+  console.log(cropData);
   
   useEffect(()=>{
     setLocation(location.pathname.replace("/pages/",""));
@@ -76,6 +78,8 @@ let handlePopUp=(e)=>{
 }
 
   const onChange = (e) => {
+    
+    
     e.preventDefault();
     let files;
     if (e.dataTransfer) {
@@ -129,7 +133,7 @@ let handlePopUp=(e)=>{
               <input onChange={onChange} type="file" />
               <div style={{display:"flex"}}>
             <div>
-          <Cropper
+          {image&& <Cropper
           ref={cropperRef}
           style={{ height: 400, width: "100%" }}
           initialAspectRatio={1}
@@ -143,15 +147,12 @@ let handlePopUp=(e)=>{
           autoCropArea={1}
           checkOrientation={false}
           guides={true}
-        />
+        />}
               </div>
               <div>
-          <div className="box" style={{ width: "50%", float: "right" }}>
+          <div className="preview-box">
           <h1>Preview</h1>
-          <div
-            className="img-preview"
-            style={{ width: "100%", float: "left", height: "300px" }}
-          />
+          <div className="img-preview preview-round"></div>
         </div>
               </div>
               </div>
