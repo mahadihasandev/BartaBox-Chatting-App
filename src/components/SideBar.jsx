@@ -43,10 +43,11 @@ function SideBar() {
   const cropperRef = createRef();
   
   
-
+//Uselocation Hook for menu change 
   useEffect(() => {
     setLocation(location.pathname.replace("/pages/", ""));
   });
+
   let domRef = useRef(null);
 
   let data = useSelector((state) => state.activeUser.value);
@@ -59,6 +60,7 @@ function SideBar() {
     }
   }, []);
 
+//Logout button
   let handleLogOut = () => {
     signOut(auth)
       .then(() => {
@@ -72,16 +74,19 @@ function SideBar() {
       });
   };
 
+//Update Profile Button
   let handleUpdateProfile = () => {
     setVisiblePopup(true);
   };
 
+//Profile picture Chang pop up
   let handlePopUp = (e) => {
     if (!domRef.current.contains(e.target)) {
       setVisiblePopup(false);
     }
   };
 
+//Cropping && sending image to firebase
   const onChange = (e) => {
     e.preventDefault();
     let files;
@@ -100,14 +105,24 @@ function SideBar() {
   const getCropData = () => {
     if (typeof cropperRef.current?.cropper !== "undefined") {
       setCropData(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
-      // const storageRef = ref(storage, auth.currentUser.uid);
 
+      //Might need Import
+
+
+    // const storageRef = ref(storage, auth.currentUser.uid);
     //   const message4 = cropData;
     //   uploadString(storageRef, message4, "data_url").then((snapshot) => {
     //     console.log("Uploaded a data_url string!");
     //   });
       // getDownloadURL(storageRef).then((downloadURL) => {
       //   console.log("File available at", downloadURL);
+      // updateProfile(auth.currentUser, {
+                  
+      //             photoURL:downloadURL,
+                
+      //           }).then(()=>{
+      //             setVisiblePopup("false")
+      //           })
       // });
     }
   };
@@ -121,6 +136,7 @@ function SideBar() {
             <FaCloudUploadAlt className="icon" />
           </div>
         </div>
+        <h4>{data.displayName}</h4>
         <div className="page-layout">
           <Link className={Locations == "home" && "active"} to="/pages/home">
             <TbHomeDown className="page-icon" />
