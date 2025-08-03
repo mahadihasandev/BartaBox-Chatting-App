@@ -51,7 +51,7 @@ function SideBar() {
   let domRef = useRef(null);
 
   let data = useSelector((state) => state.activeUser.value);
-  let ppData=data.photoURL
+ 
   // let imgdata=useSelector((state)=>console.log(state.activeUser.value.photoURL))
 
   useEffect(() => {
@@ -133,12 +133,12 @@ function SideBar() {
     <>
       <div className="sidebar-layouts">
         <div onClick={handleUpdateProfile} className="profile-layout">
-          <img src={ppData} alt="Img" />
+          <img className="ppImg" src={data.photoURL} alt="Img" />
           <div className="overlay">
             <FaCloudUploadAlt className="icon" />
           </div>
         </div>
-        <h4>{data.displayName}</h4>
+        <h4 className="display-name">{data.displayName}</h4>
         <div className="page-layout">
           <Link className={Locations == "home" && "active"} to="/pages/home">
             <TbHomeDown className="page-icon" />
