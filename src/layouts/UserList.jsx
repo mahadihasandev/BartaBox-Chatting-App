@@ -1,10 +1,24 @@
-import React from 'react'
 import { LuSearch } from "react-icons/lu";
 import { BsThreeDotsVertical } from "react-icons/bs";
-
+import { getDatabase, ref, onValue } from "firebase/database";
+import React, { useEffect, useState } from 'react'
 import SingleUser from '../components/SingleUser';
 
 function UserList() {
+  const [userList,setUserList]=useState([])
+   useEffect(()=>{
+    let arr=[];
+     const db = getDatabase();
+    const starCountRef = ref(db, 'users/');
+      onValue(starCountRef, (snapshot) => {
+        
+   snapshot.forEach((item)=>{
+    arr.push({...item.val()})
+   })
+    
+    setUserList(arr)
+  });
+  },[])
   return (
     <>
     <div className='user-box'>
@@ -19,14 +33,12 @@ function UserList() {
           <BsThreeDotsVertical className='userList-threeDot'/>
         </div>
           
-        <SingleUser/>
-        <SingleUser/>
-        <SingleUser/>
-        <SingleUser/>
-        <SingleUser/>
-
-
-
+       {  userList.map((item)=>(
+          <>
+            <SingleUser photo={item.photo} username={item.username}/>
+          </>
+            ))
+        }
       </div>     
     </div>
     </>

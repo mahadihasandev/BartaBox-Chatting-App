@@ -14,6 +14,7 @@ import RegistrationImg from "../assets/registration.png";
 import { Link, useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import fireBaseConfig from "../FirebaseConfig";
+import { getDatabase, ref, set } from "firebase/database";
 
 const BootstrapButton = styled(Button)({
   width: "55%",
@@ -127,22 +128,33 @@ function Registration() {
         .then((user) => {
           updateProfile(auth.currentUser, {
             displayName: "arnob",
-            photoURL:"./src/assets/ppic.png",
-          
-          }).then(() => {
-             sendEmailVerification(auth.currentUser)
-            toast.success("Email Verification send");
-            setEmail('')
-            setName('')
-            setPass('')
-            toast.success("New Account Created")
-            setTimeout(()=>{
-            navigate("/login")
-            },2000) 
-             
-            
+            photoURL: "./src/assets/ppic.png",
+          })
+            .then(() => {
+              sendEmailVerification(auth.currentUser);
+              toast.success("Email Verification send");
+              setEmail("");
+              setName("");
+              setPass("");
+              toast.success("New Account Created");
+              setTimeout(() => {
+                navigate("/login");
+              }, 2000);
             })
-            
+            .then(() => {
+              console.log(user);
+              
+                const db = getDatabase();
+                set(ref(db, "users/" + user.user.uid ), {
+                  username: user.user.displayName,
+                  email: user.user.email,
+                  photo:user.user.photoURL,
+                });
+
+                
+                
+              
+            });
         })
         .catch((error) => {
           const errorCode = error.code;

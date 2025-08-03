@@ -1,16 +1,16 @@
 import React from 'react'
 import ProfileImg from '../assets/profileImg.png'
 
-function SingleUser() {
+function SingleUser({username,photo}) {
   return (
     <>
     <div className='profile-box'>
         <div className='profile-img-title-box'>
           <div className='profile-img-box'>
-          <img className='profile-img' src={ProfileImg} alt="Profile-image" />
+          <img className='profile-img' src={photo} alt="Profile-image" />
           </div>
         <div className='profile-title'>
-          <h4>Friends Reunion</h4>
+          <h4>{username}</h4>
           <p>Hi Guys, Wassup!</p>
         </div>
         </div>

@@ -105,6 +105,8 @@ function SideBar() {
   const getCropData = () => {
     if (typeof cropperRef.current?.cropper !== "undefined") {
       setCropData(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
+                      dispatch(userDetails({...data,photoURL:data.photoURL}))
+                      localStorage.setItem('userinfo',JSON.stringify({...data,photoURL:data.photoURL}))
 
       //Might need Import
 

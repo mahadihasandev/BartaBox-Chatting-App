@@ -1,9 +1,10 @@
-import React from 'react'
+
 import { LuSearch } from "react-icons/lu";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import SingleUser from '../components/SingleUser';
 
 function MyGroups() {
+
   return (
     <>
         <div className='user-box'>
@@ -17,13 +18,7 @@ function MyGroups() {
           <h4 className='userList-title'>My Groups</h4>
           <BsThreeDotsVertical className='userList-threeDot'/>
         </div>
-          
         <SingleUser/>
-        <SingleUser/>
-        <SingleUser/>
-        <SingleUser/>
-        <SingleUser/>
-
       </div>     
     </div>
     </>
