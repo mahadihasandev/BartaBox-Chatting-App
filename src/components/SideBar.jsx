@@ -116,12 +116,14 @@ function SideBar() {
     //   });
       // getDownloadURL(storageRef).then((downloadURL) => {
       //   console.log("File available at", downloadURL);
-      // updateProfile(auth.currentUser, {
-                  
-      //             photoURL:downloadURL,
-                
+      // updateProfile(auth.currentUser, {                  
+      //             photoURL:downloadURL,            
       //           }).then(()=>{
+                    // setImage('')
+                    // setCropData('')
       //             setVisiblePopup("false")
+                      // dispatch(userDetails({...data,photoURL:downloadURL}))
+                      // localStorage.setItem('userinfo',JSON.stringify({...data,photoURL:downloadURL}))
       //           })
       // });
     }
