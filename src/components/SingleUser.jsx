@@ -1,7 +1,12 @@
-import React from 'react'
-import ProfileImg from '../assets/profileImg.png'
 
 function SingleUser({username,photo}) {
+
+  let handleFriendRequest=()=>{
+      
+      
+  }
+
+
   return (
     <>
     <div className='profile-box'>
@@ -14,7 +19,7 @@ function SingleUser({username,photo}) {
           <p>Hi Guys, Wassup!</p>
         </div>
         </div>
-        <button>Join</button>
+        <button onClick={handleFriendRequest}>Join</button>
       </div>
     </>
   )

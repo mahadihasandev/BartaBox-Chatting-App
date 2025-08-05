@@ -3,18 +3,27 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { getDatabase, ref, onValue } from "firebase/database";
 import React, { useEffect, useState } from 'react'
 import SingleUser from '../components/SingleUser';
+import { useSelector } from "react-redux";
 
 function UserList() {
   const [userList,setUserList]=useState([])
+
+let data=useSelector((state)=>(state.activeUser.value))
+
+
    useEffect(()=>{
     let arr=[];
      const db = getDatabase();
     const starCountRef = ref(db, 'users/');
       onValue(starCountRef, (snapshot) => {
         
-   snapshot.forEach((item)=>{
-    arr.push({...item.val()})
+   snapshot.forEach(item=>{
+   if(data.uid != item.key){
+    arr.push({...item.val(),id:item.key})
+   }
+    
    })
+    
     
     setUserList(arr)
   });
@@ -35,7 +44,7 @@ function UserList() {
           
        {  userList.map((item)=>(
           <>
-            <SingleUser photo={item.photo} username={item.username}/>
+            <SingleUser key={item.id} photo={item.photo} username={item.username}/>
           </>
             ))
         }
