@@ -142,7 +142,6 @@ function Registration() {
               }, 2000);
             })
             .then(() => {
-              console.log(user);
               
                 const db = getDatabase();
                 set(ref(db, "users/" + user.user.uid ), {
