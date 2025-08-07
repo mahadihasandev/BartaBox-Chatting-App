@@ -25,6 +25,12 @@ onValue(starCountRef, (snapshot) => {
   setFriendReq(arr);
 });
   },[])
+
+let handleAccept=(item)=>{
+  console.log(item);
+  
+}
+  
   return (
     <>
     <div className='user-box'>
@@ -52,7 +58,7 @@ onValue(starCountRef, (snapshot) => {
           <p>Hi Guys, Wassup!</p>
         </div>
         </div>
-        <button onClick={(handleAccept)}>Accept</button>
+        <button onClick={()=>{handleAccept(item)}}>Accept</button>
       </div>
         ))
        }
