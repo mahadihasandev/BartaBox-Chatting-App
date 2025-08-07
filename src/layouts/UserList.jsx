@@ -2,13 +2,15 @@ import { LuSearch } from "react-icons/lu";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { getDatabase, ref, onValue, set, push } from "firebase/database";
 import React, { useEffect, useState } from 'react'
-import SingleUser from '../components/SingleUser';
 import { useSelector } from "react-redux";
 
 
 function UserList() {
   const [userList,setUserList]=useState([])
+  let [friendReq,setFriendReq]=useState([])
   const db = getDatabase();
+  
+  
 
 let data=useSelector((state)=>(state.activeUser.value))
 
@@ -31,8 +33,20 @@ let data=useSelector((state)=>(state.activeUser.value))
   });
   },[])
 
+    useEffect(()=>{
+      
+      const starCountRef = ref(db, 'friendRequest/');
+  onValue(starCountRef, (snapshot) => {
+    let arr=[]
+    snapshot.forEach((item)=>{
+      arr.push(item.val().receiverId+item.val().senderId)
+    })
+    setFriendReq(arr);
+  });
+    },[])
+
  let handleFriendRequest=(item)=>{
-      console.log(item);
+      
        set(push(ref(db, 'friendRequest/')), {
     receiverId:item.id,
     receiverName:item.username,
@@ -71,7 +85,19 @@ let data=useSelector((state)=>(state.activeUser.value))
           <p>Hi Guys, Wassup!</p>
         </div>
         </div>
-        <button onClick={()=>handleFriendRequest(item)}>Join</button>
+        {
+          
+          
+          
+          
+          friendReq.includes(data.uid+item.id)||
+          friendReq.includes(item.id+data.uid)?
+          <button onClick={()=>{}}>pending</button>
+          :
+          <button onClick={()=>handleFriendRequest(item)}>Join</button>
+          
+        }
+        
       </div>
     </>
           

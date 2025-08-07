@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 function FriendRequest() {
 const db = getDatabase();
 let [friendReq,setFriendReq]=useState([])
-console.log(friendReq,"frRq")
+
 
 let data=useSelector((state)=>(state.activeUser.value))
   useEffect(()=>{
@@ -17,7 +17,7 @@ let data=useSelector((state)=>(state.activeUser.value))
 onValue(starCountRef, (snapshot) => {
   let arr=[]
   snapshot.forEach((item)=>{
-    if(data.uid!=item.val().senderId){
+    if(item.val().receiverId==data.uid){
         arr.push({...item.val()})
     }
     
@@ -52,7 +52,7 @@ onValue(starCountRef, (snapshot) => {
           <p>Hi Guys, Wassup!</p>
         </div>
         </div>
-        <button>Join</button>
+        <button onClick={(handleAccept)}>Accept</button>
       </div>
         ))
        }
