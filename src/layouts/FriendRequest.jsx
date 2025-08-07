@@ -1,9 +1,30 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { LuSearch } from "react-icons/lu";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import SingleUser from '../components/SingleUser';
+import { getDatabase, ref, onValue } from "firebase/database";
+import { useSelector } from 'react-redux';
 
 function FriendRequest() {
+const db = getDatabase();
+let [friendReq,setFriendReq]=useState([])
+console.log(friendReq,"frRq")
+
+let data=useSelector((state)=>(state.activeUser.value))
+  useEffect(()=>{
+    
+    const starCountRef = ref(db, 'friendRequest/');
+onValue(starCountRef, (snapshot) => {
+  let arr=[]
+  snapshot.forEach((item)=>{
+    if(data.uid!=item.val().senderId){
+        arr.push({...item.val()})
+    }
+    
+  })
+  setFriendReq(arr);
+});
+  },[])
   return (
     <>
     <div className='user-box'>
@@ -18,11 +39,25 @@ function FriendRequest() {
           <BsThreeDotsVertical className='userList-threeDot'/>
         </div>
           
-        <SingleUser/>
-        <SingleUser/>
-        <SingleUser/>
-        <SingleUser/>
-        <SingleUser/>
+       <>
+       {
+        friendReq.map((item)=>(
+            <div className='profile-box'>
+        <div className='profile-img-title-box'>
+          <div className='profile-img-box'>
+          <img className='profile-img' src={item.photo} alt="Profile-image" />
+          </div>
+        <div className='profile-title'>
+          <h4>{item.senderName}</h4>
+          <p>Hi Guys, Wassup!</p>
+        </div>
+        </div>
+        <button>Join</button>
+      </div>
+        ))
+       }
+        
+       </>
 
       </div>     
     </div>

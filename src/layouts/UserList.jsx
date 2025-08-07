@@ -36,8 +36,10 @@ let data=useSelector((state)=>(state.activeUser.value))
        set(push(ref(db, 'friendRequest/')), {
     receiverId:item.id,
     receiverName:item.username,
+
     senderId:data.uid,
     senderName:data.displayName,
+    photo:data.photoURL,
   });
       
   }
