@@ -90,8 +90,8 @@ let data=useSelector((state)=>(state.activeUser.value))
           
           
           
-          friendReq.includes(data.uid+item.id)||
-          friendReq.includes(item.id+data.uid)?
+          friendReq.includes(item.id+data.uid)||
+          friendReq.includes(data.uid+item.id)?
           <button onClick={()=>{}}>pending</button>
           :
           <button onClick={()=>handleFriendRequest(item)}>Join</button>

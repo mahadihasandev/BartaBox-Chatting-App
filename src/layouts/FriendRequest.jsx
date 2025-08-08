@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { LuSearch } from "react-icons/lu";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import SingleUser from "../components/SingleUser";
-import { getDatabase, ref, onValue, set } from "firebase/database";
+import { getDatabase, ref, onValue, set, push, remove } from "firebase/database";
 import { useSelector } from "react-redux";
 
 function FriendRequest() {
@@ -16,7 +16,7 @@ function FriendRequest() {
       let arr = [];
       snapshot.forEach((item) => {
         if (item.val().receiverId == data.uid) {
-          arr.push({ ...item.val() });
+          arr.push({ ...item.val(),id:item.key});
         }
       });
       setFriendReq(arr);
@@ -24,19 +24,12 @@ function FriendRequest() {
   }, []);
 
   let handleAccept = (item) => {
-    console.log(item);
-    set(ref(db, 'friendList/'), {
-      senderId: item.senderId,
-      senderName: item.senderName,
-      photo : item.photo,
-    });
+    set(push(ref(db, "friendList/")), {
+      ...item,
+    }).then(
+      remove(ref(db, "friendRequest/"+item.id))
+    )
   };
-
-  // photo: "https://lh3.googleusercontent.com/a/ACg8ocInBlZnxXjU-ylKDBfuYeM7q3ZF9DhMlj1m2e3XVUV9UlheGLJpgg=s96-c";
-  // receiverId: "fjSk7TsQHOQVAZe1ETNaSEVdg092";
-  // receiverName: "arnob hasan";
-  // senderId: "6OsNwRKKJhWGJlKUCzsOJMDNDr42";
-  // senderName: "Arnob Hasan";
 
   return (
     <>
