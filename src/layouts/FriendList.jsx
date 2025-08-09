@@ -10,6 +10,7 @@ let [friendList,setFriendList]=useState([])
 
 let data=useSelector((state)=>((state.activeUser.value)))
   const db = getDatabase();
+
   useEffect(()=>{
     const userRef = ref(db, 'friendList/');
       
@@ -23,6 +24,7 @@ let data=useSelector((state)=>((state.activeUser.value)))
        })
       })
   },[])
+  
   return (
     <>
         <div className='user-box'>

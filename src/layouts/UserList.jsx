@@ -8,27 +8,22 @@ import { useSelector } from "react-redux";
 function UserList() {
   const [userList,setUserList]=useState([])
   let [friendReq,setFriendReq]=useState([])
+  const [FriendList,setFriendList]=useEffect([])
   const db = getDatabase();
   
-  
-
 let data=useSelector((state)=>(state.activeUser.value))
 
-
    useEffect(()=>{
-    let arr=[];
-     
+    let arr=[];   
     const starCountRef = ref(db, 'users/');
-      onValue(starCountRef, (snapshot) => {
-        
+      onValue(starCountRef, (snapshot) => {        
    snapshot.forEach(item=>{
    if(data.uid != item.key){
     arr.push({...item.val(),id:item.key})
    }
     
    })
-    
-    
+     
     setUserList(arr)
   });
   },[])
@@ -44,6 +39,19 @@ let data=useSelector((state)=>(state.activeUser.value))
     setFriendReq(arr);
   });
     },[])
+
+    useEffect(()=>{
+        const userRef = ref(db, 'friendList/');          
+          onValue(userRef, (snapshot) => {
+            let arr=[]
+           snapshot.forEach((item) => {
+            if(data.uid==item.val().receiverId){
+              arr.push({...item.val()})
+              setFriendList(arr)
+            }
+           })
+          })
+      },[])
 
  let handleFriendRequest=(item)=>{
       
@@ -86,10 +94,7 @@ let data=useSelector((state)=>(state.activeUser.value))
         </div>
         </div>
         {
-          
-          
-          
-          
+ 
           friendReq.includes(item.id+data.uid)||
           friendReq.includes(data.uid+item.id)?
           <button onClick={()=>{}}>pending</button>
