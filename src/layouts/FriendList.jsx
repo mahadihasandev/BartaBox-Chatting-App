@@ -2,7 +2,7 @@ import React, { use, useEffect, useState } from 'react'
 import { LuSearch } from "react-icons/lu";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import SingleUser from '../components/SingleUser';
-import { getDatabase, ref, onValue,set, push } from "firebase/database";
+import { getDatabase, ref, onValue,set, push, remove } from "firebase/database";
 
 import { useSelector } from 'react-redux';
 
@@ -30,18 +30,29 @@ console.log(data);
       })
   },[])
 
-  //Block Button Function
+  //Block Button Function sendig data to firebase block collection
 
   let handleBlock=(item)=>{
     console.log(item)
-    set(push(ref(db, 'block/')), {
+    if(data.uid==item.senderId){
+      set(push(ref(db, 'block/')), {
       blockName:item.receiverName,
       blockid: item.receiverId,
-      blockbyid: data.uid,
-      blockbyName:data.displayName,
-    
-  }).then()
-    
+      blockbyName:data.senderName,
+      blockbyid: data.senderId,    
+  }).then(()=>{
+    remove(ref(db, 'friendList/'+item.key))
+  })
+    }else if(data.uid==item.receiverId){
+         set(push(ref(db, 'block/')), {
+      blockName:item.senderName,
+      blockid: item.senderId,
+      blockbyName:data.receiverName,
+      blockbyid: data.receiverId,
+  }).then(()=>{
+    remove(ref(db, 'friendList/'+item.key))
+  })
+  }
   }
   
   return (
