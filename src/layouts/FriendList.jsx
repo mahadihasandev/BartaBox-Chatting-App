@@ -8,17 +8,15 @@ import { useSelector } from 'react-redux';
 
 function FriendList() {
 let [friendList,setFriendList]=useState([])
-
 let data=useSelector((state)=>((state.activeUser.value)))
-console.log(data);
+
 
   const db = getDatabase();
 
   //Getting fireBase friendList data
 
   useEffect(()=>{
-    const userRef = ref(db, 'friendList/');
-      
+    const userRef = ref(db, 'friendList/');      
       onValue(userRef, (snapshot) => {
         let arr=[]
        snapshot.forEach((item) => {
@@ -38,8 +36,8 @@ console.log(data);
       set(push(ref(db,'block/')), {
       blockName:item.receiverName,
       blockid: item.receiverId,
-      blockbyName:data.senderName,
-      blockbyid: data.senderId,    
+      blockbyName:item.senderName,
+      blockbyid: item.senderId,    
   }).then(()=>{
     remove(ref(db, 'friendList/'+item.key))
   })
