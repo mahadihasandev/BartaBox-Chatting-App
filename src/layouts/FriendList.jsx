@@ -35,7 +35,7 @@ console.log(data);
   let handleBlock=(item)=>{
     console.log(item)
     if(data.uid==item.senderId){
-      set(push(ref(db, 'block/')), {
+      set(push(ref(db,'block/')), {
       blockName:item.receiverName,
       blockid: item.receiverId,
       blockbyName:data.senderName,
@@ -43,14 +43,14 @@ console.log(data);
   }).then(()=>{
     remove(ref(db, 'friendList/'+item.key))
   })
-    }else if(data.uid==item.receiverId){
-         set(push(ref(db, 'block/')), {
+    }else{
+         set(push(ref(db,'block/')), {
       blockName:item.senderName,
       blockid: item.senderId,
-      blockbyName:data.receiverName,
-      blockbyid: data.receiverId,
+      blockbyName:item.receiverName,
+      blockbyid: item.receiverId,
   }).then(()=>{
-    remove(ref(db, 'friendList/'+item.key))
+    remove(ref(db,'friendList/'+item.key))
   })
   }
   }
