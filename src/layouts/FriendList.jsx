@@ -2,14 +2,19 @@ import React, { use, useEffect, useState } from 'react'
 import { LuSearch } from "react-icons/lu";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import SingleUser from '../components/SingleUser';
-import { getDatabase, ref, onValue } from "firebase/database";
+import { getDatabase, ref, onValue,set, push } from "firebase/database";
+
 import { useSelector } from 'react-redux';
 
 function FriendList() {
 let [friendList,setFriendList]=useState([])
 
 let data=useSelector((state)=>((state.activeUser.value)))
+console.log(data);
+
   const db = getDatabase();
+
+  //Getting fireBase friendList data
 
   useEffect(()=>{
     const userRef = ref(db, 'friendList/');
@@ -17,13 +22,27 @@ let data=useSelector((state)=>((state.activeUser.value)))
       onValue(userRef, (snapshot) => {
         let arr=[]
        snapshot.forEach((item) => {
-        if(data.uid==item.val().receiverId){
-          arr.push({...item.val()})
-          setFriendList(arr)
+        if(data.uid==item.val().receiverId||data.uid==item.val().senderId){
+          arr.push({...item.val(),key:item.key})          
         }
        })
+       setFriendList(arr)
       })
   },[])
+
+  //Block Button Function
+
+  let handleBlock=(item)=>{
+    console.log(item)
+    set(push(ref(db, 'block/')), {
+      blockName:item.receiverName,
+      blockid: item.receiverId,
+      blockbyid: data.uid,
+      blockbyName:data.displayName,
+    
+  }).then()
+    
+  }
   
   return (
     <>
@@ -48,10 +67,11 @@ let data=useSelector((state)=>((state.activeUser.value)))
           <img className='profile-img' src={item.photo} alt="Profile-image" />
           </div>
         <div className='profile-title'>
-          <h4>{item.senderName}</h4>
+         <h4>{data.uid==item.receiverId ? item.senderName :item.receiverName}</h4>
           <p>Hi Guys, Wassup!</p>
         </div>
         </div> 
+        <button onClick={()=>{handleBlock(item)}}>Block</button>
         </div>
             </>
           ))

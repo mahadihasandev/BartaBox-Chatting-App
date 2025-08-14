@@ -10,6 +10,15 @@ function FriendRequest() {
   let [friendReq, setFriendReq] = useState([]);
 
   let data = useSelector((state) => state.activeUser.value);
+
+
+   let handleAccept = (item) => {
+    set(push(ref(db, "friendList/")), {
+      ...item,
+    }).then(
+      remove(ref(db, "friendRequest/"+item.id))
+    )
+  };
   useEffect(() => {
     const starCountRef = ref(db, "friendRequest/");
     onValue(starCountRef, (snapshot) => {
@@ -23,13 +32,7 @@ function FriendRequest() {
     });
   }, []);
 
-  let handleAccept = (item) => {
-    set(push(ref(db, "friendList/")), {
-      ...item,
-    }).then(
-      remove(ref(db, "friendRequest/"+item.id))
-    )
-  };
+ 
 
   return (
     <>

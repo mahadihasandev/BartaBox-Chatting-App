@@ -7,11 +7,24 @@ import { useSelector } from "react-redux";
 
 function UserList() {
   const [userList,setUserList]=useState([])
-  let [friendReq,setFriendReq]=useState([])
-  const [FriendList,setFriendList]=useState([])
+  let [concatFriendRequest,setFriendConcatReq]=useState([])
+  const [concatFriendList,setConcateFriendList]=useState([])
   const db = getDatabase();
   
 let data=useSelector((state)=>(state.activeUser.value))
+
+let handleFriendRequest=(item)=>{
+      
+       set(push(ref(db, 'friendRequest/')), {
+    receiverId:item.id,
+    receiverName:item.username,
+
+    senderId:data.uid,
+    senderName:data.displayName,
+    photo:data.photoURL,
+  });
+      
+  }
 
    useEffect(()=>{
     let arr=[];   
@@ -22,8 +35,7 @@ let data=useSelector((state)=>(state.activeUser.value))
     arr.push({...item.val(),id:item.key})
    }
     
-   })
-     
+   })   
     setUserList(arr)
   });
   },[])
@@ -36,7 +48,7 @@ let data=useSelector((state)=>(state.activeUser.value))
     snapshot.forEach((item)=>{
       arr.push(item.val().receiverId+item.val().senderId)
     })
-    setFriendReq(arr);
+    setFriendConcatReq(arr);
   });
     },[])
 
@@ -44,27 +56,12 @@ let data=useSelector((state)=>(state.activeUser.value))
         const userRef = ref(db, 'friendList/');          
           onValue(userRef, (snapshot) => {
             let arr=[]
-           snapshot.forEach((item) => {
-            if(data.uid==item.val().receiverId){
-              arr.push({...item.val()})
-              setFriendList(arr)
-            }
+           snapshot.forEach((item) => {  
+              arr.push(item.val().receiverId+item.val().senderId)          
            })
+           setConcateFriendList(arr)
           })
       },[])
-
- let handleFriendRequest=(item)=>{
-      
-       set(push(ref(db, 'friendRequest/')), {
-    receiverId:item.id,
-    receiverName:item.username,
-
-    senderId:data.uid,
-    senderName:data.displayName,
-    photo:data.photoURL,
-  });
-      
-  }
 
   return (
     <>
@@ -93,16 +90,21 @@ let data=useSelector((state)=>(state.activeUser.value))
           <p>Hi Guys, Wassup!</p>
         </div>
         </div>
-        {
- 
-          friendReq.includes(item.id+data.uid)||
-          friendReq.includes(data.uid+item.id)?
-          <button onClick={()=>{}}>pending</button>
-          :
-          <button onClick={()=>handleFriendRequest(item)}>Join</button>
-          
-        }
-        
+       {
+                concatFriendList.includes(item.id+data.uid)||
+                concatFriendList.includes(data.uid+item.id)
+                ?
+                <button>Friend</button>
+                :
+                 concatFriendRequest.includes(item.id+data.uid) ||
+                 concatFriendRequest.includes(data.uid+item.id) 
+                ? 
+                <button>panding</button>
+               
+                :
+                <button onClick={() => handleFriendRequest(item)}>Add</button>
+
+              }
       </div>
     </>
           
