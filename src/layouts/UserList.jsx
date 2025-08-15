@@ -9,22 +9,28 @@ function UserList() {
   const [userList,setUserList]=useState([])
   let [concatFriendRequest,setFriendConcatReq]=useState([])
   const [concatFriendList,setConcateFriendList]=useState([])
-  const db = getDatabase();
+  const [concatBlockId,setConcateBlockId]=useState([])
+  console.log(concatBlockId);
   
+  const db = getDatabase();
+
+  //Getting loged-in user data from redux
+
 let data=useSelector((state)=>(state.activeUser.value))
 
-let handleFriendRequest=(item)=>{
-      
+//Add button function and sending data to firebase friendRequest collection
+
+let handleFriendRequest=(item)=>{      
        set(push(ref(db, 'friendRequest/')), {
     receiverId:item.id,
     receiverName:item.username,
-
     senderId:data.uid,
     senderName:data.displayName,
     photo:data.photoURL,
-  });
-      
+  });   
   }
+
+  //Getting user data from firebase users collection
 
    useEffect(()=>{
     let arr=[];   
@@ -40,8 +46,9 @@ let handleFriendRequest=(item)=>{
   });
   },[])
 
-    useEffect(()=>{
-      
+    //Getting friendRequest data from firebase for dynamyc button
+
+    useEffect(()=>{      
       const starCountRef = ref(db, 'friendRequest/');
   onValue(starCountRef, (snapshot) => {
     let arr=[]
@@ -52,6 +59,8 @@ let handleFriendRequest=(item)=>{
   });
     },[])
 
+    //Getting friendList data from firebase for dynamyc button
+
     useEffect(()=>{
         const userRef = ref(db, 'friendList/');          
           onValue(userRef, (snapshot) => {
@@ -60,6 +69,20 @@ let handleFriendRequest=(item)=>{
               arr.push(item.val().receiverId+item.val().senderId)          
            })
            setConcateFriendList(arr)
+          })
+      },[])
+
+      //Getting block data from firebase for dynamyc button
+
+      useEffect(()=>{
+        const userRef = ref(db, 'block/');          
+          onValue(userRef, (snapshot) => {
+           let arr=[]
+           snapshot.forEach((item) => {  
+              arr.push(item.val().blockbyid+item.val().blockid);
+                        
+           })
+           setConcateBlockId(arr)
           })
       },[])
 
@@ -90,7 +113,12 @@ let handleFriendRequest=(item)=>{
           <p>Hi Guys, Wassup!</p>
         </div>
         </div>
-       {
+       {        concatBlockId.includes(data.uid+item.id)?
+                <button>Unblock</button>
+                :
+                concatBlockId.includes(item.id+data.uid)?
+                <button>Blocked</button>
+                :
                 concatFriendList.includes(item.id+data.uid)||
                 concatFriendList.includes(data.uid+item.id)
                 ?

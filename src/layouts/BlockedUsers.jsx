@@ -7,7 +7,7 @@ import PP from "../assets/ppic.png"
 
 function BlockedUsers() {
 const [blockUser,setBlockUser]=useState([])
-console.log(blockUser);
+
 
   const db = getDatabase();
    useEffect(()=>{
@@ -15,7 +15,7 @@ console.log(blockUser);
         onValue(userRef, (snapshot) => {
           let arr=[]
          snapshot.forEach((item) => {
-         console.log(item.val());
+         
          arr.push({...item.val()})
          })
          setBlockUser(arr)
@@ -49,7 +49,7 @@ console.log(blockUser);
           <p>Hi Guys, Wassup!</p>
         </div>
         </div> 
-        <button ></button>
+        <button>Unblock</button>
         </div>
             </>
           ))
