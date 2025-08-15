@@ -28,7 +28,6 @@ let data=useSelector((state)=>((state.activeUser.value)))
   //Block Button Function sendig data to firebase block collection
 
   let handleBlock=(item)=>{
-    console.log(item)
     if(data.uid==item.senderId){
       set(push(ref(db,'block/')), {
       blockName:item.receiverName,

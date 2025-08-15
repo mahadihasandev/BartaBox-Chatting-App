@@ -1,6 +1,6 @@
 import { LuSearch } from "react-icons/lu";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { getDatabase, ref, onValue, set, push } from "firebase/database";
+import { getDatabase, ref, onValue, set, push, remove } from "firebase/database";
 import React, { useEffect, useState } from 'react'
 import { useSelector } from "react-redux";
 
@@ -10,6 +10,8 @@ function UserList() {
   const [concatFriendRequest,setFriendConcatReq]=useState([])
   const [concatFriendList,setConcateFriendList]=useState([])
   const [concatBlockId,setConcateBlockId]=useState([])
+  
+  
   
   const db = getDatabase();
 
@@ -77,12 +79,32 @@ let handleFriendRequest=(item)=>{
         const userRef = ref(db, 'block/');          
           onValue(userRef, (snapshot) => {
            let arr=[]
-           snapshot.forEach((item) => {  
-              arr.push(item.val().blockbyid+item.val().blockid);                        
+           snapshot.forEach((item) => {
+           arr.push(item.val().blockbyid+item.val().blockid);                        
            })
            setConcateBlockId(arr)
           })
       },[])
+
+      let handleUnBlocked=(item)=>{
+        set(push(ref(db, 'friendList/')), {
+                receiverId:data.uid,
+                receiverName:data.displayName,
+                senderId:item.id,
+                senderName:item.username, 
+              }).then(()=>{
+          //       const userRef = ref(db, 'block/');          
+          // onValue(userRef, (snapshot) => {
+          //  snapshot.forEach((itemb) => {
+          //   console.log(itemb.val());
+            
+          //  if(item.id==itemb.val().blockid){
+          //   remove(ref(db,'block/'+itemb.key))
+          //  }                    
+          //  })
+          // })
+          })     
+      }
 
   return (
     <>
@@ -112,7 +134,7 @@ let handleFriendRequest=(item)=>{
         </div>
        {        concatBlockId.includes(data.uid+item.id)
                 ?
-                <button>Unblock</button>
+                <button onClick={()=>{handleUnBlocked(item)}}>Unblock</button>
                 :
                 concatBlockId.includes(item.id+data.uid)
                 ?
