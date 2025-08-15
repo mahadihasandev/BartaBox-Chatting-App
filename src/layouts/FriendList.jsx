@@ -1,15 +1,12 @@
-import React, { use, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { LuSearch } from "react-icons/lu";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import SingleUser from '../components/SingleUser';
 import { getDatabase, ref, onValue,set, push, remove } from "firebase/database";
-
 import { useSelector } from 'react-redux';
 
 function FriendList() {
 let [friendList,setFriendList]=useState([])
 let data=useSelector((state)=>((state.activeUser.value)))
-
 
   const db = getDatabase();
 
@@ -85,9 +82,6 @@ let data=useSelector((state)=>((state.activeUser.value)))
             </>
           ))
         }
-
-
-
       </div>     
     </div>
     </>

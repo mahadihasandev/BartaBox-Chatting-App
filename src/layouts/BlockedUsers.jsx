@@ -1,26 +1,57 @@
 import React, { useEffect, useState } from 'react'
 import { LuSearch } from "react-icons/lu";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import SingleUser from '../components/SingleUser';
-import { getDatabase, onValue, ref } from 'firebase/database';
+import { getDatabase, onValue, push, ref, remove, set } from 'firebase/database';
 import PP from "../assets/ppic.png"
+import { useSelector } from 'react-redux';
 
 function BlockedUsers() {
 const [blockUser,setBlockUser]=useState([])
 
+let data=useSelector((state)=>(state.activeUser.value))
 
   const db = getDatabase();
+
+  //Getting data from firebase block collection.
+  
    useEffect(()=>{
       const userRef = ref(db, 'block/');      
         onValue(userRef, (snapshot) => {
           let arr=[]
          snapshot.forEach((item) => {
+         if(data.uid==item.val().blockbyid){
+            arr.push({
+              id:item.key,
+              blockName:item.val().blockName,
+              blockid:item.val().blockid,
+            })
+         }else if(data.uid==item.val().blockid){
+            arr.push({
+              id:item.key,
+              blockbyName:item.val().blockbyName,
+              blockbyid:item.val().blockbyid,
+            })
+         }
          
-         arr.push({...item.val()})
          })
          setBlockUser(arr)
         })
     },[])
+
+  //Unblock button function && sending data to firbase friendList/ collection.
+
+  let handleUnBlock=(item)=>{
+
+    set(push(ref(db, 'friendList/')), {
+        receiverId:data.uid,
+        receiverName:data.displayName,
+        senderId:item.blockid,
+        senderName:item.blockName,
+        
+      }).then(()=>{
+        remove(ref(db, 'block/'+item.id))
+      })   
+      }
 
   return (
     <>
@@ -46,10 +77,20 @@ const [blockUser,setBlockUser]=useState([])
           </div>
         <div className='profile-title'>
          <h4>{item.blockName}</h4>
+         <h4>{item.blockbyName}</h4>
           <p>Hi Guys, Wassup!</p>
         </div>
-        </div> 
-        <button>Unblock</button>
+        </div>
+        {
+          // console.log(item)
+          
+          item.blockid
+          ?
+          <button onClick={()=>{handleUnBlock(item)}}>Unblock</button>
+          :
+          <button>Blocked</button>
+        }
+        
         </div>
             </>
           ))
