@@ -31,8 +31,7 @@ let data=useSelector((state)=>(state.activeUser.value))
               blockbyName:item.val().blockbyName,
               blockbyid:item.val().blockbyid,
             })
-         }
-         
+         }         
          })
          setBlockUser(arr)
         })
@@ -82,8 +81,6 @@ let data=useSelector((state)=>(state.activeUser.value))
         </div>
         </div>
         {
-          // console.log(item)
-          
           item.blockid
           ?
           <button onClick={()=>{handleUnBlock(item)}}>Unblock</button>

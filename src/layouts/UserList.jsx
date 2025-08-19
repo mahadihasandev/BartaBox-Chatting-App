@@ -12,24 +12,13 @@ function UserList() {
   const [concatBlockId,setConcateBlockId]=useState([])
   
   
-  
   const db = getDatabase();
 
   //Getting loged-in user data from redux.
 
 let data=useSelector((state)=>(state.activeUser.value))
 
-//Add button function and sending data to firebase and creating friendRequest/ collection.
 
-let handleFriendRequest=(item)=>{      
-       set(push(ref(db, 'friendRequest/')), {
-    receiverId:item.id,
-    receiverName:item.username,
-    senderId:data.uid,
-    senderName:data.displayName,
-    photo:data.photoURL,
-  });   
-  }
 
   //Getting user data from firebase users collection.
 
@@ -60,6 +49,18 @@ let handleFriendRequest=(item)=>{
   });
     },[])
 
+    //Add button function and sending data to firebase and creating friendRequest/ collection.
+
+let handleFriendRequest=(item)=>{      
+       set(push(ref(db, 'friendRequest/')), {
+    receiverId:item.id,
+    receiverName:item.username,
+    senderId:data.uid,
+    senderName:data.displayName,
+    photo:data.photoURL,
+  });   
+  }
+
     //Getting friendList data from firebase for dynamyc button.
 
     useEffect(()=>{
@@ -86,25 +87,10 @@ let handleFriendRequest=(item)=>{
           })
       },[])
 
-      let handleUnBlocked=(item)=>{
-        set(push(ref(db, 'friendList/')), {
-                receiverId:data.uid,
-                receiverName:data.displayName,
-                senderId:item.id,
-                senderName:item.username, 
-              }).then(()=>{
-          //       const userRef = ref(db, 'block/');          
-          // onValue(userRef, (snapshot) => {
-          //  snapshot.forEach((itemb) => {
-          //   console.log(itemb.val());
-            
-          //  if(item.id==itemb.val().blockid){
-          //   remove(ref(db,'block/'+itemb.key))
-          //  }                    
-          //  })
-          // })
-          })     
-      }
+     
+
+      //Unblock button function and sending data to firebase and creating friendList/ collection.
+
 
   return (
     <>
@@ -134,7 +120,7 @@ let handleFriendRequest=(item)=>{
         </div>
        {        concatBlockId.includes(data.uid+item.id)
                 ?
-                <button onClick={()=>{handleUnBlocked(item)}}>Unblock</button>
+                <button>Unblock</button>
                 :
                 concatBlockId.includes(item.id+data.uid)
                 ?

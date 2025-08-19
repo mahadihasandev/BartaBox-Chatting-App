@@ -380,6 +380,12 @@
  
 }
 
+.add-group-icon{
+    color: #5F35F5;
+    font-size: 30px;
+    cursor: pointer;
+}
+
 .threeDot-icon{
  position: absolute;
  right: 25px;
