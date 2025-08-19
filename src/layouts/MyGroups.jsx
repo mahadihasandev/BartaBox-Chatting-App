@@ -58,18 +58,13 @@ let hanblegroupBlank = (e) => {
     {groupPopUp && (
           <div onClick={hanblegroupBlank} className="popup-image">
             <div  ref={groupRef} className="popup-img-box">
-              <h2>Change your profile picture</h2>
-              <input onChange={onChange} type="file" />
-              <div style={{ display: "flex" }}>
-                <div>
-                </div>
-                <div>
-                  <div className="preview-box">
-                    <h1>Preview</h1>
-                    <div className="img-preview preview-round"></div>
-                  </div>
-                </div>
-              </div>
+              <h2>Create New Group</h2>
+              <label htmlFor="">Group Name : 
+              <input onChange={onChange} type="text" />
+              </label>
+              <label htmlFor="">Group Name : 
+              <input type="text" />
+              </label>
               <div>
                 <BootstrapButton variant="contained">
                   Upload
