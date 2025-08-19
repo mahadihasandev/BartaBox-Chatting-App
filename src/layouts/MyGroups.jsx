@@ -6,12 +6,30 @@ import { FaSquarePlus } from "react-icons/fa6";
 import { useRef, useState } from "react";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
 const BootstrapButton = styled(Button)({
-  width: "55%",
-  padding: "19px 0px",
+  width: "100%",
+  padding: "15px 29px",
   background: "#5F35F5",
   fontFamily: "Open Sans",
+});
+
+
+const CssTextField = styled(TextField)({
+  "& label.Mui-focused": {
+    color: "#11175D",
+  },
+  "& .MuiInput-underline:after": {
+    borderBottomColor: "#B2BAC2",
+  },
+  "& .MuiOutlinedInput-root": {
+    "&.Mui-focused fieldset": {
+      borderColor: "#11175D",
+    },
+  },
+  width: "80%",
+  paddingBottom: "33px",
 });
 
 
@@ -59,15 +77,29 @@ let hanblegroupBlank = (e) => {
           <div onClick={hanblegroupBlank} className="popup-image">
             <div  ref={groupRef} className="popup-img-box">
               <h2>Create New Group</h2>
-              <label htmlFor="">Group Name : 
-              <input onChange={onChange} type="text" />
-              </label>
-              <label htmlFor="">Group Name : 
-              <input type="text" />
-              </label>
+              
+              <CssTextField
+              // className="forget-pass-email"
+              // value={ForgetEmail}
+              // onChange={handleForgetEmail}
+              id="outlined-basic"
+              label="Group Name"
+              variant="outlined"
+            />
+              
+              <CssTextField
+              
+              // value={ForgetEmail}
+              // onChange={handleForgetEmail}
+              id="outlined-basic"
+              label="Group tag"
+              variant="outlined"
+            />
+              
+              
               <div>
                 <BootstrapButton variant="contained">
-                  Upload
+                  Create
                 </BootstrapButton>
               </div>
             </div>
