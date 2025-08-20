@@ -34,13 +34,12 @@ const CssTextField = styled(TextField)({
 
 
 function MyGroups() {
-  const [groupPopUp, setGroupPopUp] = useState(false);
+  const [groupPopUp, setGroupPopUp] =useState(false);
   let groupRef=useRef(null);
   console.log(groupRef)
   
 
 let handleAddGroup = () => {
-  console.log("working");
   setGroupPopUp(true);
 }
 
