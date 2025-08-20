@@ -41,7 +41,10 @@ function MyGroups() {
   const [groupTag, setGroupTag] = useState("");
   let groupRef=useRef(null);
 
-  let data=useSelector((state)=>(console.log(state.activeUser.value)))
+//current user data
+
+  let data=useSelector((state)=>(state.activeUser.value))
+
 //group popup button
 
 let handleAddGroup = () => {
@@ -77,7 +80,6 @@ let handleCreateGroup = () => {
       groupName: groupName,
       groupTag: groupTag
     })
-
 }
 
   return (
