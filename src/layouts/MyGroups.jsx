@@ -7,6 +7,7 @@ import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { useSelector } from "react-redux";
+import { push, ref, set } from "firebase/database";
 
 //mui button setup
 
@@ -40,6 +41,8 @@ function MyGroups() {
   const [groupName, setGroupName] = useState("");
   const [groupTag, setGroupTag] = useState("");
   let groupRef=useRef(null);
+
+  const db = getDatabase();
 
 //current user data
 
@@ -79,6 +82,10 @@ let handleCreateGroup = () => {
       adminId:data.uid,
       groupName: groupName,
       groupTag: groupTag
+    }).then(()=>{
+      setGroupName("");
+      setGroupTag("");
+      setGroupPopUp(false);
     })
 }
 
