@@ -2,7 +2,7 @@ import { LuSearch } from "react-icons/lu";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import SingleUser from '../components/SingleUser';
 import { FaSquarePlus } from "react-icons/fa6";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -40,6 +40,7 @@ function MyGroups() {
   const [groupPopUp, setGroupPopUp] =useState(false);
   const [groupName, setGroupName] = useState("");
   const [groupTag, setGroupTag] = useState("");
+  const [groupData, setGroupdata] = useState([]);
   let groupRef=useRef(null);
 
   const db = getDatabase();
@@ -87,7 +88,22 @@ let handleCreateGroup = () => {
       setGroupTag("");
       setGroupPopUp(false);
     })
-}
+  }
+
+  //reding group data from firebase
+
+  useEffect(()=>{
+const starCountRef = ref(db, 'posts/' + postId + '/starCount');
+let array = [];
+onValue(starCountRef, (snapshot) => {
+  const groupData = snapshot.val();
+  if(data.uid==groupData.adminId) {
+      array.push(groupData);
+      setGroupdata(array);
+  }
+  console.log(data);
+});
+  })
 
   return (
     <>
@@ -102,7 +118,13 @@ let handleCreateGroup = () => {
           <h4 className='userList-title'>My Groups</h4>
           <FaSquarePlus className="add-group-icon" onClick={handleAddGroup} />
         </div>
-        <SingleUser/>
+        {
+          groupData.map((item)=>(
+            console.log(item)
+            
+          ))
+        }
+        
       </div>     
     </div>
     {groupPopUp && (
