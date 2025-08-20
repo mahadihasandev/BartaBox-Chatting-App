@@ -1,4 +1,3 @@
-
 import { LuSearch } from "react-icons/lu";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import SingleUser from '../components/SingleUser';
@@ -7,6 +6,9 @@ import { useRef, useState } from "react";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import { useSelector } from "react-redux";
+
+//mui button setup
 
 const BootstrapButton = styled(Button)({
   width: "100%",
@@ -15,6 +17,7 @@ const BootstrapButton = styled(Button)({
   fontFamily: "Open Sans",
 });
 
+//mui textfield setup
 
 const CssTextField = styled(TextField)({
   "& label.Mui-focused": {
@@ -32,29 +35,50 @@ const CssTextField = styled(TextField)({
   paddingBottom: "33px",
 });
 
-
 function MyGroups() {
   const [groupPopUp, setGroupPopUp] =useState(false);
+  const [groupName, setGroupName] = useState("");
+  const [groupTag, setGroupTag] = useState("");
   let groupRef=useRef(null);
-  console.log(groupRef)
-  
+
+  let data=useSelector((state)=>(console.log(state.activeUser.value)))
+//group popup button
 
 let handleAddGroup = () => {
   setGroupPopUp(true);
 }
 
-let onChange = (e) => {
-  console.log(e.target.value);
-  
-}
+//Blank space click pop up close
 
-let hanblegroupBlank = (e) => {
+let handlegroupBlank = (e) => {
   if(!groupRef.current.contains(e.target)){
     setGroupPopUp(false);
   }
 }
 
+//Group name change
 
+let handleGroupName = (e) => {
+  setGroupName(e.target.value);
+}
+
+//Group tag change
+
+let handleGroupTag = (e) => {
+  setGroupTag(e.target.value);
+}
+
+//create group & sending data to firebase
+
+let handleCreateGroup = () => {
+  set(push(ref(db,'Mygroup/')), {
+      adminName:data.displayname,
+      adminId:data.uid,
+      groupName: groupName,
+      groupTag: groupTag
+    })
+
+}
 
   return (
     <>
@@ -73,23 +97,21 @@ let hanblegroupBlank = (e) => {
       </div>     
     </div>
     {groupPopUp && (
-          <div onClick={hanblegroupBlank} className="popup-image">
+          <div onClick={handlegroupBlank} className="popup-image">
             <div  ref={groupRef} className="popup-img-box">
               <h2>Create New Group</h2>
               
               <CssTextField
-              // className="forget-pass-email"
-              // value={ForgetEmail}
-              // onChange={handleForgetEmail}
+              value={groupName}
+              onChange={handleGroupName}
               id="outlined-basic"
               label="Group Name"
               variant="outlined"
             />
               
               <CssTextField
-              
-              // value={ForgetEmail}
-              // onChange={handleForgetEmail}
+              value={groupTag}
+              onChange={handleGroupTag}
               id="outlined-basic"
               label="Group tag"
               variant="outlined"
@@ -97,7 +119,7 @@ let hanblegroupBlank = (e) => {
               
               
               <div>
-                <BootstrapButton variant="contained">
+                <BootstrapButton onClick={handleCreateGroup} variant="contained">
                   Create
                 </BootstrapButton>
               </div>
