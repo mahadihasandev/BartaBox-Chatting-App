@@ -7,7 +7,7 @@ import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { useSelector } from "react-redux";
-import { push, ref, set } from "firebase/database";
+import { getDatabase, onValue, push, ref, set } from "firebase/database";
 
 //mui button setup
 
@@ -79,7 +79,7 @@ let handleGroupTag = (e) => {
 
 let handleCreateGroup = () => {
   set(push(ref(db,'Mygroup/')), {
-      adminName:data.displayname,
+      adminName:data.displayName,
       adminId:data.uid,
       groupName: groupName,
       groupTag: groupTag
@@ -93,17 +93,18 @@ let handleCreateGroup = () => {
   //reding group data from firebase
 
   useEffect(()=>{
-const starCountRef = ref(db, 'posts/' + postId + '/starCount');
+const starCountRef = ref(db, 'Mygroup/');
 let array = [];
 onValue(starCountRef, (snapshot) => {
-  const groupData = snapshot.val();
-  if(data.uid==groupData.adminId) {
-      array.push(groupData);
+  snapshot.forEach((item)=>{
+    if(data.uid==item.val().adminId) {
+      array.push(item.val());
       setGroupdata(array);
   }
-  console.log(data);
-});
   })
+
+});
+  },[])
 
   return (
     <>
@@ -120,7 +121,29 @@ onValue(starCountRef, (snapshot) => {
         </div>
         {
           groupData.map((item)=>(
-            console.log(item)
+            
+            
+            <>
+             <div className="profile-box">
+                <div className="profile-img-title-box">
+                  <div className="profile-img-box">
+                    <img
+                      className="profile-img"
+                      src={item.photo}
+                      alt="Profile-image"
+                    />
+                  </div>
+                  <div className="profile-title">
+                    <h4>{item.groupName}</h4>
+                     <h4>{item.adminName}</h4>
+                    <p>Hi Guys, Wassup!</p>
+                  </div>
+                </div>
+                <button>
+                  Accept
+                </button>
+              </div>
+            </>
             
           ))
         }
