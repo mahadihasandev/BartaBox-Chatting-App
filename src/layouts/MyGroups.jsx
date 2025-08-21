@@ -41,7 +41,12 @@ function MyGroups() {
   const [groupName, setGroupName] = useState("");
   const [groupTag, setGroupTag] = useState("");
   const [groupData, setGroupdata] = useState([]);
+  const [addMember,setAddMember]=useState(false)
+  
+  
+
   let groupRef=useRef(null);
+  let membarRaf=useRef(null);
 
   const db = getDatabase();
 
@@ -57,9 +62,16 @@ let handleAddGroup = () => {
 
 //Blank space click pop up close
 
+
 let handlegroupBlank = (e) => {
   if(!groupRef.current.contains(e.target)){
     setGroupPopUp(false);
+  }
+}
+
+let handleMembarpBlank=(e)=>{
+  if(!membarRaf.current.contains(e.target)){
+    setAddMember(false)
   }
 }
 
@@ -106,6 +118,13 @@ onValue(starCountRef, (snapshot) => {
 });
   },[])
 
+  let handleAddMembar=()=>{  
+    setAddMember(true) 
+  }
+
+
+
+
   return (
     <>
         <div className='user-box'>
@@ -121,9 +140,6 @@ onValue(starCountRef, (snapshot) => {
         </div>
         {
           groupData.map((item,index)=>(
-            
-            
-            
              <div key={index} className="profile-box">
                 <div className="profile-img-title-box">
                   <div className="profile-img-box">
@@ -139,14 +155,13 @@ onValue(starCountRef, (snapshot) => {
                     <p>Hi Guys, Wassup!</p>
                   </div>
                 </div>
-                <button>
-                  Accept
+                <button onClick={handleAddMembar}>
+                  Add membar
                 </button>
               </div>
-            
-            
           ))
         }
+       
         
       </div>     
     </div>
@@ -177,6 +192,16 @@ onValue(starCountRef, (snapshot) => {
                   Create
                 </BootstrapButton>
               </div>
+            </div>
+          </div>
+        )}
+
+         {addMember && (
+          <div onClick={handleMembarpBlank} className="popup-image">
+            <div  ref={membarRaf} className="popup-img-box">
+              <h2>Add Group Member</h2>
+
+              
             </div>
           </div>
         )}

@@ -64,9 +64,9 @@ let data=useSelector((state)=>((state.activeUser.value)))
         </div>
           
         {
-          friendList.map((item)=>(
-            <>
-           <div className='profile-box'>
+          friendList.map((item,index)=>(
+            
+           <div key={index} className='profile-box'>
         <div className='profile-img-title-box'>
           <div className='profile-img-box'>
           <img className='profile-img' src={item.photo} alt="Profile-image" />
@@ -78,7 +78,7 @@ let data=useSelector((state)=>((state.activeUser.value)))
         </div> 
         <button onClick={()=>{handleBlock(item)}}>Block</button>
         </div>
-            </>
+            
           ))
         }
       </div>     

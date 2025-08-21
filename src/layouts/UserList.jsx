@@ -11,7 +11,7 @@ function UserList() {
   const [concatFriendList,setConcateFriendList]=useState([])
   const [concatBlockId,setConcateBlockId]=useState([])
   const [blockKey,setBlockKey]=useState('')
-  console.log(blockKey);
+  
   
   
   
@@ -82,28 +82,35 @@ let handleFriendRequest=(item)=>{
         const userRef = ref(db, 'block/');          
           onValue(userRef, (snapshot) => {
            let arr=[]
+           let arrb=[]
            snapshot.forEach((item) => {
            arr.push(item.val().blockbyid+item.val().blockid);   
-            setBlockKey(item.key)                     
+            arrb.push({blockid:item.val().blockid,key:item.key})                   
            })
            setConcateBlockId(arr)
+          setBlockKey(arrb)
+           
           })
       },[])
-
+  
       //Unblock button function and sending data to firebase and creating friendList/ collection.
+
       let handleUnblock=(item)=>{
-        console.log(item);
-         set(push(ref(db, 'friendList/')), {
-    receiverId:item.id,
-    receiverName:item.username,
-    senderId:data.uid,
-    senderName:data.displayName,
-    photo:data.photoURL,
-  }).then(()=>{
-    remove((ref(db, 'block/'+blockKey)))
-  })
-        
+        for(let itemb of blockKey){
+          if(item.id==itemb.blockid){
+               set(push(ref(db, 'friendList/')), {
+                receiverId:item.id,
+                receiverName:item.username,
+                senderId:data.uid,
+                senderName:data.displayName,
+                photo:data.photoURL,
+              }).then(()=>{
+                remove((ref(db, 'block/'+itemb.key)))
+              })
+          } 
+        }
       }
+
   return (
     <>
     <div className='user-box'>
