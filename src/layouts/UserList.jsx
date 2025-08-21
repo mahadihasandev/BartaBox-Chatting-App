@@ -10,6 +10,9 @@ function UserList() {
   const [concatFriendRequest,setFriendConcatReq]=useState([])
   const [concatFriendList,setConcateFriendList]=useState([])
   const [concatBlockId,setConcateBlockId]=useState([])
+  const [blockKey,setBlockKey]=useState('')
+  console.log(blockKey);
+  
   
   
   const db = getDatabase();
@@ -17,8 +20,6 @@ function UserList() {
   //Getting loged-in user data from redux.
 
 let data=useSelector((state)=>(state.activeUser.value))
-
-
 
   //Getting user data from firebase users collection.
 
@@ -68,7 +69,8 @@ let handleFriendRequest=(item)=>{
           onValue(userRef, (snapshot) => {
             let arr=[]
            snapshot.forEach((item) => {  
-              arr.push(item.val().receiverId+item.val().senderId)          
+              arr.push(item.val().receiverId+item.val().senderId)
+                       
            })
            setConcateFriendList(arr)
           })
@@ -81,17 +83,27 @@ let handleFriendRequest=(item)=>{
           onValue(userRef, (snapshot) => {
            let arr=[]
            snapshot.forEach((item) => {
-           arr.push(item.val().blockbyid+item.val().blockid);                        
+           arr.push(item.val().blockbyid+item.val().blockid);   
+            setBlockKey(item.key)                     
            })
            setConcateBlockId(arr)
           })
       },[])
 
-     
-
       //Unblock button function and sending data to firebase and creating friendList/ collection.
-
-
+      let handleUnblock=(item)=>{
+        console.log(item);
+         set(push(ref(db, 'friendList/')), {
+    receiverId:item.id,
+    receiverName:item.username,
+    senderId:data.uid,
+    senderName:data.displayName,
+    photo:data.photoURL,
+  }).then(()=>{
+    remove((ref(db, 'block/'+blockKey)))
+  })
+        
+      }
   return (
     <>
     <div className='user-box'>
@@ -120,7 +132,7 @@ let handleFriendRequest=(item)=>{
         </div>
        {        concatBlockId.includes(data.uid+item.id)
                 ?
-                <button>Unblock</button>
+                <button onClick={()=>handleUnblock(item)}>Unblock</button>
                 :
                 concatFriendList.includes(item.id+data.uid)||
                 concatFriendList.includes(data.uid+item.id)
