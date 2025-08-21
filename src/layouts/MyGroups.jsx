@@ -9,6 +9,7 @@ import TextField from "@mui/material/TextField";
 import { useSelector } from "react-redux";
 import { getDatabase, onValue, push, ref, set } from "firebase/database";
 
+
 //mui button setup
 
 const BootstrapButton = styled(Button)({
@@ -41,8 +42,9 @@ function MyGroups() {
   const [groupName, setGroupName] = useState("");
   const [groupTag, setGroupTag] = useState("");
   const [groupData, setGroupdata] = useState([]);
-  const [addMember,setAddMember]=useState(false)
-  
+  const [addMember,setAddMember]=useState(false);
+  const [userList,setUserList]=useState([]);
+  console.log(userList);
   
 
   let groupRef=useRef(null);
@@ -123,7 +125,24 @@ onValue(starCountRef, (snapshot) => {
   }
 
 
+useEffect(()=>{
+  let arr = [];
+const starCountRef = ref(db,'users/');
 
+onValue(starCountRef, (snapshot) => {
+  snapshot.forEach((item)=>{
+    if(data.uid!=item.key) {
+      arr.push(item.val());
+  
+  }
+  
+  })
+setUserList(arr);
+  
+})
+  },[])
+  
+  
 
   return (
     <>
@@ -200,7 +219,31 @@ onValue(starCountRef, (snapshot) => {
           <div onClick={handleMembarpBlank} className="popup-image">
             <div  ref={membarRaf} className="popup-img-box">
               <h2>Add Group Member</h2>
-
+                {
+                  userList.map((item,index)=>(
+                    
+                    
+             <div key={index} className="profile-box">
+                <div className="profile-img-title-box">
+                  <div className="profile-img-box">
+                    <img
+                      className="profile-img"
+                      src={item.photo}
+                      alt="Profile-image"
+                    />
+                  </div>
+                  <div className="profile-title">
+                    <h4>{item.username}</h4>
+      
+                    <p>Hi Guys, Wassup!</p>
+                  </div>
+                </div>
+                <button>
+                  Add membar
+                </button>
+              </div>
+          ))
+                }
               
             </div>
           </div>
