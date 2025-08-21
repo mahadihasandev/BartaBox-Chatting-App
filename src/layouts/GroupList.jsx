@@ -15,8 +15,10 @@ const starCountRef = ref(db, 'Mygroup/');
 let array = [];
 onValue(starCountRef, (snapshot) => {
   snapshot.forEach((item)=>{
-      array.push(item.val());
+   if(data.uid!=item.val().adminId){
+    array.push(item.val());
       setAllGroupdata(array);
+   }
   })
 });
   },[])
