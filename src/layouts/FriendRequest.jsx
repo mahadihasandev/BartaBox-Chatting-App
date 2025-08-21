@@ -48,9 +48,9 @@ function FriendRequest() {
             <BsThreeDotsVertical className="userList-threeDot" />
           </div>
 
-          <>
-            {friendReq.map((item) => (
-              <div className="profile-box">
+          
+            {friendReq.map((item,index) => (
+              <div key={index} className="profile-box">
                 <div className="profile-img-title-box">
                   <div className="profile-img-box">
                     <img
@@ -73,7 +73,7 @@ function FriendRequest() {
                 </button>
               </div>
             ))}
-          </>
+          
         </div>
       </div>
     </>

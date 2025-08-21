@@ -120,11 +120,11 @@ onValue(starCountRef, (snapshot) => {
           <FaSquarePlus className="add-group-icon" onClick={handleAddGroup} />
         </div>
         {
-          groupData.map((item)=>(
+          groupData.map((item,index)=>(
             
             
-            <>
-             <div className="profile-box">
+            
+             <div key={index} className="profile-box">
                 <div className="profile-img-title-box">
                   <div className="profile-img-box">
                     <img
@@ -143,7 +143,7 @@ onValue(starCountRef, (snapshot) => {
                   Accept
                 </button>
               </div>
-            </>
+            
             
           ))
         }

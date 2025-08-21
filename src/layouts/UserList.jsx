@@ -106,9 +106,9 @@ let handleFriendRequest=(item)=>{
           <BsThreeDotsVertical className='userList-threeDot'/>
         </div>
           
-       {  userList.map((item)=>(
-          <>            
-    <div className='profile-box'>
+       {  userList.map((item,index)=>(
+                      
+    <div key={index} className='profile-box'>
         <div className='profile-img-title-box'>
           <div className='profile-img-box'>
           <img className='profile-img' src={item.photo} alt="Profile-image" />
@@ -122,11 +122,22 @@ let handleFriendRequest=(item)=>{
                 ?
                 <button>Unblock</button>
                 :
+                concatFriendList.includes(item.id+data.uid)||
+                concatFriendList.includes(data.uid+item.id)
+                ?
+                <button>Friend</button>
+                :
+                 concatFriendRequest.includes(item.id+data.uid)||
+                 concatFriendRequest.includes(data.uid+item.id) 
+                ? 
+                <button>panding</button>               
+                :
+                <button onClick={() => handleFriendRequest(item)}>Add</button>
+                &&
                 concatBlockId.includes(item.id+data.uid)
                 ?
                 <button>Blocked</button>
-                :
-                concatFriendList.includes(item.id+data.uid)||
+                :concatFriendList.includes(item.id+data.uid)||
                 concatFriendList.includes(data.uid+item.id)
                 ?
                 <button>Friend</button>
@@ -140,7 +151,7 @@ let handleFriendRequest=(item)=>{
 
               }
       </div>
-    </>          
+             
             ))
         }
       </div>     

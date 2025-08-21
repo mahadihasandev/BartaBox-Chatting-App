@@ -3,8 +3,11 @@ import { LuSearch } from "react-icons/lu";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import SingleUser from '../components/SingleUser';
 import { getDatabase, onValue, ref } from 'firebase/database';
+import { useSelector } from 'react-redux';
 
 function GroupList() {
+
+let data=useSelector((state)=>(state.activeUser.value))
 
 const [allGroupdata, setAllGroupdata]=useState([])
 const db = getDatabase();
@@ -39,11 +42,9 @@ onValue(starCountRef, (snapshot) => {
         </div>
           
        {
-          allGroupdata.map((item)=>(
+          allGroupdata.map((item,index)=>(    
             
-            
-            <>
-             <div className="profile-box">
+             <div key={index} className="profile-box">
                 <div className="profile-img-title-box">
                   <div className="profile-img-box">
                     <img
@@ -62,13 +63,9 @@ onValue(starCountRef, (snapshot) => {
                   Accept
                 </button>
               </div>
-            </>
-            
+                       
           ))
         }
-
-
-
       </div>     
     </div>
     </>
