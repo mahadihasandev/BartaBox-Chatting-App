@@ -4,16 +4,12 @@ import { getDatabase, ref, onValue, set, push, remove } from "firebase/database"
 import React, { useEffect, useState } from 'react'
 import { useSelector } from "react-redux";
 
-
 function UserList() {
   const [userList,setUserList]=useState([])
   const [concatFriendRequest,setFriendConcatReq]=useState([])
   const [concatFriendList,setConcateFriendList]=useState([])
   const [concatBlockId,setConcateBlockId]=useState([])
   const [blockKey,setBlockKey]=useState('')
-  
-  
-  
   
   const db = getDatabase();
 
