@@ -44,7 +44,7 @@ function MyGroups() {
   const [groupData, setGroupdata] = useState([]);
   const [addMember,setAddMember]=useState(false);
   const [userList,setUserList]=useState([]);
-  console.log(userList);
+  
   
 
   let groupRef=useRef(null);
