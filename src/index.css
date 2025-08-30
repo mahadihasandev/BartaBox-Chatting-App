@@ -500,9 +500,9 @@
 -moz-box-shadow: 0px 10px 15px 4px rgba(0,0,0,0.11);
     margin-top: 30px;
     border-radius: 20px;    
-    height: 800px;
+    
     overflow: hidden; 
-    padding: 13px 20px;
+    padding: 23px 20px;
 }
 
 .changeui{
@@ -584,22 +584,18 @@ color: #00000040;
 display: inline-block;
 padding: 15px 52px;
 position: relative;
-
 border-radius: 10px;
 }
 
 .chat-bubble-left::after{
       content: "";
       position: absolute;
-      left:98%;
+      left:97%;
       top: 80%;
       transform: translateY(-50%);
-      width: 0;
-      height: 0;
       border-left: 29px solid #5F35F5;
       border-top: 20px solid transparent;
       border-bottom: 1px solid transparent;
-      z-index: 2;
  }
 
  .chat-bubble-box-left{
@@ -617,7 +613,6 @@ color: #F1F1F1;
 }
 
 .input-box{
-   margin-top: 10px;
    position: relative;
    display: flex;
     
