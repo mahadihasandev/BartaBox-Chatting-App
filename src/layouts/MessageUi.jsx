@@ -31,40 +31,64 @@ function MessageUi() {
                   <BsThreeDotsVertical className='userList-threeDot'/>
                 </div>
 
-            
+              <div className='chat-bubble-wrapper'>
                 <div className='chat-bubble-box'>
                   <div className='chat-bubble'>
                     <h3 className='chat-bubble-text'>Hallo whats is</h3>
+                  </div>
+                  </div>
+                  <p className='chat-bubble-time'>today 02.30pm</p>
+                  </div>
+
+                  <div className='chat-bubble-wrapper'>
+                  <div className='chat-bubble-box'>
+                  <div className='chat-bubble'>
+                    <h3 className='chat-bubble-text'>Nathin just chaking out</h3>
+                  </div>
+                  
+                  </div>
+                  <p className='chat-bubble-time'>02.30pm</p>
+                  </div>
+
+                   <div className='chat-bubble-wrapper'>
+                  <div className='chat-bubble-box-left'>
+                  <div className='chat-bubble-left'>
+                    <h3 className='chat-bubble-text-left' >Nathin just chaking out</h3>
+                  </div>
+                  
+                  </div>
+                  <p className='chat-bubble-time-left'>02.30pm</p>
+              </div>
+
+                <div className='chat-bubble-wrapper'>
+                <div className='chat-bubble-box-left'>
+                  <div className='chat-bubble-left'>
+                    <h3 className='chat-bubble-text-left' >What are you doing</h3>
+                  </div>
+                  
+                  </div>
+                  <p className='chat-bubble-time-left'>02.30pm</p>
+                  </div>
+
+                  <div className='chat-bubble-wrapper'>
+                <div className='chat-bubble-box'>
+                  <div className='chat-bubble'>
+                    <h3 className='chat-bubble-text'>See you soon</h3>
+                  </div>
+                  </div>
+                  <p className='chat-bubble-time'>today 02.30pm</p>
+                  </div>
+
+                  <div className='chat-bubble-wrapper'>
+                <div className='chat-bubble-box'>
+                  <div className='chat-bubble'>
+                    <h3 className='chat-bubble-text'>olla</h3>
+                  </div>
                   </div>
                   <p className='chat-bubble-time'>today 02.30pm</p>
                   </div>
 
 
-                  <div className='chat-bubble-box'>
-                  <div className='chat-bubble'>
-                    <h3 className='chat-bubble-text'>Nathin just chaking out</h3>
-                  </div>
-                  <p className='chat-bubble-time'>02.30pm</p>
-                  </div>
-
-
-                  <div className='chat-bubble-box-left'>
-                  <div className='chat-bubble-left'>
-                    <h3 className='chat-bubble-text-left' >Nathin just chaking out</h3>
-                  </div>
-                  <p className='chat-bubble-time'>02.30pm</p>
-                  </div>
-              
-
-
-                <div className='chat-bubble-box-left'>
-                  <div className='chat-bubble-left'>
-                    <h3 className='chat-bubble-text-left' >What are you doing</h3>
-                  </div>
-                  <p className='chat-bubble-time'>02.30pm</p>
-
-                  
-                  </div>
                   <div className='input-box'>
                     <input type="text" />
                     

@@ -501,7 +501,7 @@
     margin-top: 30px;
     border-radius: 20px;    
     height: 800px;
-    overflow-y: scroll; 
+    overflow: hidden; 
     padding: 13px 20px;
 }
 
@@ -520,7 +520,8 @@
 
 .chat-bubble{
 background: #F1F1F1;;
-display: inline-block;
+display:block;
+
 padding: 15px 52px;
 position: relative;
 margin-left: 30px;
@@ -550,13 +551,27 @@ font-size: 16px;
 }
 
 .chat-bubble-box{
-    margin: 24px 40px;
+    display: flex;
+    justify-content: start;
+    padding-bottom: 2px;
    
 }
 
 
 .chat-bubble-time{
     font-family: 'Poppins';
+    
+font-weight: 500;
+font-size: 12px;
+margin-left: 30px;
+margin-top: 7px;
+color: #00000040;
+}
+
+.chat-bubble-time-left{
+ font-family: 'Poppins';
+   display: flex; 
+   justify-content: end;
 font-weight: 500;
 font-size: 12px;
 margin-left: 30px;
@@ -588,9 +603,9 @@ border-radius: 10px;
  }
 
  .chat-bubble-box-left{
-   margin-left: 60%;
-   margin-top: 12px;
-   padding-bottom: 12px;
+  display: flex;
+  justify-content:end;
+  margin-right: 30px;
 
 }
 
@@ -602,7 +617,7 @@ color: #F1F1F1;
 }
 
 .input-box{
-   margin-top: 200px;
+   margin-top: 10px;
    position: relative;
    display: flex;
     
@@ -642,4 +657,8 @@ color: #F1F1F1;
      top: 50%;
      transform: translateY(-50%);
      color: #5F35F5;
+}
+
+.chat-bubble-wrapper{
+    padding-bottom: 25px;
 }
