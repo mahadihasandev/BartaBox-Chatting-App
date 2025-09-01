@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { LuSearch } from "react-icons/lu";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import SingleUser from '../components/SingleUser';
+import ppic from '../assets/profileImg.png'
 import { getDatabase, onValue, ref } from 'firebase/database';
 import { useSelector } from 'react-redux';
 
@@ -49,7 +49,7 @@ onValue(starCountRef, (snapshot) => {
                   <div className="profile-img-box">
                     <img
                       className="profile-img"
-                      src={item.photo}
+                      src={ppic}
                       alt="Profile-image"
                     />
                   </div>

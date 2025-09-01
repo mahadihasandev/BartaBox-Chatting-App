@@ -9,12 +9,10 @@ import { MdOutlineEmojiEmotions } from "react-icons/md";
 function MessageUi() {
   return (
     <div>
-         
-             
-              <div className="userList-box-Message">
-                <div className='userList-title-box '>
-                  <h4 className='message-title-box'>
-                    <div className='profile-box'>
+            <div className="userList-box-Message">
+              <div className='userList-title-box '>
+                <h4 className='message-title-box'>
+                  <div className='profile-box'>
         <div className='profile-img-title-box'>
           <div className='profile-img-box'>
           <img className='profile-img' src={chatimg} alt="Profile-image" />
@@ -22,7 +20,7 @@ function MessageUi() {
           </div>
         <div className='profile-title'>
          Robin
-          <p>Online</p>
+        <p>Online</p>
         </div>
         </div> 
         
@@ -34,7 +32,7 @@ function MessageUi() {
               <div className='chat-bubble-wrapper'>
                 <div className='chat-bubble-box'>
                   <div className='chat-bubble'>
-                    <h3 className='chat-bubble-text'>Hallo whats is</h3>
+                    <h3 className='chat-bubble-text'>Hallo how are you.</h3>
                   </div>
                   </div>
                   <p className='chat-bubble-time'>today 02.30pm</p>
@@ -43,27 +41,27 @@ function MessageUi() {
                   <div className='chat-bubble-wrapper'>
                   <div className='chat-bubble-box'>
                   <div className='chat-bubble'>
-                    <h3 className='chat-bubble-text'>Nathin just chaking out</h3>
+                    <h3 className='chat-bubble-text'>Are you online</h3>
                   </div>
                   
                   </div>
-                  <p className='chat-bubble-time'>02.30pm</p>
+                  <p className='chat-bubble-time'>today 02.31pm</p>
                   </div>
 
                    <div className='chat-bubble-wrapper'>
                   <div className='chat-bubble-box-left'>
                   <div className='chat-bubble-left'>
-                    <h3 className='chat-bubble-text-left' >Nathin just chaking out</h3>
+                    <h3 className='chat-bubble-text-left' >yes sorry i was busy</h3>
                   </div>
                   
                   </div>
-                  <p className='chat-bubble-time-left'>02.30pm</p>
+                  <p className='chat-bubble-time-left'>today 02.31pm</p>
               </div>
 
                 <div className='chat-bubble-wrapper'>
                 <div className='chat-bubble-box-left'>
                   <div className='chat-bubble-left'>
-                    <h3 className='chat-bubble-text-left' >What are you doing</h3>
+                    <h3 className='chat-bubble-text-left' >are you on the way?</h3>
                   </div>
                   
                   </div>
@@ -76,16 +74,16 @@ function MessageUi() {
                     <h3 className='chat-bubble-text'>See you soon</h3>
                   </div>
                   </div>
-                  <p className='chat-bubble-time'>today 02.30pm</p>
+                  <p className='chat-bubble-time'>today 02.32pm</p>
                   </div>
 
                   <div className='chat-bubble-wrapper'>
                 <div className='chat-bubble-box'>
                   <div className='chat-bubble'>
-                    <h3 className='chat-bubble-text'>olla</h3>
+                    <h3 className='chat-bubble-text'>Bye</h3>
                   </div>
                   </div>
-                  <p className='chat-bubble-time'>today 02.30pm</p>
+                  <p className='chat-bubble-time'>today 02.33pm</p>
                   </div>
 
 
