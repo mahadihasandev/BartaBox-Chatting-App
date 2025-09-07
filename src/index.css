@@ -671,15 +671,17 @@ color: #fff;
 }
 
 .chat-bubble img{
-    height: 100%;
-    width: 70%;
+     width: 350px;
+    height: 460px;
     border-radius: 10px;
     object-fit: cover;
+    
 }
 
 .chat-bubble-left img{
-    height: 100%;
-    width: 70%;
+    width: 350px;
+    height: 460px;
     border-radius: 10px;
     object-fit: cover;
+    
 }
