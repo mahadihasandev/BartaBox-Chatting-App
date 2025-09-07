@@ -6,9 +6,9 @@ import { IoIosSend } from "react-icons/io";
 import { FaCamera } from "react-icons/fa";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
 
-function MessageUi() {
+function MessageUi({ className }) {
   return (
-    <div>
+    <div className={`${className}`}>
       <div className="userList-box-Message">
         <div className="userList-title-box">
           <h4 className="message-title-box">
@@ -23,6 +23,7 @@ function MessageUi() {
           <BsThreeDotsVertical className="userList-threeDot" />
         </div>
 
+        <div className='chat-bubble-section'>
         <div className="chat-bubble-wrapper">
           <div className="chat-bubble-box">        
             <div className="chat-bubble">
@@ -81,6 +82,7 @@ function MessageUi() {
           <p className="chat-bubble-time">today 02.33pm</p>
         </div>
 
+        </div>
         <div className="input-box">
           <input type="text" />
 

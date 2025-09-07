@@ -13,8 +13,8 @@ function Message() {
         <GroupList/>
          <FriendList Uichange='changeui'/>
       </Grid>
-      <Grid size={8}>
-        <MessageUi/>
+      <Grid className='message-grid' size={8}>
+        <MessageUi className='message-main'/>
       </Grid> 
     </Grid>  
     
