@@ -5,6 +5,8 @@ import chatimg from '../assets/ppic.png'
 import { IoIosSend } from "react-icons/io";
 import { FaCamera } from "react-icons/fa";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
+import loginImg1 from '../assets/loginImg1.png'
+import registration from '../assets/registration1.png'
 
 function MessageUi({ className }) {
   return (
@@ -66,7 +68,6 @@ function MessageUi({ className }) {
         <div className="chat-bubble-wrapper"> 
           <div className="chat-bubble-box">    
             <div className="chat-bubble">
-              
               <h3 className="chat-bubble-text">See you soon</h3>
             </div>
             </div>          
@@ -82,7 +83,26 @@ function MessageUi({ className }) {
           <p className="chat-bubble-time">today 02.33pm</p>
         </div>
 
+          {/* chatting image */}
+         <div className="chat-bubble-wrapper">
+          <div className="chat-bubble-box">         
+            <div className="chat-bubble">
+              <img  src={loginImg1} alt="chatting-image" />            
+          </div>
+          </div> 
+          <p className="chat-bubble-time">today 02.33pm</p>
         </div>
+
+        <div className="chat-bubble-wrapper">
+          <div className="chat-bubble-box-left">
+            <div className="chat-bubble-left">
+              <img  src={registration} alt="chatting-image" />
+            </div>
+          </div>
+          <p className="chat-bubble-time-left">today 02.31pm</p>
+        </div>
+
+      </div>
         <div className="input-box">
           <input type="text" />
 
