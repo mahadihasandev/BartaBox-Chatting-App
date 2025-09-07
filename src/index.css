@@ -501,7 +501,7 @@
     border-radius: 20px;    
     overflow: hidden;
     padding: 23px 20px;
-    overflow: scroll;
+    
 }
 
 .changeui{
@@ -670,7 +670,3 @@ color: #fff;
     margin-bottom: 20px;
 }
 
-.message-main{
-    overflow: hidden;
-}
-   
