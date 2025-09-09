@@ -8,18 +8,24 @@ import { MdOutlineEmojiEmotions } from "react-icons/md";
 import loginImg1 from "../assets/loginImg1.png";
 import registration from "../assets/registration1.png";
 import ModalImage from "react-modal-image";
+import { useSelector } from "react-redux";
+
 
 function MessageUi({ className }) {
+  let data=useSelector((state)=>((state.friendList.value)))
+  
+
+
   return (
     <div className={`${className}`}>
       <div className="userList-box-Message">
         <div className="userList-title-box">
           <h4 className="message-title-box">
             <div className="profile-img-box">
-              <img className="profile-img" src={chatimg} alt="Profile-image" />
+              <img className="profile-img" src={data.photo} alt="Profile-image" />
             </div>
             <div className="profile-title">
-              Robin
+              {data.name}
               <p>Online</p>
             </div>
           </h4>

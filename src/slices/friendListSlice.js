@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 export const friendListSlice = createSlice({
   name:'friendList',
   initialState: {
-    value: null,
+    value: localStorage.getItem('friendLists')?JSON.parse(localStorage.getItem('friendLists')):null,
   },
   reducers: {
     friendLists: (state,actions) => {
