@@ -4,7 +4,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { getDatabase, ref, onValue,set, push, remove } from "firebase/database";
 import { useSelector } from 'react-redux';
 
-function FriendList({Uichange}) {
+function FriendList() {
 let [friendList,setFriendList]=useState([])
 let data=useSelector((state)=>((state.activeUser.value)))
 
@@ -51,7 +51,7 @@ let data=useSelector((state)=>((state.activeUser.value)))
   
   return (
     <>
-        <div className={`user-box ${Uichange}`}>
+        <div className={`user-box`}>
       <div className='user-search-box'>
         <LuSearch className='search-icon'/>
         <input placeholder='Search' type="text" />
