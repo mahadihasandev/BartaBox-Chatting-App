@@ -687,3 +687,16 @@ color: #fff;
     object-fit: cover;
     
 }
+
+.chat-bubble-text-input{
+    font-family: 'Poppins';
+position: relative;
+display: inline-block;
+font-weight: 500;
+font-size: 16px;
+padding: 15px 52px;
+background: #5F35F5;
+border-radius: 10px;
+color: #fff;
+}
+

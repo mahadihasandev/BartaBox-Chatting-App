@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { LuSearch } from "react-icons/lu";
 import chatimg from "../assets/ppic.png";
@@ -9,12 +9,32 @@ import loginImg1 from "../assets/loginImg1.png";
 import registration from "../assets/registration1.png";
 import ModalImage from "react-modal-image";
 import { useSelector } from "react-redux";
-
+import { getDatabase, onValue, push, ref, set } from "firebase/database";
 
 function MessageUi({ className }) {
-  let data=useSelector((state)=>((state.friendList.value)))
-  
+  let data = useSelector((state) => state.friendList.value);
+  const [input, setInput] = useState("");
+  const [messages, setMessages] = useState([]);
+  const db = getDatabase();
 
+  let handleSend = () => {
+    set(push(ref(db, "sendMessage/")), {
+      input,
+    }).then(() => {
+      setInput("");
+    });
+  };
+
+  useEffect(() => {
+    const userRef = ref(db, "sendMessage/");
+    let arr = [];
+    onValue(userRef, (snapshot) => {
+      snapshot.forEach((item) => {
+        arr.push({ ...item.val() });
+      });
+      setMessages(arr);
+    });
+  }, []);
 
   return (
     <div className={`${className}`}>
@@ -22,7 +42,11 @@ function MessageUi({ className }) {
         <div className="userList-title-box">
           <h4 className="message-title-box">
             <div className="profile-img-box">
-              <img className="profile-img" src={data.photo} alt="Profile-image" />
+              <img
+                className="profile-img"
+                src={data.photo}
+                alt="Profile-image"
+              />
             </div>
             <div className="profile-title">
               {data.name}
@@ -123,9 +147,8 @@ function MessageUi({ className }) {
                   small={loginImg1}
                   large={loginImg1}
                   alt="Hello World!"
-                />;
-                
-               
+                />
+                ;
               </div>
             </div>
             <p className="chat-bubble-time">today 02.33pm</p>
@@ -134,23 +157,40 @@ function MessageUi({ className }) {
           <div className="chat-bubble-wrapper">
             <div className="chat-bubble-box-left">
               <div className="chat-bubble-left">
-
-                <ModalImage small={registration}
+                <ModalImage
+                  small={registration}
                   large={registration}
                   alt="Hello World!"
-                />;
-               
+                />
+                ;
               </div>
             </div>
             <p className="chat-bubble-time-left">today 02.31pm</p>
           </div>
+
+          {messages.map((item) => (
+            <div className="chat-bubble-wrapper">
+              <div className="chat-bubble-box-left">
+                <div className="chat-bubble-left">
+                  <h3 className="chat-bubble-text-left">{item.input}</h3>
+                </div>
+              </div>
+              <p className="chat-bubble-time-left">today 02.31pm</p>
+            </div>
+          ))}
         </div>
         <div className="input-box">
-          <input type="text" />
+          <input
+            value={input}
+            onChange={(e) => {
+              setInput(e.target.value);
+            }}
+            type="text"
+          />
 
           <FaCamera className="camera-btn" />
           <MdOutlineEmojiEmotions className="emoji-btn" />
-          <IoIosSend className="send-btn" />
+          <IoIosSend onClick={handleSend} className="send-btn" />
         </div>
       </div>
     </div>
