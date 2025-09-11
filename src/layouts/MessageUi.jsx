@@ -10,16 +10,27 @@ import registration from "../assets/registration1.png";
 import ModalImage from "react-modal-image";
 import { useSelector } from "react-redux";
 import { getDatabase, onValue, push, ref, set } from "firebase/database";
+ 
 
 function MessageUi({ className }) {
-  let data = useSelector((state) => state.friendList.value);
+  let currentChat = useSelector((state) => state.friendList.value)
+  let currentLogin = useSelector((state) => state.activeUser.value)
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const db = getDatabase();
-
+    console.log(currentLogin);
+    
+    
+    
+    
   let handleSend = () => {
     set(push(ref(db, "sendMessage/")), {
-      input,
+      message:input,
+      messagesenderId:currentLogin.uid,
+      massagesenderName:currentLogin.displayName,
+      messagereceiverId:currentChat.uid,
+      messagereceiverName:currentChat.name,
+      
     }).then(() => {
       setInput("");
     });
@@ -30,6 +41,7 @@ function MessageUi({ className }) {
     let arr = [];
     onValue(userRef, (snapshot) => {
       snapshot.forEach((item) => {
+
         arr.push({ ...item.val() });
       });
       setMessages(arr);
@@ -44,12 +56,12 @@ function MessageUi({ className }) {
             <div className="profile-img-box">
               <img
                 className="profile-img"
-                src={data.photo}
+                src={currentChat?.photo ? currentChat.photo : chatimg}
                 alt="Profile-image"
               />
             </div>
             <div className="profile-title">
-              {data.name}
+              {currentChat?.name ? currentChat.name : "Select a friend"}
               <p>Online</p>
             </div>
           </h4>
@@ -172,7 +184,7 @@ function MessageUi({ className }) {
             <div className="chat-bubble-wrapper">
               <div className="chat-bubble-box-left">
                 <div className="chat-bubble-left">
-                  <h3 className="chat-bubble-text-left">{item.input}</h3>
+                  <h3 className="chat-bubble-text-left">{item.message}</h3>
                 </div>
               </div>
               <p className="chat-bubble-time-left">today 02.31pm</p>
