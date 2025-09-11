@@ -18,7 +18,8 @@ function MessageUi({ className }) {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const db = getDatabase();
-    console.log(currentLogin);
+    
+    console.log(messages,"messages")
     
     
     
@@ -41,12 +42,17 @@ function MessageUi({ className }) {
     let arr = [];
     onValue(userRef, (snapshot) => {
       snapshot.forEach((item) => {
-
-        arr.push({ ...item.val() });
+          let messageData=item.val()
+        if ((messageData?.messagesenderId==currentLogin?.uid&&messageData?.messagereceiverId==currentChat?.uid)||
+          (messageData?.messagesenderId==currentChat?.uid&&messageData?.messagereceiverId==currentLogin?.uid))
+         {
+          arr.push({...item.val()});
+        }
       });
       setMessages(arr);
+
     });
-  }, []);
+  },[handleSend]);
 
   return (
     <div className={`${className}`}>
@@ -67,66 +73,20 @@ function MessageUi({ className }) {
           </h4>
           <BsThreeDotsVertical className="userList-threeDot" />
         </div>
-
+       
         <div className="chat-bubble-section">
-          <div className="chat-bubble-wrapper">
-            <div className="chat-bubble-box">
-              <div className="chat-bubble">
-                <h3 className="chat-bubble-text">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Error
-                  nemo explicabo, excepturi, commodi aliquam debitis ipsam eius
-                  harum tenetur enim necessitatibus officiis maxime veritatis
-                  recusandae optio laboriosam. Maxime minima aut itaque quod
-                  pariatur earum dolor aliquam et unde cumque quibusdam,
-                  officiis accusantium, saepe consectetur in molestiae iusto,
-                  harum qui id doloribus dicta quisquam! Molestias vel esse
-                  perferendis asperiores dolorum odit? Incidunt earum officiis
-                  voluptates nesciunt, blanditiis ipsum numquam cupiditate
-                  adipisci, assumenda dicta, corporis quo officia dolor illo?
-                  Libero repudiandae voluptatum provident quidem soluta
-                  temporibus praesentium debitis officia, voluptas alias, dolore
-                  possimus quas illo error nihil placeat culpa assumenda.
-                  Placeat, dolor?
-                </h3>
-              </div>
-            </div>
-            <p className="chat-bubble-time">today 02.30pm</p>
-          </div>
+          
 
-          <div className="chat-bubble-wrapper">
-            <div className="chat-bubble-box">
-              <div className="chat-bubble">
-                <h3 className="chat-bubble-text">Are you online</h3>
-              </div>
-            </div>
-            <p className="chat-bubble-time">today 02.31pm</p>
-          </div>
+          
 
-          <div className="chat-bubble-wrapper">
-            <div className="chat-bubble-box-left">
-              <div className="chat-bubble-left">
-                <h3 className="chat-bubble-text-left">yes sorry i was busy</h3>
-              </div>
-            </div>
-            <p className="chat-bubble-time-left">today 02.31pm</p>
-          </div>
+          
 
           <div className="chat-bubble-wrapper">
             <div className="chat-bubble-box-left">
               <div className="chat-bubble-left">
                 <h3 className="chat-bubble-text-left">
                   Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                  Libero quos ad dignissimos et non, commodi mollitia cumque
-                  nihil ipsa rerum iure excepturi dolores ipsum neque architecto
-                  enim aperiam ex saepe consequuntur, amet veniam? Ipsam eaque
-                  veritatis iure nam vitae sequi ducimus nulla voluptatem
-                  impedit quia? Non fuga modi ducimus voluptatem excepturi alias
-                  nisi voluptas eos saepe omnis laboriosam ipsa autem dolores
-                  iure deleniti itaque accusantium ipsum facere, cumque laborum
-                  eaque incidunt harum earum iste. Illo accusamus impedit eaque
-                  ipsam cupiditate qui aperiam! Accusamus asperiores ut
-                  repellendus eos aut autem quis consequatur commodi, earum
-                  nobis fugiat. Odio facilis voluptates unde quidem!
+                 
                 </h3>
               </div>
             </div>
@@ -181,14 +141,28 @@ function MessageUi({ className }) {
           </div>
 
           {messages.map((item) => (
-            <div className="chat-bubble-wrapper">
-              <div className="chat-bubble-box-left">
-                <div className="chat-bubble-left">
-                  <h3 className="chat-bubble-text-left">{item.message}</h3>
+            
+            currentLogin?.uid==item?.messagesenderId?(<div className="chat-bubble-wrapper">
+              <div className="chat-bubble-box">
+                <div className="chat-bubble">
+                  <h3 className="chat-bubble-text">{item.message}</h3>
                 </div>
               </div>
               <p className="chat-bubble-time-left">today 02.31pm</p>
+            </div>)
+            :
+            <div className="chat-bubble-wrapper">
+            <div className="chat-bubble-box-left">
+              <div className="chat-bubble-left">
+                <h3 className="chat-bubble-text-left">
+                  {item.message}
+                 
+                </h3>
+              </div>
             </div>
+            <p className="chat-bubble-time-left">02.30pm</p>
+          </div>
+          
           ))}
         </div>
         <div className="input-box">
