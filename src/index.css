@@ -400,9 +400,10 @@
 -moz-box-shadow: 0px 10px 15px 4px rgba(0,0,0,0.11);
     margin-top: 30px;
     border-radius: 20px;    
-    height: 400px;
-    overflow-y: scroll; 
-    padding: 13px 20px;
+    min-height: 500px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
  .userList-title {   
@@ -700,3 +701,245 @@ border-radius: 10px;
 color: #fff;
 }
 
+/* New User Card Design */
+.user-card-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 20px;
+}
+
+.user-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    flex: 1;
+    min-height: 400px;
+}
+
+.user-card-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.user-card-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.3);
+    background: white;
+}
+
+.user-card-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.user-card-info {
+    text-align: center;
+}
+
+.user-card-name {
+    font-family: "Poppins", sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    margin-bottom: 8px;
+}
+
+.user-card-status {
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+}
+
+.user-card-body {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-card-details {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.detail-label {
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.detail-value {
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.user-card-footer {
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+    border-top: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.user-action-btn {
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 12px 40px;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.user-action-btn.add {
+    background: #4CAF50;
+    color: white;
+}
+
+.user-action-btn.add:hover {
+    background: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 20px rgba(76, 175, 80, 0.4);
+}
+
+.user-action-btn.friend {
+    background: #2196F3;
+    color: white;
+    cursor: not-allowed;
+}
+
+.user-action-btn.pending {
+    background: #FF9800;
+    color: white;
+    cursor: not-allowed;
+}
+
+.user-action-btn.blocked {
+    background: #9E9E9E;
+    color: white;
+    cursor: not-allowed;
+}
+
+.user-action-btn.unblock {
+    background: #FF5722;
+    color: white;
+}
+
+.user-action-btn.unblock:hover {
+    background: #E64A19;
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 20px rgba(255, 87, 34, 0.4);
+}
+
+.user-action-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Pagination Controls */
+.pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    gap: 15px;
+}
+
+.pagination-btn {
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 12px;
+    border: 2px solid #5F35F5;
+    background: white;
+    color: #5F35F5;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background: #5F35F5;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0px 4px 15px rgba(95, 53, 245, 0.3);
+}
+
+.pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-color: #ccc;
+    color: #ccc;
+}
+
+.pagination-info {
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #5F35F5;
+    padding: 8px 20px;
+    background: rgba(95, 53, 245, 0.1);
+    border-radius: 12px;
+}
+
+/* No User Message */
+.no-user-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+    min-height: 400px;
+}
+
+.no-user-message h3 {
+    font-family: "Poppins", sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.no-user-message p {
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #666;
+}
