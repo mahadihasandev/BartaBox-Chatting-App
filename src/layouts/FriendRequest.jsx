@@ -4,6 +4,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import SingleUser from "../components/SingleUser";
 import { getDatabase, ref, onValue, set, push, remove } from "firebase/database";
 import { useSelector } from "react-redux";
+import defaultProfileImg from '../assets/profileImg.png';
 
 function FriendRequest() {
   const db = getDatabase();
@@ -55,8 +56,11 @@ function FriendRequest() {
                   <div className="profile-img-box">
                     <img
                       className="profile-img"
-                      src={item.photo}
+                      src={item.photo || defaultProfileImg}
                       alt="Profile-image"
+                      onError={(e) => {
+                        e.target.src = defaultProfileImg;
+                      }}
                     />
                   </div>
                   <div className="profile-title">

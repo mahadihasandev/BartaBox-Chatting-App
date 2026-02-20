@@ -77,7 +77,7 @@ function Registration() {
       setEmailError("Email does not exist");
       hasError = true;
     } else {
-      if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+      if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
         setEmailError("Type a valid email");
         hasError = true;
       }

@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { LuSearch } from "react-icons/lu";
 import chatimg from "../assets/ppic.png";
+import defaultProfileImg from "../assets/profileImg.png";
 import { IoIosSend } from "react-icons/io";
 import { FaCamera } from "react-icons/fa";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
-import loginImg1 from "../assets/loginImg1.png";
-import registration from "../assets/registration1.png";
 import ModalImage from "react-modal-image";
 import { useSelector } from "react-redux";
 import { getDatabase, onValue, push, ref, set } from "firebase/database";
@@ -18,11 +17,7 @@ function MessageUi({ className }) {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const db = getDatabase();
-    
-    console.log(messages,"messages")
-    
-    
-    
+    console.log(messages);
     
   let handleSend = () => {
     set(push(ref(db, "sendMessage/")), {
@@ -52,7 +47,8 @@ function MessageUi({ className }) {
       setMessages(arr);
 
     });
-  },[handleSend]);
+  },[currentLogin, currentChat]);
+
 
   return (
     <div className={`${className}`}>
@@ -62,8 +58,11 @@ function MessageUi({ className }) {
             <div className="profile-img-box">
               <img
                 className="profile-img"
-                src={currentChat?.photo ? currentChat.photo : chatimg}
+                src={currentChat?.photo || defaultProfileImg}
                 alt="Profile-image"
+                onError={(e) => {
+                  e.target.src = defaultProfileImg;
+                }}
               />
             </div>
             <div className="profile-title">
@@ -75,13 +74,15 @@ function MessageUi({ className }) {
         </div>
        
         <div className="chat-bubble-section">
-          
-
-          
-
-          
-
-          <div className="chat-bubble-wrapper">
+          {!currentChat?.name ? (
+            <div className='no-chat-selected'>
+              <div className='no-chat-icon'>💬</div>
+              <h3>Select a friend or group to start chatting</h3>
+              <p>Go to Home page and click on a friend or group to begin your conversation</p>
+            </div>
+          ) : (
+            <>
+          {/* <div className="chat-bubble-wrapper">
             <div className="chat-bubble-box-left">
               <div className="chat-bubble-left">
                 <h3 className="chat-bubble-text-left">
@@ -91,28 +92,28 @@ function MessageUi({ className }) {
               </div>
             </div>
             <p className="chat-bubble-time-left">02.30pm</p>
-          </div>
+          </div> */}
 
-          <div className="chat-bubble-wrapper">
+          {/* <div className="chat-bubble-wrapper">
             <div className="chat-bubble-box">
               <div className="chat-bubble">
                 <h3 className="chat-bubble-text">See you soon</h3>
               </div>
             </div>
             <p className="chat-bubble-time">today 02.32pm</p>
-          </div>
+          </div> */}
 
-          <div className="chat-bubble-wrapper">
+          {/* <div className="chat-bubble-wrapper">
             <div className="chat-bubble-box">
               <div className="chat-bubble">
                 <h3 className="chat-bubble-text">Bye</h3>
               </div>
             </div>
             <p className="chat-bubble-time">today 02.33pm</p>
-          </div>
+          </div> */}
 
           {/* chatting image */}
-          <div className="chat-bubble-wrapper">
+          {/* <div className="chat-bubble-wrapper">
             <div className="chat-bubble-box">
               <div className="chat-bubble">
                 <ModalImage
@@ -138,11 +139,11 @@ function MessageUi({ className }) {
               </div>
             </div>
             <p className="chat-bubble-time-left">today 02.31pm</p>
-          </div>
+          </div> */}
 
           {messages.map((item) => (
             
-            currentLogin?.uid==item?.messagesenderId?(<div className="chat-bubble-wrapper">
+            currentLogin.uid==item.messagesenderId?(<div className="chat-bubble-wrapper">
               <div className="chat-bubble-box">
                 <div className="chat-bubble">
                   <h3 className="chat-bubble-text">{item.message}</h3>
@@ -164,7 +165,10 @@ function MessageUi({ className }) {
           </div>
           
           ))}
+            </>
+          )}
         </div>
+        {currentChat?.name && (
         <div className="input-box">
           <input
             value={input}
@@ -178,6 +182,7 @@ function MessageUi({ className }) {
           <MdOutlineEmojiEmotions className="emoji-btn" />
           <IoIosSend onClick={handleSend} className="send-btn" />
         </div>
+        )}
       </div>
     </div>
   );

@@ -6,8 +6,11 @@ import { useEffect, useRef, useState } from "react";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { getDatabase, onValue, push, ref, set } from "firebase/database";
+import { friendLists } from '../slices/friendListSlice';
+import defaultProfileImg from '../assets/profileImg.png';
 
 
 //mui button setup
@@ -55,6 +58,8 @@ function MyGroups() {
 //current user data
 
   let data=useSelector((state)=>(state.activeUser.value))
+  let dispatch = useDispatch()
+  let navigate = useNavigate()
 
 //group popup button
 
@@ -141,9 +146,20 @@ setUserList(arr);
   
 })
   },[])
-  
-  
 
+  //Handle group click to open chat
+  let handleGroupClick = (item) => {
+    dispatch(friendLists({
+      name:item.groupName,
+      uid:item.adminId, // Using adminId as group identifier
+      photo:defaultProfileImg,
+      isGroup: true,
+      groupName: item.groupName,
+      adminName: item.adminName
+    }))
+    navigate('/pages/messages')
+  }
+  
   return (
     <>
         <div className='user-box'>
@@ -158,27 +174,37 @@ setUserList(arr);
           <FaSquarePlus className="add-group-icon" onClick={handleAddGroup} />
         </div>
         {
-          groupData.map((item,index)=>(
-             <div key={index} className="profile-box">
-                <div className="profile-img-title-box">
-                  <div className="profile-img-box">
-                    <img
-                      className="profile-img"
-                      src={item.photo}
-                      alt="Profile-image"
-                    />
+          groupData.length === 0 ? (
+            <div className='no-user-message'>
+              <h3>No groups found</h3>
+              <p>Create a group to start chatting</p>
+            </div>
+          ) : (
+            groupData.map((item,index)=>(
+               <div key={index} className="profile-box" onClick={()=>{handleGroupClick(item)}}>
+                  <div className="profile-img-title-box">
+                    <div className="profile-img-box">
+                      <img
+                        className="profile-img"
+                        src={item.photo || defaultProfileImg}
+                        alt="Profile-image"
+                        onError={(e) => {
+                          e.target.src = defaultProfileImg;
+                        }}
+                      />
+                    </div>
+                    <div className="profile-title">
+                      <h4>{item.groupName}</h4>
+                       <h4>{item.adminName}</h4>
+                      <p>Hi Guys, Wassup!</p>
+                    </div>
                   </div>
-                  <div className="profile-title">
-                    <h4>{item.groupName}</h4>
-                     <h4>{item.adminName}</h4>
-                    <p>Hi Guys, Wassup!</p>
-                  </div>
+                  <button onClick={(e)=>{e.stopPropagation(); handleAddMembar()}}>
+                    Add membar
+                  </button>
                 </div>
-                <button onClick={handleAddMembar}>
-                  Add membar
-                </button>
-              </div>
-          ))
+            ))
+          )
         }
        
         
@@ -228,8 +254,11 @@ setUserList(arr);
                   <div className="profile-img-box">
                     <img
                       className="profile-img"
-                      src={item.photo}
+                      src={item.photo || defaultProfileImg}
                       alt="Profile-image"
+                      onError={(e) => {
+                        e.target.src = defaultProfileImg;
+                      }}
                     />
                   </div>
                   <div className="profile-title">

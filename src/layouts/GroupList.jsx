@@ -3,11 +3,15 @@ import { LuSearch } from "react-icons/lu";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import ppic from '../assets/profileImg.png'
 import { getDatabase, onValue, ref } from 'firebase/database';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { friendLists } from '../slices/friendListSlice';
 
 function GroupList() {
 
 let data=useSelector((state)=>(state.activeUser.value))
+let dispatch = useDispatch()
+let navigate = useNavigate()
 
 const [allGroupdata, setAllGroupdata]=useState([])
 const db = getDatabase();
@@ -26,6 +30,18 @@ onValue(starCountRef, (snapshot) => {
 });
   },[])
 
+  //Handle group click to open chat
+  let handleGroupClick = (item) => {
+    dispatch(friendLists({
+      name:item.groupName,
+      uid:item.adminId, // Using adminId as group identifier
+      photo:ppic,
+      isGroup: true,
+      groupName: item.groupName,
+      adminName: item.adminName
+    }))
+    navigate('/pages/messages')
+  }
 
   return (
     <>
@@ -42,29 +58,36 @@ onValue(starCountRef, (snapshot) => {
         </div>
           
        {
-          allGroupdata.map((item,index)=>(    
-            
-             <div key={index} className="profile-box">
-                <div className="profile-img-title-box">
-                  <div className="profile-img-box">
-                    <img
-                      className="profile-img"
-                      src={ppic}
-                      alt="Profile-image"
-                    />
+          allGroupdata.length === 0 ? (
+            <div className='no-user-message'>
+              <h3>No groups found</h3>
+              <p>Join groups to start chatting</p>
+            </div>
+          ) : (
+            allGroupdata.map((item,index)=>(    
+              
+               <div key={index} className="profile-box" onClick={()=>{handleGroupClick(item)}}>
+                  <div className="profile-img-title-box">
+                    <div className="profile-img-box">
+                      <img
+                        className="profile-img"
+                        src={ppic}
+                        alt="Profile-image"
+                      />
+                    </div>
+                    <div className="profile-title">
+                      <h4>{item.groupName}</h4>
+                       <h4>{item.adminName}</h4>
+                      <p>Hi Guys, Wassup!</p>
+                    </div>
                   </div>
-                  <div className="profile-title">
-                    <h4>{item.groupName}</h4>
-                     <h4>{item.adminName}</h4>
-                    <p>Hi Guys, Wassup!</p>
-                  </div>
+                  <button>
+                    Accept
+                  </button>
                 </div>
-                <button>
-                  Accept
-                </button>
-              </div>
-                       
-          ))
+                         
+            ))
+          )
         }
       </div>     
     </div>

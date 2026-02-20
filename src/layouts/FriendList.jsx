@@ -2,11 +2,16 @@ import React, { useEffect, useState } from 'react'
 import { LuSearch } from "react-icons/lu";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { getDatabase, ref, onValue,set, push, remove } from "firebase/database";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { friendLists } from '../slices/friendListSlice';
+import defaultProfileImg from '../assets/profileImg.png';
 
 function FriendList() {
 let [friendList,setFriendList]=useState([])
 let data=useSelector((state)=>((state.activeUser.value)))
+let dispatch = useDispatch()
+let navigate = useNavigate()
 
   const db = getDatabase();
 
@@ -27,7 +32,8 @@ let data=useSelector((state)=>((state.activeUser.value)))
 
   //Block Button Function sendig data to firebase block collection
 
-  let handleBlock=(item)=>{
+  let handleBlock=(item, e)=>{
+    e.stopPropagation(); // Prevent navigation when clicking block button
     if(data.uid==item.senderId){
       set(push(ref(db,'block/')), {
       blockName:item.receiverName,
@@ -48,6 +54,24 @@ let data=useSelector((state)=>((state.activeUser.value)))
   })
   }
   }
+
+  //Handle friend click to open chat
+  let handleFriendClick = (item) => {
+    if(data.uid==item.senderId){
+      dispatch(friendLists({
+        name:item.receiverName,
+        uid:item.receiverId,
+        photo:item.photo,
+      }))
+    } else {
+      dispatch(friendLists({
+        name:item.senderName,
+        uid:item.senderId,
+        photo:item.photo,
+      }))
+    }
+    navigate('/pages/messages')
+  }
   
   return (
     <>
@@ -64,22 +88,36 @@ let data=useSelector((state)=>((state.activeUser.value)))
         </div>
           
         {
-          friendList.map((item,index)=>(
-            
-           <div key={index} className='profile-box'>
-        <div className='profile-img-title-box'>
-          <div className='profile-img-box'>
-          <img className='profile-img' src={item.photo} alt="Profile-image" />
+          friendList.length === 0 ? (
+            <div className='no-user-message'>
+              <h3>No friends found</h3>
+              <p>Add friends to start chatting</p>
+            </div>
+          ) : (
+            friendList.map((item,index)=>(
+              
+             <div key={index} className='profile-box' onClick={()=>{handleFriendClick(item)}}>
+          <div className='profile-img-title-box'>
+            <div className='profile-img-box'>
+            <img 
+              className='profile-img' 
+              src={item.photo || defaultProfileImg} 
+              alt="Profile-image"
+              onError={(e) => {
+                e.target.src = defaultProfileImg;
+              }}
+            />
+            </div>
+          <div className='profile-title'>
+           <h4>{data.uid==item.receiverId ? item.senderName :item.receiverName}</h4>
+            <p>Hi Guys, Wassup!</p>
           </div>
-        <div className='profile-title'>
-         <h4>{data.uid==item.receiverId ? item.senderName :item.receiverName}</h4>
-          <p>Hi Guys, Wassup!</p>
-        </div>
-        </div> 
-        <button onClick={()=>{handleBlock(item)}}>Block</button>
-        </div>
-            
-          ))
+          </div> 
+          <button onClick={(e)=>{handleBlock(item, e)}}>Block</button>
+          </div>
+              
+            ))
+          )
         }
       </div>     
     </div>

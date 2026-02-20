@@ -4,6 +4,7 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { getDatabase, ref, onValue, set, push, remove } from "firebase/database";
 import React, { useEffect, useState } from 'react'
 import { useSelector } from "react-redux";
+import defaultProfileImg from '../assets/profileImg.png';
 
 function UserList() {
   const [userList,setUserList]=useState([])
@@ -172,7 +173,13 @@ function UserList() {
             <div className='user-card'>
               <div className='user-card-header'>
                 <div className='user-card-avatar'>
-                  <img src={currentUser.photo || '/default-avatar.png'} alt={currentUser.username} />
+                  <img 
+                    src={currentUser.photo || defaultProfileImg} 
+                    alt={currentUser.username}
+                    onError={(e) => {
+                      e.target.src = defaultProfileImg;
+                    }}
+                  />
                 </div>
                 <div className='user-card-info'>
                   <h3 className='user-card-name'>{currentUser.username}</h3>

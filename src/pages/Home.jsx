@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate} from 'react-router-dom'
 import { Bounce, toast, ToastContainer } from 'react-toastify';
 import UserList from '../layouts/UserList';
-import Grid from '@mui/material/Grid';
 import GroupList from '../layouts/GroupList';
 import FriendList from '../layouts/FriendList';
 import FriendRequest from '../layouts/FriendRequest';
@@ -11,9 +10,9 @@ import MyGroups from '../layouts/MyGroups';
 import BlockedUsers from '../layouts/BlockedUsers';
 
 function Home() {
+  const [activeTab, setActiveTab] = useState('userList');
   let navigate=useNavigate()
-let data=useSelector((state)=>(state.activeUser.value)
-)
+  let data=useSelector((state)=>(state.activeUser.value))
 
   useEffect(
     ()=>{
@@ -22,6 +21,34 @@ let data=useSelector((state)=>(state.activeUser.value)
         toast.success("Login failed")
       }             
     },[])
+
+  const tabs = [
+    { id: 'groupList', label: 'Group List' },
+    { id: 'friendList', label: 'Friend List' },
+    { id: 'userList', label: 'User List' },
+    { id: 'friendRequest', label: 'Friend Request' },
+    { id: 'myGroups', label: 'My Groups' },
+    { id: 'blockedUsers', label: 'Blocked Users' }
+  ];
+
+  const renderContent = () => {
+    switch(activeTab) {
+      case 'groupList':
+        return <GroupList />;
+      case 'friendList':
+        return <FriendList />;
+      case 'userList':
+        return <UserList />;
+      case 'friendRequest':
+        return <FriendRequest />;
+      case 'myGroups':
+        return <MyGroups />;
+      case 'blockedUsers':
+        return <BlockedUsers />;
+      default:
+        return <UserList />;
+    }
+  };
 
   return (
     <>
@@ -39,35 +66,25 @@ let data=useSelector((state)=>(state.activeUser.value)
       transition={Bounce}
     />
 
-  <div className='grid-division'>
-    <Grid container spacing={3}>
-      <Grid size={4}>
-        <GroupList/>
-      </Grid>
-      <Grid size={4}>
-        <FriendList/>
-      </Grid>
-      <Grid size={4}>
-       <UserList/>
-      </Grid>  
-    </Grid>   
-  </div>
+    <div className='home-container'>
+      <div className='tabs-container'>
+        <div className='tabs-wrapper'>
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
+              onClick={() => setActiveTab(tab.id)}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </div>
 
-
-<div className='grid-division'>
-    <Grid container spacing={3}>
-      <Grid size={4}>
-        <FriendRequest/>
-      </Grid>
-      <Grid size={4}>
-        <MyGroups/>
-      </Grid>
-      <Grid size={4}>
-       <BlockedUsers/>
-      </Grid>  
-    </Grid>   
-  </div>
-
+      <div className='tab-content'>
+        {renderContent()}
+      </div>
+    </div>
 
     </>
   )
