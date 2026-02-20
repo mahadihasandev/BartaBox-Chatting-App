@@ -6,7 +6,7 @@ import SideBar from '../components/SideBar';
 function RootLayouts() {
   return (
     <>
-    <Grid container spacing={2}>
+    <Grid container className='root-layouts' spacing={1}>
       <Grid size={2}>
         <SideBar/>
       </Grid>
