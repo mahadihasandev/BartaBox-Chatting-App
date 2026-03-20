@@ -28,7 +28,7 @@ onValue(starCountRef, (snapshot) => {
    }
   })
 });
-  },[])
+  },[db, data?.uid])
 
   //Handle group click to open chat
   let handleGroupClick = (item) => {

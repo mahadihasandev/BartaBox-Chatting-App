@@ -123,7 +123,7 @@ onValue(starCountRef, (snapshot) => {
   })
 
 });
-  },[])
+  },[db, data?.uid])
 
   let handleAddMembar=()=>{  
     setAddMember(true) 
@@ -145,7 +145,7 @@ onValue(starCountRef, (snapshot) => {
 setUserList(arr);
   
 })
-  },[])
+  },[db, data?.uid])
 
   //Handle group click to open chat
   let handleGroupClick = (item) => {

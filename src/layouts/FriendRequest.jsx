@@ -31,7 +31,7 @@ function FriendRequest() {
       });
       setFriendReq(arr);
     });
-  }, []);
+  }, [db, data?.uid]);
 
  
 

@@ -3,9 +3,13 @@ import MessageUi from '../layouts/MessageUi'
 
 function Message() {
   return (
-    <div className='message-page-container'>
+    <section className='message-page-container'>
+      <div className='message-page-header'>
+        <h1>Chats</h1>
+        <p>Stay connected with friends and groups in real time.</p>
+      </div>
       <MessageUi className='message-main'/>
-    </div>
+    </section>
   )
 }
 

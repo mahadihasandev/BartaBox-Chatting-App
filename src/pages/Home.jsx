@@ -14,13 +14,12 @@ function Home() {
   let navigate=useNavigate()
   let data=useSelector((state)=>(state.activeUser.value))
 
-  useEffect(
-    ()=>{
-      if(!data){
-        navigate('/login')
-        toast.success("Login failed")
-      }             
-    },[])
+  useEffect(() => {
+    if (!data) {
+      navigate('/login')
+      toast.error('Login required')
+    }
+  }, [data, navigate])
 
   const tabs = [
     { id: 'groupList', label: 'Group List' },
@@ -66,7 +65,12 @@ function Home() {
       transition={Bounce}
     />
 
-    <div className='home-container'>
+    <section className='home-container'>
+      <div className='home-header'>
+        <h1>Discover And Connect</h1>
+        <p>Manage friends, groups, requests, and blocked profiles from one dashboard.</p>
+      </div>
+
       <div className='tabs-container'>
         <div className='tabs-wrapper'>
           {tabs.map((tab) => (
@@ -84,7 +88,7 @@ function Home() {
       <div className='tab-content'>
         {renderContent()}
       </div>
-    </div>
+    </section>
 
     </>
   )

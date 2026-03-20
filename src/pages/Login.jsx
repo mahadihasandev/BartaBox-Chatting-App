@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
@@ -11,6 +11,8 @@ import {
   getAuth,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   GoogleAuthProvider,
   sendPasswordResetEmail,
 } from "firebase/auth";
@@ -22,159 +24,190 @@ import { getDatabase, ref, set } from "firebase/database";
 
 const BootstrapButton = styled(Button)({
   width: "55%",
-  padding: "19px 0px",
-  background: "#5F35F5",
-  fontFamily: "Open Sans",
+  padding: "14px 0px",
+  background: "#0d6efd",
+  fontFamily: "Manrope",
+  borderRadius: "12px",
+  textTransform: "none",
+  fontWeight: 700,
 });
 
 const CssTextField = styled(TextField)({
   "& label.Mui-focused": {
-    color: "#11175D",
-  },
-  "& .MuiInput-underline:after": {
-    borderBottomColor: "#B2BAC2",
+    color: "#0945a8",
   },
   "& .MuiOutlinedInput-root": {
     "&.Mui-focused fieldset": {
-      borderColor: "#11175D",
+      borderColor: "#0d6efd",
     },
   },
   width: "55%",
-  paddingBottom: "33px",
+  paddingBottom: "18px",
 });
 
 function Login() {
   const provider = new GoogleAuthProvider(fireBaseConfig);
   const auth = getAuth(fireBaseConfig);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [showPass, setShowPass] = useState(false);
   const [pass, setPass] = useState("");
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passError, setPassError] = useState("");
-  const navigate = useNavigate();
-  const [ForgetPassBtn, setForgetPassBtn] = useState(false);
-  const [ForgetEmail, setForgetEmail] = useState("");
-  const dispatch = useDispatch();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
-  let handleEyeClick = () => {
-    setShowPass(!showPass);
+  const [forgetPassBtn, setForgetPassBtn] = useState(false);
+  const [forgetEmail, setForgetEmail] = useState("");
+
+  provider.setCustomParameters({
+    prompt: "select_account",
+  });
+
+  const persistGoogleUser = (user) => {
+    dispatch(userDetails(user));
+    localStorage.setItem("activeUser", JSON.stringify(user));
+
+    const db = getDatabase();
+    return set(ref(db, "users/" + user.uid), {
+      username: user.displayName,
+      email: user.email,
+      photo: user.photoURL,
+    });
   };
 
-  let handleEmail = (e) => {
-    setEmail(e.target.value);
-    setEmailError("");
-  };
+  useEffect(() => {
+    getRedirectResult(auth)
+      .then((result) => {
+        if (!result?.user) return;
 
-  let handlePass = (e) => {
-    setPass(e.target.value);
-    setPassError("");
-  };
-
-  let handleBtnClick = () => {
-    if (!email) {
-      setEmailError("Emile is empty");
-    } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-      setEmailError("Type a valid email");
-    }
-
-    if (!pass) {
-      setPassError("Password is empty");
-    } else if (!/^.{8,}$/.test(pass)) {
-      setPassError("at least 8 character");
-    } else if (!/.*[A-Z]/.test(pass)) {
-      setPassError("at least one upper case");
-    } else if (!/^.*[a-z]/.test(pass)) {
-      setPassError("at least one lower case");
-    } else if (!/.*\d/.test(pass)) {
-      setPassError("at least one number");
-
-      // (?=.*[@$!%*?&])
-      // [A-Za-z\d@$!%*?&]{8,}$
-    }
-
-    if (
-      email &&
-      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) &&
-      pass
-    ) {
-      signInWithEmailAndPassword(auth, email, pass)
-        .then((user) => {
-          if (user.user.emailVerified) {
-            dispatch(userDetails(user.user));
-            localStorage.setItem("activeUser", JSON.stringify(user.user));
-            setEmail("");
-            setPass("");
-            toast.success("You are logged in Successfully");
-            setTimeout(() => {
-              navigate("/pages/home");
-            }, 1000);
-          } else {
-            toast.error("Email is not verified");
-          }
-        })
-        .catch((error) => {
-          let errorcode = error.code;
-          if (errorcode.includes("auth/invalid-credential")) {
-            toast.error("Invalid Email or Password");
-          } else {
-            toast.error(errorcode);
-            setEmail("");
-            setPass("");
-          }
-        });
-    }
-  };
-
-  let handleGoogleAuth = () => {
-    signInWithPopup(auth, provider)
-      .then((user) => {
-        toast.success("You are logged in Successfully");
-        navigate("/pages/home");
-        dispatch(userDetails(user.user));
-        localStorage.setItem("activeUser", JSON.stringify(user.user));
-        
         const db = getDatabase();
-        set(ref(db, "users/" + user.user.uid), {
-          username: user.user.displayName,
-          email: user.user.email,
-          photo: user.user.photoURL,
+        set(ref(db, "users/" + result.user.uid), {
+          username: result.user.displayName,
+          email: result.user.email,
+          photo: result.user.photoURL,
+        }).then(() => {
+          dispatch(userDetails(result.user));
+          localStorage.setItem("activeUser", JSON.stringify(result.user));
+          toast.success("Welcome to BartaBox");
+          navigate("/pages/home");
         });
       })
       .catch((error) => {
-        const errorCode = error.code;
-        toast.error(errorCode);
+        if (error?.code !== "auth/no-auth-event") {
+          toast.error(error.code || "Google login failed");
+        }
+      })
+      .finally(() => {
+        setIsGoogleLoading(false);
+      });
+  }, [auth, dispatch, navigate]);
+
+  const validate = () => {
+    let valid = true;
+
+    if (!email) {
+      setEmailError("Email is required");
+      valid = false;
+    } else if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+      setEmailError("Enter a valid email");
+      valid = false;
+    }
+
+    if (!pass) {
+      setPassError("Password is required");
+      valid = false;
+    } else if (pass.length < 8) {
+      setPassError("Password must be at least 8 characters");
+      valid = false;
+    }
+
+    return valid;
+  };
+
+  const handleBtnClick = () => {
+    setEmailError("");
+    setPassError("");
+
+    if (!validate()) return;
+
+    setIsSubmitting(true);
+    signInWithEmailAndPassword(auth, email, pass)
+      .then((user) => {
+        if (user.user.emailVerified) {
+          dispatch(userDetails(user.user));
+          localStorage.setItem("activeUser", JSON.stringify(user.user));
+          setEmail("");
+          setPass("");
+          toast.success("Welcome back");
+          setTimeout(() => navigate("/pages/home"), 800);
+        } else {
+          toast.error("Verify your email before logging in");
+        }
+      })
+      .catch((error) => {
+        const errorcode = error.code;
+        if (errorcode.includes("auth/invalid-credential")) {
+          toast.error("Invalid email or password");
+        } else {
+          toast.error(errorcode);
+        }
+      })
+      .finally(() => {
+        setIsSubmitting(false);
       });
   };
 
-  let handleForgetPass = () => {
-    setForgetPassBtn(true);
-  };
+  const handleGoogleAuth = () => {
+    setIsGoogleLoading(true);
 
-  let handleForgetEmail = (e) => {
-    setForgetEmail(e.target.value);
-  };
-
-  let handleForgetPassBtn = () => {
-    if (!ForgetEmail) {
-      toast.error("Entire a Valid email");
-    } else {
-      sendPasswordResetEmail(auth, ForgetEmail)
-        .then(() => {
-          toast.success("Verification email send");
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          toast.error(errorCode);
+    signInWithPopup(auth, provider)
+      .then((user) => {
+        persistGoogleUser(user.user).then(() => {
+          toast.success("Welcome to BartaBox");
+          navigate("/pages/home");
         });
+      })
+      .catch((error) => {
+        const popupRestrictedErrors = [
+          "auth/popup-blocked",
+          "auth/popup-closed-by-user",
+          "auth/cancelled-popup-request",
+          "auth/operation-not-supported-in-this-environment",
+        ];
 
-      setForgetPassBtn(false);
-      setForgetEmail("");
-    }
+        if (popupRestrictedErrors.includes(error.code)) {
+          toast.info("Opening Google sign-in redirect...");
+          signInWithRedirect(auth, provider);
+          return;
+        }
+
+        toast.error(error.code || "Google login failed");
+      })
+      .finally(() => {
+        setIsGoogleLoading(false);
+      });
   };
 
-  let handleBtoLogin = () => {
-    setForgetPassBtn(false);
-    setForgetEmail("");
+  const handleForgetPassBtn = () => {
+    if (!forgetEmail) {
+      toast.error("Enter your email first");
+      return;
+    }
+
+    sendPasswordResetEmail(auth, forgetEmail)
+      .then(() => {
+        toast.success("Reset email sent");
+      })
+      .catch((error) => {
+        toast.error(error.code);
+      })
+      .finally(() => {
+        setForgetPassBtn(false);
+        setForgetEmail("");
+      });
   };
 
   return (
@@ -185,10 +218,10 @@ function Login() {
             <div className="reg-title">
               <ToastContainer
                 position="top-center"
-                autoClose={5000}
+                autoClose={3000}
                 hideProgressBar={false}
                 newestOnTop={false}
-                closeOnClick={false}
+                closeOnClick
                 rtl={false}
                 pauseOnFocusLoss
                 draggable
@@ -196,81 +229,95 @@ function Login() {
                 theme="dark"
                 transition={Bounce}
               />
-              <h5>Login to your account!</h5>
-              <div onClick={handleGoogleAuth} className="googleBtn">
+
+              <h5>Log in to Messenger-style chat</h5>
+              <p>Fast, simple, and secure access to your messages.</p>
+
+              <button
+                onClick={handleGoogleAuth}
+                className="googleBtn"
+                type="button"
+                disabled={isGoogleLoading}
+              >
                 <img src={GoogleIcon} alt="Google" />
-                <h4>Login with Google</h4>
-              </div>
-              <div className="emailError">
-                {emailError && <div className="error-screen">{emailError}</div>}
-              </div>
+                <h4>{isGoogleLoading ? "Connecting..." : "Continue with Google"}</h4>
+              </button>
+
+              {emailError && <div className="error-screen">{emailError}</div>}
               <CssTextField
                 value={email}
-                onChange={handleEmail}
-                id="outlined-basic"
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setEmailError("");
+                }}
+                id="login-email"
                 label="Email Address"
                 variant="outlined"
               />
+
               <div className="passField">
                 {passError && <div className="error-screen">{passError}</div>}
-
                 <div className="passFieldLogin">
                   <CssTextField
                     value={pass}
-                    onChange={handlePass}
+                    onChange={(e) => {
+                      setPass(e.target.value);
+                      setPassError("");
+                    }}
                     type={showPass ? "text" : "password"}
-                    id="outlined-basic"
+                    id="login-password"
                     label="Password"
                     variant="outlined"
                   />
-                  <div onClick={handleEyeClick} className="fa-eye-on-login">
+                  <div onClick={() => setShowPass(!showPass)} className="fa-eye-on-login">
                     {showPass ? <FiEye /> : <FiEyeOff />}
                   </div>
                 </div>
-                <div onClick={handleForgetPass} className="forget-pass">
-                  Forget Password?
+
+                <div onClick={() => setForgetPassBtn(true)} className="forget-pass">
+                  Forgot password?
                 </div>
               </div>
-              <BootstrapButton onClick={handleBtnClick} variant="contained">
-                Login to Continue
+
+              <BootstrapButton onClick={handleBtnClick} variant="contained" disabled={isSubmitting}>
+                {isSubmitting ? "Logging in..." : "Log in"}
               </BootstrapButton>
+
               <p>
-                Don’t have an account ?{" "}
-                <Link to="/">
-                  <span>Sign up</span>
-                </Link>
+                Don&apos;t have an account? <Link to="/"><span>Create one</span></Link>
               </p>
             </div>
           </div>
         </Grid>
+
         <Grid className="reg-grid" size={{ xs: 0, md: 6 }}>
-          <img className="regImg" src={LoginImg} alt="Image" />
+          <img className="regImg" src={LoginImg} alt="Login visual" />
         </Grid>
       </Grid>
 
-      {ForgetPassBtn && (
+      {forgetPassBtn && (
         <div className="forget-pass-ui">
           <div className="forget-pass-ui-box">
-            <div className="emailError">
-              {emailError && <div className="error-screen">{emailError}</div>}
-            </div>
             <CssTextField
               className="forget-pass-email"
-              value={ForgetEmail}
-              onChange={handleForgetEmail}
-              id="outlined-basic"
+              value={forgetEmail}
+              onChange={(e) => setForgetEmail(e.target.value)}
+              id="forget-pass-email"
               label="Email Address"
               variant="outlined"
             />
             <div className="forget-pass-btn-box">
+              <BootstrapButton onClick={handleForgetPassBtn} variant="contained">
+                Send reset email
+              </BootstrapButton>
               <BootstrapButton
-                onClick={handleForgetPassBtn}
+                onClick={() => {
+                  setForgetPassBtn(false);
+                  setForgetEmail("");
+                }}
                 variant="contained"
               >
-                Send a Reset Email
-              </BootstrapButton>
-              <BootstrapButton onClick={handleBtoLogin} variant="contained">
-                Back to login
+                Cancel
               </BootstrapButton>
             </div>
           </div>

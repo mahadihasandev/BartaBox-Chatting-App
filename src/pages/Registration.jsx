@@ -18,165 +18,143 @@ import { getDatabase, ref, set } from "firebase/database";
 
 const BootstrapButton = styled(Button)({
   width: "55%",
-  padding: "19px 0px",
-  background: "#5F35F5",
-  borderRadius: "86px",
-  fontFamily: "Open Sans",
+  padding: "14px 0px",
+  background: "#0d6efd",
+  borderRadius: "12px",
+  fontFamily: "Manrope",
+  textTransform: "none",
+  fontWeight: 700,
 });
 
 const CssTextField = styled(TextField)({
   "& label.Mui-focused": {
-    color: "#11175D",
-  },
-  "& .MuiInput-underline:after": {
-    borderBottomColor: "#B2BAC2",
+    color: "#0945a8",
   },
   "& .MuiOutlinedInput-root": {
     "&.Mui-focused fieldset": {
-      borderColor: "#11175D",
+      borderColor: "#0d6efd",
     },
   },
   width: "55%",
-  paddingBottom: "33px",
+  paddingBottom: "18px",
 });
 
 function Registration() {
   const [showPass, setShowPass] = useState(false);
+  const [showConfirmPass, setShowConfirmPass] = useState(false);
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [nameError, setNameError] = useState("");
   const [passError, setPassError] = useState("");
+  const [confirmPassError, setConfirmPassError] = useState("");
   const [name, setName] = useState("");
   const [pass, setPass] = useState("");
-  let navigate = useNavigate();
+  const [confirmPass, setConfirmPass] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const navigate = useNavigate();
   const auth = getAuth(fireBaseConfig);
 
-  function handleEmail(e) {
-    setEmail(e.target.value);
-    setEmailError("");
-  }
-
-  function handleName(e) {
-    setName(e.target.value);
-    setNameError("");
-  }
-
-  function handlePass(e) {
-    setPass(e.target.value);
-    setPassError("");
-  }
-
-  let handleEyeClick = () => {
-    setShowPass(!showPass);
-  };
-
-  function handleClick() {
+  const validate = () => {
     let hasError = false;
 
     if (!email) {
-      setEmailError("Email does not exist");
+      setEmailError("Email is required");
       hasError = true;
-    } else {
-      if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-        setEmailError("Type a valid email");
-        hasError = true;
-      }
+    } else if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+      setEmailError("Enter a valid email");
+      hasError = true;
     }
 
     if (!name) {
-      setNameError("name is required");
+      setNameError("Display name is required");
       hasError = true;
-    } else if (!/^.{2,15}$/.test(name)) {
-      setNameError("Name must be between 2-16 character long");
-      hasError = true;
-    } else if (!/^[a-zA-Z].*$/.test(name)) {
-      setNameError("Must be start with a letter");
-      hasError = true;
-    } else if (!/^[a-zA-Z0-9_]+$/.test(name)) {
-      setNameError("only later number & underscore are valid");
+    } else if (!/^.{2,20}$/.test(name)) {
+      setNameError("Name must be 2-20 characters");
       hasError = true;
     }
 
     if (!pass) {
-      setPassError("Password is empty");
+      setPassError("Password is required");
       hasError = true;
     } else if (!/^.{8,}$/.test(pass)) {
-      setPassError("at least 8 character");
+      setPassError("Use at least 8 characters");
       hasError = true;
     } else if (!/.*[A-Z]/.test(pass)) {
-      setPassError("at least one upper case");
+      setPassError("Include at least one uppercase letter");
       hasError = true;
     } else if (!/^.*[a-z]/.test(pass)) {
-      setPassError("at least one lower case");
+      setPassError("Include at least one lowercase letter");
       hasError = true;
     } else if (!/.*\d/.test(pass)) {
-      setPassError("at least one number");
+      setPassError("Include at least one number");
       hasError = true;
-      // (?=.*[@$!%*?&])
-      // [A-Za-z\d@$!%*?&]{8,}$
     }
 
-    //    if(email&&!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)&&pass&&name){
-    //     console.log(email+name+pass)
-    //   }else{
-    //     console.log("error")
-    //   }
-    //  }
+    if (!confirmPass) {
+      setConfirmPassError("Confirm your password");
+      hasError = true;
+    } else if (confirmPass !== pass) {
+      setConfirmPassError("Passwords do not match");
+      hasError = true;
+    }
 
-    if (!hasError) {
-      createUserWithEmailAndPassword(auth, email, pass)
-        .then((user) => {
-          updateProfile(auth.currentUser, {
-            displayName: "arnob",
-            photoURL: "./src/assets/ppic.png",
-          })
-            .then(() => {
-              sendEmailVerification(auth.currentUser);
-              toast.success("Email Verification send");
-              setEmail("");
-              setName("");
-              setPass("");
-              toast.success("New Account Created");
-              setTimeout(() => {
-                navigate("/login");
-              }, 2000);
-            })
-            .then(() => {
-              
-                const db = getDatabase();
-                set(ref(db, "users/" + user.user.uid ), {
-                  username: user.user.displayName,
-                  email: user.user.email,
-                  photo:user.user.photoURL,
-                });
+    return !hasError;
+  };
 
-                
-                
-              
-            });
-        })
-        .catch((error) => {
-          const errorCode = error.code;
+  const handleClick = () => {
+    setEmailError("");
+    setNameError("");
+    setPassError("");
+    setConfirmPassError("");
 
-          toast.error(errorCode);
-          setEmail("");
-          setName("");
-          setPass("");
+    if (!validate()) return;
+
+    setIsSubmitting(true);
+    createUserWithEmailAndPassword(auth, email, pass)
+      .then(async (user) => {
+        await updateProfile(auth.currentUser, {
+          displayName: name,
+          photoURL: "https://i.ibb.co/GQ4sL6n/default-avatar.png",
         });
-    }
-  }
+
+        await sendEmailVerification(auth.currentUser);
+
+        const db = getDatabase();
+        await set(ref(db, "users/" + user.user.uid), {
+          username: name,
+          email: user.user.email,
+          photo: "https://i.ibb.co/GQ4sL6n/default-avatar.png",
+        });
+
+        setEmail("");
+        setName("");
+        setPass("");
+        setConfirmPass("");
+        toast.success("Account created. Verify your email to login.");
+        setTimeout(() => {
+          navigate("/login");
+        }, 1200);
+      })
+      .catch((error) => {
+        toast.error(error.code);
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
+  };
 
   return (
     <>
       <Grid container>
-        <Grid size={{ xs: 12, md: 6 }} spacing={20}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <div className="reg-box">
             <ToastContainer
               position="top-center"
-              autoClose={5000}
+              autoClose={3000}
               hideProgressBar={false}
               newestOnTop={false}
-              closeOnClick={false}
+              closeOnClick
               rtl={false}
               pauseOnFocusLoss
               draggable
@@ -184,54 +162,84 @@ function Registration() {
               theme="dark"
               transition={Bounce}
             />
+
             <div className="reg-title">
-              <h2>Get started with easily register</h2>
-              <p>Free register and you can enjoy it</p>
+              <h2>Create your account</h2>
+              <p>Join your friends and start chatting instantly.</p>
+
               {emailError && <div className="error-screen">{emailError}</div>}
               <CssTextField
                 value={email}
-                onChange={handleEmail}
-                id="outlined-basic"
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setEmailError("");
+                }}
+                id="register-email"
                 label="Email Address"
                 variant="outlined"
               />
+
               {nameError && <div className="error-screen">{nameError}</div>}
               <CssTextField
                 value={name}
-                onChange={handleName}
-                id="outlined-basic"
-                label="Full name"
+                onChange={(e) => {
+                  setName(e.target.value);
+                  setNameError("");
+                }}
+                id="register-name"
+                label="Display Name"
                 variant="outlined"
               />
+
               {passError && <div className="error-screen">{passError}</div>}
               <div className="passField">
                 <CssTextField
                   value={pass}
-                  onChange={handlePass}
+                  onChange={(e) => {
+                    setPass(e.target.value);
+                    setPassError("");
+                  }}
                   type={showPass ? "text" : "password"}
-                  id="outlined-basic"
+                  id="register-password"
                   label="Password"
                   variant="outlined"
                 />
-                <div onClick={handleEyeClick} className="fa-eye-on">
+                <div onClick={() => setShowPass(!showPass)} className="fa-eye-on">
                   {showPass ? <FiEye /> : <FiEyeOff />}
                 </div>
               </div>
 
-              <BootstrapButton onClick={handleClick} variant="contained">
-                Sign up
+              {confirmPassError && <div className="error-screen">{confirmPassError}</div>}
+              <div className="passField">
+                <CssTextField
+                  value={confirmPass}
+                  onChange={(e) => {
+                    setConfirmPass(e.target.value);
+                    setConfirmPassError("");
+                  }}
+                  type={showConfirmPass ? "text" : "password"}
+                  id="register-confirm-password"
+                  label="Confirm Password"
+                  variant="outlined"
+                />
+                <div onClick={() => setShowConfirmPass(!showConfirmPass)} className="fa-eye-on">
+                  {showConfirmPass ? <FiEye /> : <FiEyeOff />}
+                </div>
+              </div>
+
+              <BootstrapButton onClick={handleClick} variant="contained" disabled={isSubmitting}>
+                {isSubmitting ? "Creating account..." : "Create account"}
               </BootstrapButton>
+
               <p>
-                Already have an account ?{" "}
-                <Link to="/login">
-                  <span>Sign In</span>
-                </Link>{" "}
+                Already have an account? <Link to="/login"><span>Sign in</span></Link>
               </p>
             </div>
           </div>
         </Grid>
+
         <Grid className="reg-grid" size={{ xs: 0, md: 6 }}>
-          <img className="regImg" src={RegistrationImg} alt="Image" />
+          <img className="regImg" src={RegistrationImg} alt="Registration visual" />
         </Grid>
       </Grid>
     </>

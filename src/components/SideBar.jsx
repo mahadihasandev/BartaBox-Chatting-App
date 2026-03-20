@@ -28,10 +28,8 @@ const BootstrapButton = styled(Button)({
 });
 
 function SideBar() {
-  const [Locations, setLocation] = useState();
+  const [activeRoute, setActiveRoute] = useState("home");
   const [visiblePopup, setVisiblePopup] = useState(false);
-
-  // const storage = getStorage();
 
   const auth = getAuth();
   let dispatch = useDispatch();
@@ -39,32 +37,29 @@ function SideBar() {
   let location = useLocation();
   const [image, setImage] = useState("");
 
-  const [cropData, setCropData] = useState("");
   const cropperRef = createRef();
   
-  
-//Uselocation Hook for menu change 
+  // Use location hook for menu highlight state.
   useEffect(() => {
-    setLocation(location.pathname.replace("/pages/", ""));
-  });
+    setActiveRoute(location.pathname.replace("/pages/", "") || "home");
+  }, [location.pathname]);
 
   let domRef = useRef(null);
 
   let data = useSelector((state) => state.activeUser.value);
- 
-  // let imgdata=useSelector((state)=>console.log(state.activeUser.value.photoURL))
 
   useEffect(() => {
     if (!data) {
       navigate("/login");
     }
-  }, []);
+  }, [data, navigate]);
 
-//Logout button
+  // Logout button
   let handleLogOut = () => {
     signOut(auth)
       .then(() => {
         localStorage.removeItem("activeUser");
+        localStorage.removeItem("friendLists");
         dispatch(userDetails(null));
         navigate("/login");
       })
@@ -74,19 +69,19 @@ function SideBar() {
       });
   };
 
-//Update Profile Button
+  // Update profile button
   let handleUpdateProfile = () => {
     setVisiblePopup(true);
   };
 
-//Profile picture Chang pop up
+  // Profile picture popup close when clicking outside.
   let handlePopUp = (e) => {
     if (!domRef.current.contains(e.target)) {
       setVisiblePopup(false);
     }
   };
 
-//Cropping && sending image to firebase
+  // Crop image input locally.
   const onChange = (e) => {
     e.preventDefault();
     let files;
@@ -104,68 +99,61 @@ function SideBar() {
 
   const getCropData = () => {
     if (typeof cropperRef.current?.cropper !== "undefined") {
-      setCropData(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
-                      dispatch(userDetails({...data,photoURL:data.photoURL}))
-                      localStorage.setItem('userinfo',JSON.stringify({...data,photoURL:data.photoURL}))
-
-      //Might need Import
-
-
-    // const storageRef = ref(storage, auth.currentUser.uid);
-    //   const message4 = cropData;
-    //   uploadString(storageRef, message4, "data_url").then((snapshot) => {
-    //     console.log("Uploaded a data_url string!");
-    //   });
-      // getDownloadURL(storageRef).then((downloadURL) => {
-      //   console.log("File available at", downloadURL);
-      // updateProfile(auth.currentUser, {                  
-      //             photoURL:downloadURL,            
-      //           }).then(()=>{
-                    // setImage('')
-                    // setCropData('')
-      //             setVisiblePopup("false")
-                      // dispatch(userDetails({...data,photoURL:downloadURL}))
-                      // localStorage.setItem('userinfo',JSON.stringify({...data,photoURL:downloadURL}))
-      //           })
-      // });
+      const croppedPhoto = cropperRef.current?.cropper
+        .getCroppedCanvas()
+        .toDataURL();
+      const updatedUser = { ...data, photoURL: croppedPhoto };
+      dispatch(userDetails(updatedUser));
+      localStorage.setItem("activeUser", JSON.stringify(updatedUser));
+      setImage("");
+      setVisiblePopup(false);
+      toast.success("Profile photo updated locally");
     }
   };
 
   return (
     <>
       <div className="sidebar-layouts">
-        <div onClick={handleUpdateProfile} className="profile-layout">
-          <img className="ppImg" src={data.photoURL} alt="Img" />
-          <div className="overlay">
-            <FaCloudUploadAlt className="icon" />
+        <div className="sidebar-top">
+          <div onClick={handleUpdateProfile} className="profile-layout">
+            <img className="ppImg" src={data?.photoURL} alt="Profile" />
+            <div className="overlay">
+              <FaCloudUploadAlt className="icon" />
+            </div>
           </div>
+          <h4 className="display-name">{data?.displayName}</h4>
         </div>
-        <h4 className="display-name">{data.displayName}</h4>
+
         <div className="page-layout">
-          <Link className={Locations == "home" && "active"} to="/pages/home">
+          <Link className={activeRoute === "home" ? "active" : ""} to="/pages/home">
             <TbHomeDown className="page-icon" />
+            <span>Home</span>
           </Link>
           <Link
-            className={Locations == "messages" && "active"}
+            className={activeRoute === "messages" ? "active" : ""}
             to="/pages/messages"
           >
             <AiOutlineMessage className="page-icon" />
+            <span>Messages</span>
           </Link>
           <Link
-            className={Locations == "notification" && "active"}
+            className={activeRoute === "notification" ? "active" : ""}
             to="/pages/notification"
           >
             <MdOutlineNotificationsActive className="page-icon" />
+            <span>Notification</span>
           </Link>
           <Link
-            className={Locations == "settings" && "active"}
+            className={activeRoute === "settings" ? "active" : ""}
             to="/pages/settings"
           >
             <MdOutlineSettings className="page-icon" />
+            <span>Settings</span>
           </Link>
         </div>
         <div className="logout-layout">
           <HiOutlineLogout onClick={handleLogOut} className="page-icon" />
+          <span>Logout</span>
         </div>
 
         {visiblePopup && (
@@ -193,9 +181,9 @@ function SideBar() {
                     />
                   )}
                 </div>
-                <div>
+                <div className="preview-column">
                   <div className="preview-box">
-                    <h1>Preview</h1>
+                    <h3>Preview</h3>
                     <div className="img-preview preview-round"></div>
                   </div>
                 </div>

@@ -28,7 +28,7 @@ let navigate = useNavigate()
        })
        setFriendList(arr)
       })
-  },[])
+  },[db, data?.uid])
 
   //Block Button Function sendig data to firebase block collection
 

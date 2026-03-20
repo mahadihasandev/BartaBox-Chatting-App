@@ -35,7 +35,7 @@ let data=useSelector((state)=>(state.activeUser.value))
          })
          setBlockUser(arr)
         })
-    },[])
+    },[db, data?.uid])
 
   //Unblock button function && sending data to firbase friendList/ collection.
 

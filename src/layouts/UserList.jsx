@@ -34,7 +34,7 @@ function UserList() {
       setUserList(arr)
       setSearchUser(arr)
     });
-  },[])
+  },[db, data?.uid])
 
   //Getting friendRequest data from firebase for dynamic button.
   useEffect(()=>{      
@@ -46,7 +46,7 @@ function UserList() {
       })
       setFriendConcatReq(arr);
     });
-  },[])
+  },[db])
 
   //Add button function and sending data to firebase and creating friendRequest/ collection.
   let handleFriendRequest=(item)=>{      
@@ -69,7 +69,7 @@ function UserList() {
       })
       setConcateFriendList(arr)
     })
-  },[])
+  },[db])
 
   //Getting block/ collection data from firebase for dynamic button.
   useEffect(()=>{
@@ -84,7 +84,7 @@ function UserList() {
       setConcateBlockId(arr)
       setBlockKey(arrb)
     })
-  },[])
+  },[db])
   
   //Unblock button function and sending data to firebase and creating friendList/ collection.
   let handleUnblock=(item)=>{
